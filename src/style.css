@@ -5,6 +5,14 @@
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
+  --purple:#AA97EC;
+  --pink:#e0bede;
+  --darkpink:#d89aeb;
+  --darkblue:#747bff;
+  --lightblue:#b4bdff;
+  --dark:#0E1528;
+  --night:#141E3A;
+  --white:rgba(255, 255, 255, 0.87);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;

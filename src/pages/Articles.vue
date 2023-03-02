@@ -1,7 +1,7 @@
 <template>
     <div class="wrap">
         <div class="aside">
-            <h2 class="date">2023.03.01</h2>
+            <h2 class="date">2023.03.02</h2>
             <container class="search" title="Search">
                 <template #header>
                     <search></search>
@@ -85,10 +85,10 @@ export default defineComponent({
     max-width: 230px;
     padding: 0 0 20px;
     margin: 0 auto;
-    color: #AA97EC;
+    color: var(--purple);
     margin-bottom: 20px;
     font-size: 36px;
-    text-shadow: 1px 1px 0px #d89aeb, 2px 2px 0px #e0bede;
+    text-shadow: 1px 1px 0px var(--darkpink), 2px 2px 0px var(--pink);
     border-bottom: 2px solid;
 }
 

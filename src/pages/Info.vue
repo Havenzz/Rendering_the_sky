@@ -152,31 +152,6 @@ export default defineComponent({
                 }
             }
 
-            .user_right {
-                flex: 1;
-
-                &>p {
-                    text-align: end;
-                }
-
-                &>button {
-                    background-color: #2B3444;
-                    height: 30px;
-                    line-height: 0;
-                    font-size: 13px;
-                    color: #D3D3D3;
-                    border: none;
-                    transition: .3s;
-                    border-radius: 3px;
-
-                    &:hover {
-                        box-shadow: 0 0 8px 2px rgba(0, 0, 0, .1);
-                        color: #fff;
-                        background-color: #353E4E;
-                    }
-                }
-            }
-
             .user_state {
                 width: 100%;
                 border-radius: 3px;

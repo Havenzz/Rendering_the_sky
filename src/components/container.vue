@@ -28,7 +28,7 @@ export default defineComponent({
     background-position: top left;
     background-repeat: no-repeat;
     background-color: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(3px);
     border-radius: 3px;
     padding: 0px 0px 0px 0px;
     margin-bottom: 22px;
