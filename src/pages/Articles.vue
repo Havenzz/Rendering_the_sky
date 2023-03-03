@@ -1,7 +1,7 @@
 <template>
     <div class="wrap">
         <div class="aside">
-            <h2 class="date">2023.03.02</h2>
+            <h2 class="date">2023.03.03</h2>
             <container class="search" title="Search">
                 <template #header>
                     <search></search>

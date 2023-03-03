@@ -7,7 +7,7 @@
                 </div>
                 <div class="user_info">
                     <div class="user_header">
-                        <h2>Logic</h2>
+                        <h2>Haven Wu</h2>
                         <span>- Web前端工程师 -</span>
                     </div>
                     <div class="user_content">

@@ -29,7 +29,7 @@
 
 <script lang="ts">
 import prism from 'prismjs';
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, onMounted } from 'vue';
 import container from '../../components/container.vue';
 import { article } from './articles.vue'
 export default defineComponent({
@@ -47,7 +47,6 @@ export default defineComponent({
             author: '老蛙@'
         }
         onMounted(() => {
-            // import('../../lib/prism/prism.js');
             prism.highlightAll()
         })
 
