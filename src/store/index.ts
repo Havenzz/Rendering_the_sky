@@ -4,7 +4,7 @@ import { MockUrl } from '../http';
 interface UserProps {
     isLogin: boolean;
     username: string;
-    email: string;
+    avatarURL: string;
 }
 
 export interface ItemProps {
@@ -31,7 +31,7 @@ const store = createStore<GlobalDataProps>({
         user: {
             isLogin: false,
             username: '',
-            email: '',
+            avatarURL: '',
         },
         project: [],
         isShowLogin: false,
@@ -49,8 +49,11 @@ const store = createStore<GlobalDataProps>({
         }
     },
     mutations: {
-        UPDATE_PROJECT(state,projectData) {
-            state.project = projectData;
+        UPDATE_USERSTATE(state,projectData) {
+            state.user = {
+                ...projectData,
+                isLogin:true
+            }
         },
         UPDATE_ISSHOWLOGIN(state,payload){
             state.isShowLogin = payload
