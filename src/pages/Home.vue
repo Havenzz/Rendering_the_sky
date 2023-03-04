@@ -1,0 +1,193 @@
+<template>
+    <div class="home">
+        <div class="home_loading" :style="{ width: width + 'px', height: height + 'px' }" v-if="isLoading">
+            <span>(●'◡'●) 模型加载中...</span>
+        </div>
+        <div id="home_threeJS" v-show="!isLoading" ref="threeRef"></div>
+        <div class="textBox">
+            <h1>Welcome</h1>
+            <h1>to</h1>
+            <h1>Haven's</h1>
+            <h1>blog!</h1>
+            <div class="btn_container">
+                <button @click="goInfoRoute">了解更多</button>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script lang="ts">
+import { defineComponent, ref, Ref } from 'vue';
+import { useRouter } from 'vue-router';
+import useThreeRender from '../hook/useThreeRender';
+
+export default defineComponent({
+    setup() {
+        // router
+        const router = useRouter()
+        const threeRef = ref<Ref | null>(null);
+        const { width, height, isLoading } = useThreeRender(threeRef)
+        const goInfoRoute = () => {
+            router.push('/info')
+        }
+
+        return {
+            threeRef,
+            goInfoRoute,
+            isLoading,
+            width,
+            height
+        }
+    }
+})
+</script>
+
+<style scoped lang="less">
+.home {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    display: flex;
+    padding-top: 66px;
+    box-sizing: border-box;
+}
+
+.home_loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    --size: 50px;
+
+    @media screen and (max-width: 1200px) {
+        margin: 0 auto;
+    }
+
+    span {
+        display: block;
+        box-sizing: border-box;
+        color: #fff;
+        font-size: 18px;
+        text-align: center;
+        line-height: 30px;
+        padding-top: 30px;
+    }
+
+    &::before {
+        content: '';
+        width: var(--size);
+        height: var(--size);
+        border: 3px solid #fff;
+        border-right-color: #AA97EC;
+        border-radius: 50%;
+        animation: rotate .8s linear infinite;
+    }
+
+    @keyframes rotate {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+}
+
+
+#home_threeJS {
+    overflow: hidden;
+
+    @media screen and (max-width: 1200px) {
+        margin: 0 auto;
+    }
+}
+
+:deep(#home_threeJS canvas) {
+    cursor: grab;
+}
+
+.textBox {
+    position: absolute;
+    top: 16%;
+    right: 66px;
+    overflow: hidden;
+    padding: 10px;
+    user-select: none;
+    box-sizing: border-box;
+
+
+    h1 {
+        font-size: 110px;
+        color: #aa97ec;
+        text-align: end;
+        text-shadow: 2px 2px 0px #d89aeb, 4px 4px 0px #e0bede;
+        @media screen and (max-width:900px) {
+            text-shadow: 1px 1px 0px #d89aeb, 2px 2px 0px #e0bede;
+        }
+    }
+
+    .btn_container {
+        margin-top: 66px;
+        display: flex;
+        justify-content: end;
+
+        button {
+            margin: 10px;
+            padding: 16px 20px;
+            background-color: rgba(6, 6, 6, 0.66);
+            box-shadow: 0px 3px 7px 0px rgb(0 0 0 / 35%);
+            text-shadow: 0 0 3px #a189e2, 0 0 6px #e0b5eb, ;
+            color: #fff;
+        }
+    }
+
+    @media screen and (max-width: 1200px) {
+        display: flex;
+        flex-flow: wrap;
+        justify-content: center;
+        top: 100%;
+        width: 800px;
+        margin: 0 auto;
+        left: 0;
+        right: 0;
+
+        h1 {
+            font-size: 56px;
+            margin-right: 20px;
+            text-align: center;
+        }
+
+        .btn_container {
+            margin: 0 auto;
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+    }
+
+    @media screen and (max-width: 800px) {
+        width: 100%;
+
+        h1 {
+            font-size: 42px;
+        }
+    }
+
+    @media screen and (max-width: 520px) {
+        top: 105%;
+
+        h1 {
+            font-size: 28px;
+            margin-right: 10px;
+        }
+
+        .btn_container {
+            margin: 20px auto 0;
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+    }
+}
+</style>
