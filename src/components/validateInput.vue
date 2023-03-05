@@ -130,7 +130,7 @@ export default defineComponent({
 .inputBox input:valid~span,
 .inputBox input:focus~span {
     color: #6c4fbd;
-    transform: translateX(0px) translateY(-34px);
+    transform: translateX(0px) translateY(-40px);
     font-size: 0.75em;
 }
 
@@ -140,7 +140,7 @@ export default defineComponent({
     bottom: 0;
     width: 100%;
     height: 2px;
-    background: linear-gradient(150deg, #a189e2 , #e0b5eb);
+    background: #fff;
     border-radius: 4px;
     overflow: hidden;
     transition: 0.5s;

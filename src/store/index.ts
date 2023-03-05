@@ -7,23 +7,11 @@ interface UserProps {
     avatarURL: string;
 }
 
-export interface ItemProps {
-    itemImgURL: string[];
-    itemName: string;
-    itemURL?: string;
-    itemCycle: string;
-    itemDescribe: string;
-    itemStack: string;
-    itemModule: string;
-    itemDuty: string[];
-    itemPointer: string[];
-}
-
-interface GlobalDataProps {
+export interface GlobalDataProps {
     user: UserProps;
-    project: ItemProps[];
     isShowLogin: boolean;
     isLoading: boolean;
+    progress: number;
 }
 
 const store = createStore<GlobalDataProps>({
@@ -33,9 +21,9 @@ const store = createStore<GlobalDataProps>({
             username: '',
             avatarURL: '',
         },
-        project: [],
         isShowLogin: false,
-        isLoading: false
+        isLoading: false,
+        progress:0
     },
     actions: {
         async fetchProjectData({ commit }) {
@@ -46,13 +34,22 @@ const store = createStore<GlobalDataProps>({
             } catch (error) {
                 location.replace('/')
             }
+        },
+        update_progress({ commit },progress){
+            if(progress === 1){
+                commit('UPDATE_PROGRESS',progress)
+                setTimeout(() => {
+                    commit('UPDATE_PROGRESS',0)
+                }, 600);
+            }else{
+                commit('UPDATE_PROGRESS',progress)
+            }
         }
     },
     mutations: {
-        UPDATE_USERSTATE(state,projectData) {
+        UPDATE_USERSTATE(state,userData) {
             state.user = {
-                ...projectData,
-                isLogin:true
+                ...userData,
             }
         },
         UPDATE_ISSHOWLOGIN(state,payload){
@@ -60,6 +57,9 @@ const store = createStore<GlobalDataProps>({
         },
         UPDATE_ISLOADING(state,payload){
             state.isLoading = payload
+        },
+        UPDATE_PROGRESS(state,payload){
+            state.progress = payload
         }
     }
 })

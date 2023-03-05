@@ -13,6 +13,7 @@
   --dark:#0E1528;
   --night:#141E3A;
   --white:rgba(255, 255, 255, 0.87);
+  --linear:linear-gradient(150deg, #a189e2, #e0b5eb);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;

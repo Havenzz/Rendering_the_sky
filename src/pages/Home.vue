@@ -1,9 +1,6 @@
 <template>
     <div class="home">
-        <div class="home_loading" :style="{ width: width + 'px', height: height + 'px' }" v-if="isLoading">
-            <span>(●'◡'●) 模型加载中...</span>
-        </div>
-        <div id="home_threeJS" v-show="!isLoading" ref="threeRef"></div>
+        <threeHome />
         <div class="textBox">
             <h1>Welcome</h1>
             <h1>to</h1>
@@ -16,30 +13,14 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, Ref } from 'vue';
+<script lang="ts" setup>
 import { useRouter } from 'vue-router';
-import useThreeRender from '../hook/useThreeRender';
+import threeHome from '../components/threeHome.vue';
 
-export default defineComponent({
-    setup() {
-        // router
-        const router = useRouter()
-        const threeRef = ref<Ref | null>(null);
-        const { width, height, isLoading } = useThreeRender(threeRef)
-        const goInfoRoute = () => {
-            router.push('/info')
-        }
-
-        return {
-            threeRef,
-            goInfoRoute,
-            isLoading,
-            width,
-            height
-        }
-    }
-})
+const router = useRouter()
+const goInfoRoute = () => {
+    router.push('/info')
+}
 </script>
 
 <style scoped lang="less">
@@ -122,6 +103,7 @@ export default defineComponent({
         color: #aa97ec;
         text-align: end;
         text-shadow: 2px 2px 0px #d89aeb, 4px 4px 0px #e0bede;
+
         @media screen and (max-width:900px) {
             text-shadow: 1px 1px 0px #d89aeb, 2px 2px 0px #e0bede;
         }

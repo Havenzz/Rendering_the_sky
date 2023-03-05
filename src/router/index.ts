@@ -4,39 +4,42 @@ const router = createRouter({
     history: routerHistory,
     routes: [
         {
-            path:'/',
-            redirect:'/home'
+            path: '/',
+            redirect: '/home'
         },
         {
-            path:'/:catchAll(.*)',
-            redirect:'/404'
+            path: '/:catchAll(.*)',
+            redirect: '/404'
         },
         {
-            path:'/404',
+            path: '/404',
             component: () => import('../pages/404.vue')
         },
         {
-            path:'/home',
-            component: () => import('../pages/Home.vue')
+            path: '/home',
+            component: () => import('../pages/Home.vue'),
+            meta: {
+                keepAlive: true
+            }
         },
         {
-            path:'/info',
+            path: '/info',
             component: () => import('../pages/Info.vue'),
         },
         {
-            path:'/login',
+            path: '/login',
             component: () => import('../pages/Login.vue')
         },
         {
-            path:'/articles',
+            path: '/articles',
             component: () => import('../pages/Articles.vue'),
-            children:[
+            children: [
                 {
-                    path:'',
+                    path: '',
                     component: () => import('../pages/ArticlesChildren/articles.vue')
                 },
                 {
-                    path:':id',
+                    path: ':id',
                     component: () => import('../pages/ArticlesChildren/article.vue')
                 }
             ]

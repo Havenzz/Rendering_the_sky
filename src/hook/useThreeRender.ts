@@ -12,10 +12,10 @@ export default (container: Ref<HTMLElement>) => {
             width = window.innerWidth;
             height = window.innerHeight - 345;
         } else if (window.innerWidth <= 1200) {
-            width = 800;
+            width = 750;
             height = window.innerHeight - 245;
         } else {
-            width = 800;
+            width = 750;
             height = window.innerHeight - 100;
         }
         return {

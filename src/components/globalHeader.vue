@@ -1,16 +1,29 @@
 <template>
     <div class="global-header">
         <div class="header-wrap">
-            <div class="mask" :class="{show:asideShow}" @click="asideShow = false"></div>
-            <div class="header-left-small" @click="asideShow = true">###</div>
-            <div class="header-left">
-                <div class="ufo" :style="{ left: `${ufoOffset}%` }"></div>
-                <div class="header-navbar" :class="{show:asideShow}" ref="headerNavbarRef">
-                    <slot></slot>
-                </div>
-            </div>
+            <navBar>
+                <router-link active-class="active" to="/home">首&nbsp;页</router-link>
+                <router-link active-class="active" to="/info">资&nbsp;料</router-link>
+                <router-link active-class="active" to="/articles">文&nbsp;章</router-link>
+                <router-link active-class="active" to="/about">关&nbsp;于</router-link>
+            </navBar>
             <div class="header-right">
-                <div @click="oepnLogin">
+                <dropdown v-if="userData.isLogin">
+                    <template #header>
+                        <div class="userInfo">
+                            <div class="avatar">
+                                <!-- <img :src="userData.avatarURL"> -->
+                                <img src="../assets/logic.jpg" alt="">
+                            </div>
+                            <span>{{ userData.username }}</span>
+                        </div>
+                    </template>
+                    <ul class="dropdown">
+                        <li>新建文章</li>
+                        <li @click="signOut">退出登录</li>
+                    </ul>
+                </dropdown>
+                <div v-else @click="oepnLogin">
                     <span>登&nbsp;录</span>
                 </div>
             </div>
@@ -18,72 +31,25 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, onMounted, ref, Ref, PropType, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+<script lang="ts" setup>
 import { useStore } from 'vuex';
+import { defineProps } from 'vue';
+import navBar from './navBar.vue';
+import dropdown from './dropdown.vue'
+import { signOut } from '../http';
+
 export interface userDataProp {
     username: string;
-    email: string;
     isLogin: boolean;
+    avatarURL: string;
 }
-export default defineComponent({
-    setup() {
-        const headerNavbarRef = ref<Ref | null>(null);
-        const ufoOffset = ref(0);
-        const route = useRoute();
-        const router = useRouter();
-        const store = useStore();
-        const asideShow = ref(false);
+const { userData } = defineProps<{ userData: userDataProp }>()
 
-        const changeOffset = () => {
-            const elArr = Array.from(headerNavbarRef.value.children);
-            // 初始偏移值 = 当前路由在导航栏列表中的索引 * 导航栏列表的单个占比
-            ufoOffset.value = elArr.findIndex((el: HTMLAnchorElement | unknown) => {
-                const checkStr = (el as HTMLAnchorElement).attributes.getNamedItem('href')?.value;
-                if (checkStr) {
-                    return route.path.indexOf(checkStr) !== -1;
-                }
-            }) * (100 / elArr.length);
+const store = useStore();
+const oepnLogin = () => {
+    store.commit('UPDATE_ISSHOWLOGIN', true)
+}
 
-            if (ufoOffset.value < 0) {
-                ufoOffset.value = 0
-            }
-
-            return elArr
-        }
-
-        onMounted(async () => {
-            await router.isReady();
-            const elArr = changeOffset();
-            elArr.forEach((el: HTMLElement | unknown, index: number) => {
-                (el as HTMLElement).addEventListener('mouseover', () => {
-                    ufoOffset.value = 100 / elArr.length * index
-                });
-                (el as HTMLElement).addEventListener('mouseleave', () => {
-                    changeOffset()
-                });
-            });
-
-        })
-
-        watch(() => route.path, () => {
-            changeOffset()
-            asideShow.value = false;
-        })
-
-        const oepnLogin = () => {
-            store.commit('UPDATE_ISSHOWLOGIN', true)
-        }
-
-        return {
-            headerNavbarRef,
-            ufoOffset,
-            oepnLogin,
-            asideShow,
-        }
-    }
-})
 </script>
 
 <style scoped lang="less">
@@ -98,6 +64,35 @@ export default defineComponent({
     box-shadow: 0px 3px 7px 0px rgb(0 0 0 / 35%);
 }
 
+.userInfo {
+    display: flex;
+    align-items: center;
+
+    .avatar {
+        width: 30px;
+        height: 30px;
+        margin-right: 10px;
+        border-radius: 50%;
+        overflow: hidden;
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
+}
+.dropdown li{
+    font-size: 14px;
+    line-height: 28px;
+    text-align: center;
+    cursor: pointer;
+    width: 130px;
+    color: var(--white);
+    &:hover{
+        color: #fff;
+    }
+}
+
 .header-wrap {
     max-width: 1200px;
     margin: 0 auto;
@@ -107,87 +102,8 @@ export default defineComponent({
     height: 100%;
 }
 
-.header-left-small{
-    display: none;
-    background: linear-gradient(150deg, #a189e2, #e0b5eb);
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-left: 20px;
-    @media screen and (max-width:1200px){
-        display: block;
-    }
-}
-
-.header-left {
-    position: relative;
-    height: 100%;
-
-    .ufo {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: calc(25% - 60px);
-        height: 6px;
-        background: linear-gradient(150deg, #a189e2, #e0b5eb);
-        ;
-        margin-left: 30px;
-        transition: .3s;
-        user-select: none;
-        z-index: 1;
-
-        @media screen and (max-width:1200px) {
-            display: none;
-        }
-    }
-}
-
-.header-navbar {
-    display: flex;
-    font-size: 17px;
-    height: 100%;
-    word-spacing: 1px;
-    list-style-type: none;
-
-    @media screen and (max-width:1200px) {
-        flex-direction: column;
-        z-index: 9999;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 233px;
-        background-color: rgba(6, 6, 6, .9);
-        box-shadow: 0px 3px 7px 0px rgb(0 0 0 / 35%);
-        justify-content: center;
-        transform: translateX(-666px);
-        transition: .3s;
-        opacity: 0;
-        &.show{
-            opacity: 1;
-            transform: translateX(0);
-        }
-        :deep(a) {
-            text-align: center;
-        }
-    }
-
-    :deep(a) {
-        padding: 0 30px;
-        letter-spacing: 0px;
-        color: #ccc;
-        line-height: 66px;
-        z-index: 9;
-
-        &.active,
-        &:hover {
-            text-shadow: 0 0 10px #a189e2, 0 0 20px #e0b5eb, 0 0 40px #e0b5eb;
-            color: #fff;
-        }
-    }
-}
-
 .header-right span {
-    margin-right: 30px;
+    padding-right: 30px;
     line-height: 66px;
     display: block;
     cursor: pointer;
@@ -197,7 +113,7 @@ export default defineComponent({
     }
 }
 
-.mask{
+.mask {
     position: fixed;
     top: 0;
     left: 0;
@@ -207,7 +123,8 @@ export default defineComponent({
     z-index: 9;
     background-color: rgba(6, 6, 6, .66);
     display: none;
-    &.show{
+
+    &.show {
         display: block;
     }
 }

@@ -16,13 +16,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, Ref, reactive, onUnmounted } from 'vue';
+import { defineComponent, Ref, reactive } from 'vue';
 import background from '../components/background.vue';
 import formContainer from '../components/formContainer.vue';
 import validateInput, { rulesProp } from '../components/validateInput.vue';
-import { login } from '../http'
+import { signIn } from '../http'
 import { useStore } from 'vuex';
 import useCreateAndRemoveDOM from '../hook/useCreateAndRemoveDOM';
+
 interface userDataProp {
     username: string;
     password: string;
@@ -35,7 +36,7 @@ export default defineComponent({
         useCreateAndRemoveDOM('back');
         const store = useStore();
         const closeLogin = () => {
-            store.commit('UPDATE_ISSHOWLOGIN', false)
+            store.commit('UPDATE_ISSHOWLOGIN', false);
         }
         document.body.style.overflow = 'hidden'
         //data
@@ -60,24 +61,16 @@ export default defineComponent({
             minLen: 6,
             maxLen: 14
         }]
-        let timer: any;
+
         const formSubmit = (isPassed: boolean, isLoading: Ref) => {
             if (isPassed) {
                 isLoading.value = true;
-                if (timer) {
-                    clearTimeout(timer);
-                }
-                login({
+                signIn({
                     username: userData.username,
                     password: userData.password
-                }).then(r => {
-                    const { data } = r.data
-                    store.commit('UPDATE_USERSTATE', data)
-                    closeLogin()
-                }).catch(e => {
-                    
-                }).finally(() => {
-                    isLoading.value = false;
+                }, {
+                    isLoading,
+                    closeLogin
                 })
             } else {
                 console.log('error!!!')
