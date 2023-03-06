@@ -12,8 +12,8 @@
                     <template #header>
                         <div class="userInfo">
                             <div class="avatar">
-                                <!-- <img :src="userData.avatarURL"> -->
-                                <img src="../assets/logic.jpg" alt="">
+                                <img v-if="userData.avatarURL !== '#'" :src="userData.avatarURL">
+                                <img v-else src="../assets/logic.jpg">
                             </div>
                             <span>{{ userData.username }}</span>
                         </div>
