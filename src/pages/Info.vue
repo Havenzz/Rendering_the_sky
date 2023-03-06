@@ -48,7 +48,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
+import { defineComponent } from 'vue';
 import container from '../components/container.vue';
 export default defineComponent({
     components: {

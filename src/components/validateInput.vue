@@ -90,7 +90,7 @@ export default defineComponent({
 .inputBox {
     position: relative;
     width: 100%;
-    margin-top: 35px;
+    margin-top: 40px;
     box-sizing: border-box;
 }
 

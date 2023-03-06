@@ -142,4 +142,20 @@ watch(() => route.path, () => {
         }
     }
 }
+
+.mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    backdrop-filter: blur(3px);
+    z-index: 9;
+    background-color: rgba(6, 6, 6, .66);
+    display: none;
+
+    &.show {
+        display: block;
+    }
+}
 </style>

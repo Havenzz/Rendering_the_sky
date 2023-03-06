@@ -20,7 +20,7 @@
                     </template>
                     <ul class="dropdown">
                         <li>新建文章</li>
-                        <li @click="signOut">退出登录</li>
+                        <li @click="onSignOut">退出登录</li>
                     </ul>
                 </dropdown>
                 <div v-else @click="oepnLogin">
@@ -36,7 +36,6 @@ import { useStore } from 'vuex';
 import { defineProps } from 'vue';
 import navBar from './navBar.vue';
 import dropdown from './dropdown.vue'
-import { signOut } from '../http';
 
 export interface userDataProp {
     username: string;
@@ -48,6 +47,10 @@ const { userData } = defineProps<{ userData: userDataProp }>()
 const store = useStore();
 const oepnLogin = () => {
     store.commit('UPDATE_ISSHOWLOGIN', true)
+}
+
+const onSignOut = () => {
+    store.dispatch('signOut')
 }
 
 </script>
@@ -81,14 +84,16 @@ const oepnLogin = () => {
         }
     }
 }
-.dropdown li{
+
+.dropdown li {
     font-size: 14px;
     line-height: 28px;
     text-align: center;
     cursor: pointer;
     width: 130px;
     color: var(--white);
-    &:hover{
+
+    &:hover {
         color: #fff;
     }
 }
@@ -110,22 +115,6 @@ const oepnLogin = () => {
 
     &:hover {
         color: #fff;
-    }
-}
-
-.mask {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    backdrop-filter: blur(3px);
-    z-index: 9;
-    background-color: rgba(6, 6, 6, .66);
-    display: none;
-
-    &.show {
-        display: block;
     }
 }
 </style>

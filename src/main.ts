@@ -5,47 +5,83 @@ import './style.css'
 import './assets/font/iconfont.css'
 import App from './App.vue'
 import router from './router'
-import axios from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
+import debounce from 'lodash/debounce'
+import { LOGIN_STATE_KEY } from './http'
 
-const enum progState {
+
+// 进度条进度枚举
+export const enum PROGSTATE {
     INITIAL = 0,
     ACTIVE = 0.4,
     DONE = 1
 }
 
+// 请求队列 重复的请求会被记录下来 直到请求返回才释放
+const requestQueue = new Map();
+// 延迟时间
+export const DEFAULT_DELAY = 600;
+// 释放函数
+function clearRequestQueue(config: AxiosRequestConfig) {
+    if (config) {
+        const key = `${config.method}-${config.url}`;
+        requestQueue.delete(key);
+    }
+}
+
 // axios
 axios.interceptors.request.use(config => {
-    store.dispatch('update_progress', progState.ACTIVE)
-    config.onDownloadProgress = progress => {
-        if (progress.total) {
-            if (progress.loaded / progress.total !== 1) {
-                store.dispatch('update_progress', progress.loaded / progress.total)
+    const key = `${config.method}-${config.url}`;
+    if (!requestQueue.has(key)) {
+        store.dispatch('update_progress', PROGSTATE.ACTIVE)
+        // 使用 lodash 的防抖函数，限制请求发送的频率
+        const debouncedRequest = debounce(() => {
+            clearRequestQueue(config);
+            config.onDownloadProgress = progress => {
+                if (progress.total) {
+                    if (progress.loaded / progress.total !== 1) {
+                        store.dispatch('update_progress', progress.loaded / progress.total)
+                    }
+                }
             }
-        }
+        }, DEFAULT_DELAY);
+
+        requestQueue.set(key, debouncedRequest);
+        return config;
     }
-    return config
+    return Promise.reject('debounced');
 }, error => {
-    store.dispatch('update_progress', progState.INITIAL)
     return Promise.reject(error)
 })
 
 axios.interceptors.response.use(response => {
-    store.dispatch('update_progress', progState.DONE)
+    store.dispatch('update_progress', PROGSTATE.DONE)
+    clearRequestQueue(response.config)
     return response
 }, error => {
-    store.dispatch('update_progress', progState.INITIAL)
+    if (error !== 'debounced') {
+        setTimeout(() => {
+            // 由于错误响应非常快 所以这里延时释放
+            clearRequestQueue(error.config)
+            store.dispatch('update_progress', PROGSTATE.INITIAL)
+        }, DEFAULT_DELAY);
+    }
     return Promise.reject(error)
 })
 
-// router
 
+// router
 router.beforeEach((to, from, next) => {
-    store.dispatch('update_progress', progState.ACTIVE)
-    next()
+    store.dispatch('update_progress', PROGSTATE.ACTIVE)
+    if (localStorage.getItem(LOGIN_STATE_KEY)) {
+        store.dispatch('getUser',next)
+    } else {
+        next()
+    }
 })
 
 router.afterEach((to, from) => {
-    store.dispatch('update_progress', progState.DONE)
+    store.dispatch('update_progress', PROGSTATE.DONE)
 })
 
 

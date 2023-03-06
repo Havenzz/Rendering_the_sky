@@ -20,7 +20,6 @@ import { defineComponent, Ref, reactive } from 'vue';
 import background from '../components/background.vue';
 import formContainer from '../components/formContainer.vue';
 import validateInput, { rulesProp } from '../components/validateInput.vue';
-import { signIn } from '../http'
 import { useStore } from 'vuex';
 import useCreateAndRemoveDOM from '../hook/useCreateAndRemoveDOM';
 
@@ -65,13 +64,15 @@ export default defineComponent({
         const formSubmit = (isPassed: boolean, isLoading: Ref) => {
             if (isPassed) {
                 isLoading.value = true;
-                signIn({
+                const user:userDataProp = {
                     username: userData.username,
                     password: userData.password
-                }, {
+                }
+                const params = {
                     isLoading,
                     closeLogin
-                })
+                }
+                store.dispatch('signIn', { user, params })
             } else {
                 console.log('error!!!')
             }

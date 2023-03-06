@@ -1,10 +1,10 @@
 <template>
-    <div class="dropdown">
+    <div class="dropdown" ref="dropdown">
         <div class="dropdown_header" @click="toggle">
             <slot name="header"></slot>
         </div>
         <transition name="fade" appear>
-            <div class="dropdown_content" v-show="isOpen">
+            <div class="dropdown_content"  v-show="isOpen">
                 <slot></slot>
             </div>
         </transition>
@@ -12,12 +12,27 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, Ref, watchEffect } from 'vue';
 const isOpen = ref<boolean>(false);
+const dropdown = ref<Ref | null>(null)
 
 const toggle = () => {
     isOpen.value = !isOpen.value
 }
+
+watchEffect((onInvalidate) => {
+    const onClick = (e: Event) => {
+        if (!dropdown.value.contains(e.target)) {
+            if(isOpen.value){
+                isOpen.value = false;
+            }
+        }
+    }
+    document.addEventListener('click',onClick)
+    onInvalidate(() => {
+        document.removeEventListener('click',onClick)
+    })
+})
 
 </script>
 
@@ -25,6 +40,7 @@ const toggle = () => {
 .dropdown {
     position: relative;
     user-select: none;
+
     .dropdown_header {
         cursor: pointer;
         max-width: 200px;
