@@ -1,7 +1,7 @@
 <template>
     <div class="wrap">
         <div class="aside">
-            <h2 class="date">2023.03.03</h2>
+            <h2 class="date">{{ time }}</h2>
             <container class="search" title="Search">
                 <template #header>
                     <search></search>
@@ -19,22 +19,20 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script lang="ts" setup>
 import container from '../components/container.vue';
-import search from '../components/search.vue'
-export default defineComponent({
-    components: {
-        container,
-        search
-    },
-    setup() {
+import search from '../components/search.vue';
+import { useStore } from 'vuex';
+import { computed } from 'vue';
 
-        return {
-
-        }
-    }
+const store = useStore();
+const time = computed(() => {
+    const date = new Date(store.getters.time)
+    const MM = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1);
+    const DD = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+    return `${date.getFullYear()}.${MM}.${DD}`
 })
+
 </script>
 
 <style scoped lang="less">
@@ -52,6 +50,7 @@ export default defineComponent({
 
     .search {
         width: 230px;
+
         .classification {
             padding: 10px 20px;
 
@@ -74,6 +73,7 @@ export default defineComponent({
 
 .aside {
     margin-right: 30px;
+
     @media screen and (max-width:1000px) {
         width: 100%;
         margin-right: 0;

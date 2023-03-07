@@ -1,7 +1,7 @@
 <template>
     <div class="navBar">
-        <div class="mask" :class="{ show: asideShow }" @click="asideShow = false"></div>
-        <div class="header-left-small" @click="asideShow = true">###</div>
+        <div class="mask" :class="{ show: asideShow }" @click="onClickHide"></div>
+        <div class="header-left-small" @click="onClickShow">###</div>
         <div class="header-left">
             <div class="ufo" :style="{ left: `${ufoOffset}%` }"></div>
             <div class="header-navbar" :class="{ show: asideShow }" ref="headerNavbarRef">
@@ -39,6 +39,15 @@ const changeOffset = () => {
     return elArr
 }
 
+const onClickShow = () => {
+    asideShow.value = true;
+    document.body.style.overflow = 'hidden';
+}
+const onClickHide = () => {
+    asideShow.value = false;
+    document.body.removeAttribute('style')
+}
+
 onMounted(async () => {
     await router.isReady();
     const elArr = changeOffset();
@@ -55,7 +64,7 @@ onMounted(async () => {
 
 watch(() => route.path, () => {
     changeOffset()
-    asideShow.value = false;
+    onClickHide()
 })
 
 </script>
@@ -156,6 +165,12 @@ watch(() => route.path, () => {
 
     &.show {
         display: block;
+    }
+
+    @media screen and (min-width:1200px) {
+        &.show {
+            display: none;
+        }
     }
 }
 </style>

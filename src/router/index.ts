@@ -41,6 +41,13 @@ const router = createRouter({
                 {
                     path: ':id',
                     component: () => import('../pages/ArticlesChildren/article.vue')
+                },
+                {
+                    path: 'edit',
+                    component: () => import('../pages/ArticlesChildren/editAticle.vue'),
+                    meta: {
+                        requireLogin: true
+                    }
                 }
             ]
         }

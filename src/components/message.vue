@@ -10,20 +10,23 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits, withDefaults, ref } from 'vue';
+import { defineProps, defineEmits, withDefaults, ref, onBeforeUnmount } from 'vue';
 import useCreateAndRemoveDOM from '../hook/useCreateAndRemoveDOM';
 interface props {
     type: 'success' | 'error' | 'default';
     message: string;
-    time?: number;
+    timeout?: number;
 }
 useCreateAndRemoveDOM('message')
 
 const props = withDefaults(defineProps<props>(), {
-    type: 'success',
-    message: 'hhh',
+    type: 'default',
+    message: 'unknown',
 })
-const emit = defineEmits(['close'])
+const emit = defineEmits<{
+    (e: 'close', value: boolean): void
+}>()
+
 const classObj: any = {};
 
 classObj[props.type] = true;
@@ -35,6 +38,13 @@ const close = () => {
     emit('close', true);
 }
 
+if(props.timeout){
+    const timeout = props.timeout > 1000 ? props.timeout - 600 : props.timeout
+    setTimeout(() => {
+        isVisible.value = false;
+    }, timeout);
+}
+
 </script>
 
 <style scoped lang="less">
@@ -42,7 +52,7 @@ const close = () => {
     position: fixed;
     left: 50%;
     transform: translateX(-50%);
-    top: 10px;
+    top: 50px;
     height: 32px;
     line-height: 32px;
     min-width: 50px;

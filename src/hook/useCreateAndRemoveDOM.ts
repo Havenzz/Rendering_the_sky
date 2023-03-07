@@ -7,6 +7,5 @@ export default (DOMName: string) => {
 
     onUnmounted(() => {
         document.body.removeChild(DOM);
-        document.body.style.overflow = '';
     })
 }

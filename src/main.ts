@@ -8,6 +8,7 @@ import router from './router'
 import axios, { AxiosRequestConfig } from 'axios'
 import debounce from 'lodash/debounce'
 import { LOGIN_STATE_KEY } from './http'
+import createMessage from './components/createMessage'
 
 
 // 进度条进度枚举
@@ -21,6 +22,7 @@ export const enum PROGSTATE {
 const requestQueue = new Map();
 // 延迟时间
 export const DEFAULT_DELAY = 600;
+export const ERROR_DELAY = 1200;
 // 释放函数
 function clearRequestQueue(config: AxiosRequestConfig) {
     if (config) {
@@ -39,7 +41,7 @@ axios.interceptors.request.use(config => {
             clearRequestQueue(config);
             config.onDownloadProgress = progress => {
                 if (progress.total) {
-                    if (progress.loaded / progress.total !== 1) {
+                    if (progress.loaded / progress.total !== PROGSTATE.DONE) {
                         store.dispatch('update_progress', progress.loaded / progress.total)
                     }
                 }
@@ -55,16 +57,18 @@ axios.interceptors.request.use(config => {
 })
 
 axios.interceptors.response.use(response => {
+    console.log(response)
     store.dispatch('update_progress', PROGSTATE.DONE)
     clearRequestQueue(response.config)
     return response
 }, error => {
+    console.log(error)
     if (error !== 'debounced') {
         setTimeout(() => {
+            store.dispatch('update_progress', PROGSTATE.INITIAL)
             // 由于错误响应非常快 所以这里延时释放
             clearRequestQueue(error.config)
-            store.dispatch('update_progress', PROGSTATE.INITIAL)
-        }, DEFAULT_DELAY);
+        }, ERROR_DELAY);
     }
     return Promise.reject(error)
 })
@@ -72,11 +76,30 @@ axios.interceptors.response.use(response => {
 
 // router
 router.beforeEach((to, from, next) => {
+    const { user } = store.state
+    const { requireLogin } = to.meta
     store.dispatch('update_progress', PROGSTATE.ACTIVE)
-    if (localStorage.getItem(LOGIN_STATE_KEY)) {
-        store.dispatch('getUser',next)
+    if (!user.isLogin) {
+        if (localStorage.getItem(LOGIN_STATE_KEY)) {
+            try {
+                store.dispatch('getUser', next)
+            } catch (error) {
+                next(from.path || '/')
+            }
+        } else {
+            if (requireLogin) {
+                createMessage(`该页面需要权限，请登录后再访问(●'◡'●)`, 'error', ERROR_DELAY)
+                next(from.path || '/')
+            } else {
+                next()
+            }
+        }
     } else {
-        next()
+        if (requireLogin) {
+            store.dispatch('getUser', next)
+        } else {
+            next()
+        }
     }
 })
 

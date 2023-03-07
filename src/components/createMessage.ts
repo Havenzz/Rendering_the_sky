@@ -1,11 +1,12 @@
-import { h, render } from 'vue';
-import Message from './message.vue';
+import { h, render, defineAsyncComponent  } from 'vue';
 export type MessageType = 'success' | 'error' | 'default';
 
-const createMessage = (message: string, type: MessageType, timeout?: number) => {
+const createMessage = async (message: string, type: MessageType, timeout?: number) => {
+    const Message = await defineAsyncComponent(() => import('./message.vue'));
     const messageVnode = h(Message, {
         message,
-        type
+        type,
+        timeout
     })
     const mountNode = document.createElement('div');
     render(messageVnode, mountNode);

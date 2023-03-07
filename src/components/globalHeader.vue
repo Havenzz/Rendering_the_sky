@@ -19,7 +19,7 @@
                         </div>
                     </template>
                     <ul class="dropdown">
-                        <li>新建文章</li>
+                        <li @click="router.push('articles/edit')">新建文章</li>
                         <li @click="onSignOut">退出登录</li>
                     </ul>
                 </dropdown>
@@ -36,6 +36,7 @@ import { useStore } from 'vuex';
 import { defineProps } from 'vue';
 import navBar from './navBar.vue';
 import dropdown from './dropdown.vue'
+import { useRouter } from 'vue-router';
 
 export interface userDataProp {
     username: string;
@@ -45,6 +46,7 @@ export interface userDataProp {
 const { userData } = defineProps<{ userData: userDataProp }>()
 
 const store = useStore();
+const router = useRouter()
 const oepnLogin = () => {
     store.commit('UPDATE_ISSHOWLOGIN', true)
 }

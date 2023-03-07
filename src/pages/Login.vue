@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, Ref, reactive } from 'vue';
+import { defineComponent, Ref, reactive, onBeforeUnmount } from 'vue';
 import background from '../components/background.vue';
 import formContainer from '../components/formContainer.vue';
 import validateInput, { rulesProp } from '../components/validateInput.vue';
@@ -77,6 +77,10 @@ export default defineComponent({
                 console.log('error!!!')
             }
         }
+
+        onBeforeUnmount(() => {
+            document.body.removeAttribute('style');
+        })
 
         return {
             userData,

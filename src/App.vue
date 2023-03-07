@@ -1,5 +1,4 @@
 <template>
-  <loading v-if="isLoading"></loading>
   <background></background>
   <global-header :user-data="userData"></global-header>
   <Login v-if="isShowLogin"></Login>
@@ -19,14 +18,12 @@ import { computed } from 'vue';
 import background from './components/background.vue';
 import Login from './pages/Login.vue';
 import { useStore } from 'vuex';
-import loading from './components/loading.vue';
 import mprogress from './components/mprogress.vue';
 
 const store = useStore();
 
 const userData = computed<userDataProp>(() => store.state.user);
 const isShowLogin = computed(() => store.state.isShowLogin);
-const isLoading = computed(() => store.state.isLoading);
 const progress = computed<number>(() => store.state.progress);
 
 
