@@ -1,15 +1,11 @@
 <template>
     <container>
-        <upload :action="``" @fileUpload="fileUpload"></upload>
+        <postImage :uploadUrl="``"></postImage>
     </container>
 </template>
 
 <script lang="ts" setup>
 import container from '../../components/container.vue';
-import upload from '../../components/upload.vue';
-import createMessage, { MESSAGE_DELAY } from '../../components/createMessage';
+import postImage from '../../components/postImage.vue'
 
-const fileUpload = (res: any) => {
-    createMessage(`上传成功(●'◡'●)`, 'success', MESSAGE_DELAY)
-}
 </script>
