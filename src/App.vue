@@ -4,7 +4,7 @@
   <Login v-if="isShowLogin"></Login>
   <div class="main">
     <router-view v-slot="{ Component }">
-      <keep-alive>
+      <keep-alive include="Home">
         <component :is="Component"></component>
       </keep-alive>
     </router-view>

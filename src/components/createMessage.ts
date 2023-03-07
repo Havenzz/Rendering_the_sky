@@ -1,5 +1,7 @@
 import { h, render, defineAsyncComponent  } from 'vue';
 export type MessageType = 'success' | 'error' | 'default';
+export const MESSAGE_DELAY = 2000;
+
 
 const createMessage = async (message: string, type: MessageType, timeout?: number) => {
     const Message = await defineAsyncComponent(() => import('./message.vue'));

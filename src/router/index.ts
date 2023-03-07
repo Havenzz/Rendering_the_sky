@@ -18,9 +18,6 @@ const router = createRouter({
         {
             path: '/home',
             component: () => import('../pages/Home.vue'),
-            meta: {
-                keepAlive: true
-            }
         },
         {
             path: '/info',

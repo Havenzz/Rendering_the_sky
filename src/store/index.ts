@@ -1,10 +1,9 @@
 import { createStore } from 'vuex';
 import axios from 'axios';
 import { NavigationGuardNext } from 'vue-router';
-import createMessage from '../components/createMessage';
+import createMessage, { MESSAGE_DELAY } from '../components/createMessage';
 import { DEFAULT_DELAY, ERROR_DELAY, PROGSTATE } from '../main'
 
-const MESSAGE_DELAY = 2000;
 
 export const LOGIN_STATE_KEY = 'autoLogin'
 interface UserProps {
