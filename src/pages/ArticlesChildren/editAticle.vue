@@ -2,18 +2,11 @@
     <container title="新建文章">
         <formContainer class="articleInfo">
             <router-link to="/articles">~ go back</router-link>
-            <validateInput 
-            label="文章标题：" 
-            placeholder="请输入文章标签" 
-            :rules="[{ message: 'hh', type: 'require' }]"
-            v-model="article.title">
+            <validateInput label="文章标题：" placeholder="请输入文章标签" :rules="[{ message: 'hh', type: 'require' }]"
+                v-model="article.title">
             </validateInput>
-            <validateInput 
-            label="文章描述：" 
-            tagType="textarea" 
-            placeholder="请输入文章描述，最多可以输入128个字符" 
-            maxlength="128"
-            :rules="[{ message: 'hh', type: 'require' }]" v-model="article.describe">
+            <validateInput label="文章描述：" tagType="textarea" placeholder="请输入文章描述，最多可以输入128个字符" maxlength="128"
+                :rules="[{ message: 'hh', type: 'require' }]" v-model="article.describe">
             </validateInput>
             <div class="article_content">
                 <label>文章内容:</label>
@@ -45,6 +38,7 @@ import validateInput from '../../components/validateInput.vue';
 import editor from '../../components/editor.vue';
 import { Options } from 'easymde';
 import { reactive } from 'vue';
+import { highlight } from 'prismjs';
 interface article {
     title: string;
     describe: string;
@@ -54,7 +48,10 @@ interface article {
     tags: string[];
 }
 const editorOptions: Options = {
-    spellChecker: false
+    spellChecker: false,
+    renderingConfig: {
+        codeSyntaxHighlighting: true,
+    }
 }
 const article = reactive<article>({
     title: '',

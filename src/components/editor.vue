@@ -12,7 +12,6 @@ interface EditorProps {
     modelValue?: string;
     options?: Options;
 }
-
 interface EditorEvents {
     (type: 'update:modelValue', value: string): void;
     (type: 'change', value: string): void;
@@ -24,6 +23,7 @@ const props = defineProps<EditorProps>();
 const textArea = ref<HTMLTextAreaElement | null>(null);
 let easyMDEInstrance: EasyMDE | null = null;
 const innerValue = ref(props.modelValue || '');
+
 onMounted(() => {
     if(textArea.value){
         const config: Options = {
@@ -55,3 +55,11 @@ onUnmounted(() => {
 })
 
 </script>
+
+<style scoped lang="less">
+.easymde_editor{
+    background-color: #fff;
+    color: #000;
+}
+
+</style>
