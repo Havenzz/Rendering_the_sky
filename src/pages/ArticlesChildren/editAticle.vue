@@ -1,18 +1,23 @@
 <template>
     <container title="新建文章">
-        <div class="articleInfo">
+        <formContainer class="articleInfo">
             <router-link to="/articles">~ go back</router-link>
-            <div class="article_title">
-                <label>文章标题:</label>
-                <input type="text" placeholder="请输入文章标题" v-model="article.title">
-            </div>
-            <div class="article_describe">
-                <label>文章描述:</label>
-                <textarea autocomplete="off" placeholder="请输入文章描述，最多可以输入128个字符" maxlength="128" v-model="article.describe"></textarea>
-            </div>
+            <validateInput 
+            label="文章标题：" 
+            placeholder="请输入文章标签" 
+            :rules="[{ message: 'hh', type: 'require' }]"
+            v-model="article.title">
+            </validateInput>
+            <validateInput 
+            label="文章描述：" 
+            tagType="textarea" 
+            placeholder="请输入文章描述，最多可以输入128个字符" 
+            maxlength="128"
+            :rules="[{ message: 'hh', type: 'require' }]" v-model="article.describe">
+            </validateInput>
             <div class="article_content">
                 <label>文章内容:</label>
-                <input type="text" v-model="article.content">
+                <editor v-model="article.content" :options="editorOptions"></editor>
             </div>
             <div class="article_image">
                 <label>文章封面：</label>
@@ -25,13 +30,20 @@
                     <span class="addTag">add tag</span>
                 </div>
             </div>
-        </div>
+            <template #submit>
+                <button>submit</button>
+            </template>
+        </formContainer>
     </container>
 </template>
 
 <script lang="ts" setup>
 import container from '../../components/container.vue';
 import postImage from '../../components/postImage.vue';
+import formContainer from '../../components/formContainer.vue';
+import validateInput from '../../components/validateInput.vue';
+import editor from '../../components/editor.vue';
+import { Options } from 'easymde';
 import { reactive } from 'vue';
 interface article {
     title: string;
@@ -41,7 +53,9 @@ interface article {
     uploader: string;
     tags: string[];
 }
-
+const editorOptions: Options = {
+    spellChecker: false
+}
 const article = reactive<article>({
     title: '',
     describe: '',
@@ -59,27 +73,39 @@ const getImgBlob = (img: Blob) => {
 <style lang="less" scoped>
 .articleInfo {
     padding: 10px 0 20px;
-    label{
-        display: block;
-        margin: 10px 0;
-    }
-    textarea{
-        resize: none;
-    }
-    textarea,
-    .article_title input,
-    .article_describe input{
-        box-sizing: border-box;
-        background-color: rgba(0, 0, 0, .3);
-        width: 100%;
-        padding: 8px 16px;  
-        border: 1px solid #454062; 
-        border-radius: 8px;
-        color: #fff;
-        outline: none;
-    }
-    .article_content{
 
+    :deep(.inputBox) {
+        position: relative;
+        padding-bottom: 20px;
+
+        input,
+        textarea {
+            box-sizing: border-box;
+            background-color: rgba(0, 0, 0, .3);
+            width: 100%;
+            padding: 8px 16px;
+            border: 1px solid #454062;
+            border-radius: 8px;
+            color: #fff;
+            outline: none;
+        }
+
+        span {
+            display: block;
+            margin: 10px 0;
+            font-size: 16px;
+            text-indent: 5px;
+        }
+
+        p {
+            line-height: 28px;
+            color: var(--red);
+            height: 28px;
+            position: absolute;
+            top: 80%;
+            left: 10px;
+        }
     }
+
 }
 </style>

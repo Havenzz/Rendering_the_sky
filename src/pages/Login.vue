@@ -1,6 +1,6 @@
 <template>
     <teleport to='#back'>
-        <div class="login">
+        <div id="login">
             <div class="closeLogin" @click="closeLogin"><i class="iconfont">&#xeb6a;</i></div>
             <form-container title="- Sign in -" @form-submit="formSubmit">
                 <validate-input label="Username" v-model="userData.username" :rules="emailRule" required></validate-input>
@@ -64,7 +64,7 @@ export default defineComponent({
         const formSubmit = (isPassed: boolean, isLoading: Ref) => {
             if (isPassed) {
                 isLoading.value = true;
-                const user:userDataProp = {
+                const user: userDataProp = {
                     username: userData.username,
                     password: userData.password
                 }
@@ -93,8 +93,8 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
-.login {
+<style scoped lang="less">
+#login {
     --width: 365px;
     position: absolute;
     width: var(--width);
@@ -103,9 +103,146 @@ export default defineComponent({
     border-radius: 8px;
     overflow: hidden;
     color: #000;
+
+    :deep(.form-container) {
+        position: absolute;
+        inset: 2px;
+        background: #28292d;
+        padding: 50px 40px;
+        border-radius: 8px;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+    }
+
+    :deep(.inputBox) {
+        position: relative;
+        width: 100%;
+        margin-top: 40px;
+        box-sizing: border-box;
+    }
+
+    :deep(.inputBox input) {
+        position: relative;
+        width: 100%;
+        padding: 20px 10px 10px;
+        background: transparent;
+        outline: none;
+        box-shadow: none;
+        border: none;
+        color: #000;
+        font-size: 1em;
+        letter-spacing: 0.05em;
+        transition: 0.5s;
+        z-index: 10;
+        box-sizing: border-box;
+    }
+
+    :deep(.inputBox p) {
+        position: absolute;
+        left: 0;
+        font-size: 12px;
+        bottom: -20px;
+        color: var(--red);
+    }
+
+    :deep(.inputBox span) {
+        position: absolute;
+        left: 0;
+        padding: 20px 0px 10px;
+        pointer-events: none;
+        font-size: 1em;
+        color: #8f8f8f;
+        letter-spacing: 0.05em;
+        transition: 0.5s;
+    }
+
+    :deep(.inputBox input:valid~span),
+    :deep(.inputBox input:focus~span) {
+        color: #6c4fbd;
+        transform: translateX(0px) translateY(-40px);
+        font-size: 0.75em;
+    }
+
+    :deep(.inputBox i) {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 2px;
+        background: #fff;
+        border-radius: 4px;
+        overflow: hidden;
+        transition: 0.5s;
+        pointer-events: none;
+        z-index: 9;
+    }
+
+    :deep(.inputBox input:valid~i),
+    :deep(.inputBox input:focus~i) {
+        height: 44px;
+    }
+
+    :deep(.title) {
+        color: #c7b7f5;
+        font-weight: 600;
+        text-align: center;
+        letter-spacing: 0.1em;
+        font-size: 26px;
+    }
+
+    :deep(.submit__btn) {
+        display: block;
+        width: 100%;
+        height: 50px;
+        max-width: 500px;
+        margin: 22px auto 0;
+        position: relative;
+        outline: none;
+        background: linear-gradient(150deg, #a189e2, #e0b5eb);
+        cursor: pointer;
+        border-radius: 4px;
+        font-weight: 600;
+        outline: none;
+        overflow: hidden;
+        border: none;
+        color: #000;
+    }
+
+    :deep(.submit__btn span) {
+        transition: .6s;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0;
+        font-weight: bold;
+    }
+
+    :deep(.submit__btn span.active) {
+        opacity: 1;
+    }
+
+    :deep(.submit__loading) {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        box-shadow: inset -4px -4px 0 0 yellow;
+        animation: rotate 1s linear infinite;
+    }
+
+    @keyframes rotate {
+        0% {
+            transform: translate(-50%, -50%) rotate(0);
+        }
+
+        100% {
+            transform: translate(-50%, -50%) rotate(360deg);
+        }
+    }
 }
 
-.login::before {
+#login::before {
     content: '';
     z-index: 1;
     position: absolute;
@@ -118,7 +255,7 @@ export default defineComponent({
     animation: animate 6s linear infinite;
 }
 
-.login::after {
+#login::after {
     content: '';
     z-index: 1;
     position: absolute;

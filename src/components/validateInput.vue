@@ -1,7 +1,9 @@
 <template>
     <div class="inputBox">
-        <input type="text" :class="{ 'validate-input-error': inputRef.error }" autocomplete="off" v-bind="$attrs"
-            :value="inputRef.value" @input="onInput" @blur="validate">
+        <input v-if="tagType === 'input'" type="text" :class="{ 'validate-input-error': inputRef.error }" autocomplete="off"
+            v-bind="$attrs" :value="inputRef.value" @input="onInput" @blur="validate">
+        <textarea v-else :class="{ 'validate-input-error': inputRef.error }" autocomplete="off" v-bind="$attrs"
+            :value="inputRef.value" @input="onInput" @blur="validate"></textarea>
         <span>{{ label }}</span>
         <p v-show="inputRef.error">{{ inputRef.message }}</p>
         <i></i>
@@ -9,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive, PropType, onMounted } from 'vue';
+import { defineComponent, reactive, PropType, onMounted } from 'vue';
 import mitt from 'mitt'
 interface ruleProp {
     type: 'require' | 'email' | 'range';
@@ -27,7 +29,11 @@ export default defineComponent({
     props: {
         modelValue: String,
         rules: Array as PropType<rulesProp>,
-        label: String
+        label: String,
+        tagType: {
+            type: String,
+            default: 'input'
+        }
     },
     inheritAttrs: false,
     setup(props, context) {
@@ -88,68 +94,26 @@ export default defineComponent({
 
 <style scoped>
 .inputBox {
-    position: relative;
-    width: 100%;
-    margin-top: 40px;
-    box-sizing: border-box;
+    display: flex;
+    flex: 0;
+    flex-wrap: wrap;
 }
 
-.inputBox input {
-    position: relative;
-    width: 100%;
-    padding: 20px 10px 10px;
-    background: transparent;
-    outline: none;
-    box-shadow: none;
-    border: none;
-    color: #000;
-    font-size: 1em;
-    letter-spacing: 0.05em;
-    transition: 0.5s;
-    z-index: 10;
-    box-sizing: border-box;
-}
-.inputBox p {
-    position: absolute;
-    left: 0;
-    font-size: 12px;
-    bottom: -20px;
-    color: rgb(226, 119, 119);
-}
 .inputBox span {
-    position: absolute;
-    left: 0;
-    padding: 20px 0px 10px;
-    pointer-events: none;
-    font-size: 1em;
-    color: #8f8f8f;
-    letter-spacing: 0.05em;
-    transition: 0.5s;
+    order: 0;
 }
 
-.inputBox input:valid~span,
-.inputBox input:focus~span {
-    color: #6c4fbd;
-    transform: translateX(0px) translateY(-40px);
-    font-size: 0.75em;
+.inputBox input,
+.inputBox textarea {
+    order: 1;
 }
 
-.inputBox i {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 2px;
-    background: #fff;
-    border-radius: 4px;
-    overflow: hidden;
-    transition: 0.5s;
-    pointer-events: none;
-    z-index: 9;
+.inputBox p {
+    order: 2;
 }
 
-.inputBox input:valid~i,
-.inputBox input:focus~i {
-    height: 44px;
+.inputBox textarea {
+    outline: none;
+    resize: none;
 }
 </style>

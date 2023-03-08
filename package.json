@@ -12,6 +12,7 @@
     "axios": "^1.2.2",
     "cropperjs": "^1.5.13",
     "default-passive-events": "^2.0.0",
+    "easymde": "^2.18.0",
     "lodash": "^4.17.21",
     "mitt": "^3.0.0",
     "prismjs": "^1.29.0",
