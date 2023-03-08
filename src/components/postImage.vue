@@ -23,62 +23,74 @@
 <script lang="ts" setup>
 import Cropper from 'cropperjs';
 import 'cropperjs/dist/cropper.css';
-import { ref, defineProps, nextTick } from 'vue';
+import { ref, defineEmits, nextTick, defineProps } from 'vue';
 import mdialog from './mdialog.vue';
-import createMessage from './createMessage';
+import createMessage, { MESSAGE_DELAY } from './createMessage';
+
+const emit = defineEmits<{
+    (e: 'getImgBlob', blob: Blob): void
+}>()
+const props = defineProps<{
+    imgURL?: string;
+}>()
 
 let cropper: Cropper;
-const props = defineProps<{
-    uploadUrl: string;
-}>()
-let currentImg = ref<string>('');
+const currentImg = ref<string>('');
 const newImg = ref<string>('');
-let fileRef = ref<null | HTMLInputElement>(null);
+const fileRef = ref<null | HTMLInputElement>(null);
+const MAX_SIZE = 512;
 
-import('../assets/logic.jpg').then(r => {
-    currentImg.value = r.default
-})
+if (props.imgURL) {
+    currentImg.value = props.imgURL;
+} else {
+    import('../assets/fengmian.png').then(r => {
+        currentImg.value = r.default;
+    })
+}
 
-let uploadDialog = ref(false);
+const uploadDialog = ref(false);
 
-let openUpload = () => {
+const openUpload = () => {
     uploadDialog.value = true;
 };
 
-let handleClose = () => {
+const handleClose = () => {
     uploadDialog.value = false;
     cropper.destroy();
 };
 
-let chooseImage = () => {
+const chooseImage = () => {
     if (fileRef.value) {
         fileRef.value.click();
     }
 };
 // 确认图片
-let confirmImage = () => {
+const confirmImage = () => {
     let cas = cropper.getCroppedCanvas();
     let base64url = cas.toDataURL('image/jpeg');
-    cas.toBlob(function (e) {
-        console.log(e); // 生成Blob的图片格式
+    cas.toBlob(function (blob) {
+        if (blob) {
+            emit('getImgBlob', blob)
+        }
     });
     // 使用bese64进行预览 不发送请求
     currentImg.value = base64url;
     uploadDialog.value = false
 };
 
-let imageRef = ref<HTMLImageElement | null>(null);
+const imageRef = ref<HTMLImageElement | null>(null);
 
 // 获取文件信息
-let getImageInfo = (e: any) => {
+const getImageInfo = (e: any) => {
     // 上传的文件
     let file = (e.target!).files[0];
     if (!file) {
         return false
     }
     let fileSize = (file.size / 1024).toFixed(2);
-    if (+fileSize > 1024) {
-        createMessage('图片大小必须在1MB以内！', 'error', 2000);
+    console.log(fileSize)
+    if (+fileSize > MAX_SIZE) {
+        createMessage(`图片大小必须在${MAX_SIZE}kb以内!`, 'error', MESSAGE_DELAY);
         return false;
     }
     // 获取 window 的 URL 工具
@@ -100,7 +112,7 @@ let getImageInfo = (e: any) => {
 };
 
 // 裁剪图片
-let cropImage = () => {
+const cropImage = () => {
     if (imageRef.value) {
         cropper = new Cropper(imageRef.value, {
             aspectRatio: 16 / 10,
@@ -116,8 +128,8 @@ let cropImage = () => {
 
 <style lang="less" scoped>
 .upload {
-    width: 240px;
-    height: 150px;
+    width: 320px;
+    height: 200px;
     box-sizing: border-box;
     cursor: pointer;
     background-position: center center;
@@ -128,7 +140,7 @@ let cropImage = () => {
         content: '替换封面';
         text-align: center;
         position: absolute;
-        line-height: 150px;
+        line-height: 200px;
         background-color: rgba(0, 0, 0, .6);
         width: 100%;
         height: 100%;

@@ -55,6 +55,8 @@ const close = () => {
         align-items: center;
         justify-content: space-between;
         background-color: #1c1c1c;
+        border-top-right-radius: 8px;
+        border-top-left-radius: 8px;
         i {
             margin-top: 2px;
             margin-right: 12px;
