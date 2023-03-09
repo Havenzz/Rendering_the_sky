@@ -15,6 +15,7 @@
   --white:rgba(255, 255, 255, 0.87);
   --linear:linear-gradient(150deg, #a189e2, #e0b5eb);
   --red:rgb(226, 119, 119);
+  --deeppurple:#454062;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;

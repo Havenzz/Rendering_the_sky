@@ -1,7 +1,6 @@
 import { createApp } from 'vue'
 import store from './store'
 import './style.css'
-import 'easymde/dist/easymde.min.css'
 import './assets/font/iconfont.css'
 import App from './App.vue'
 import router from './router'

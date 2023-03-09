@@ -10,7 +10,12 @@
             </validateInput>
             <div class="article_content">
                 <label>文章内容:</label>
-                <editor v-model="article.content" :options="editorOptions"></editor>
+                <Suspense>
+                    <editor v-model="article.content"></editor>
+                    <template #fallback>
+                        <div>Loading...</div>
+                    </template>
+                </Suspense>
             </div>
             <div class="article_image">
                 <label>文章封面：</label>
@@ -35,10 +40,12 @@ import container from '../../components/container.vue';
 import postImage from '../../components/postImage.vue';
 import formContainer from '../../components/formContainer.vue';
 import validateInput from '../../components/validateInput.vue';
-import editor from '../../components/editor.vue';
-import { Options } from 'easymde';
+import { defineAsyncComponent } from 'vue'
 import { reactive } from 'vue';
-import { highlight } from 'prismjs';
+const editor = defineAsyncComponent(() => 
+    import('../../components/editor.vue')
+)
+
 interface article {
     title: string;
     describe: string;
@@ -47,12 +54,7 @@ interface article {
     uploader: string;
     tags: string[];
 }
-const editorOptions: Options = {
-    spellChecker: false,
-    renderingConfig: {
-        codeSyntaxHighlighting: true,
-    }
-}
+
 const article = reactive<article>({
     title: '',
     describe: '',
@@ -81,7 +83,7 @@ const getImgBlob = (img: Blob) => {
             background-color: rgba(0, 0, 0, .3);
             width: 100%;
             padding: 8px 16px;
-            border: 1px solid #454062;
+            border: 1px solid var(--deeppurple);
             border-radius: 8px;
             color: #fff;
             outline: none;
@@ -104,5 +106,11 @@ const getImgBlob = (img: Blob) => {
         }
     }
 
+    label {
+        display: block;
+        margin: 10px 0;
+        font-size: 16px;
+        text-indent: 5px;
+    }
 }
 </style>
