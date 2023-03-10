@@ -9,6 +9,7 @@ import 'tinymce/plugins/autoresize'
 import 'tinymce/themes/silver/theme';
 import 'tinymce/icons/default';
 import 'tinymce/models/dom';
+import '/public/tinymce/langs/zh-Hans.js'
 
 interface EditorProps {
     modelValue?: string;
@@ -29,11 +30,10 @@ onMounted(() => {
         tinymce.init({
             target: textArea.value,
             base_url:'/tinymce',
-            skin_url: '/tinymce/skins/ui/oxide',
-            language_url:'/tinymce/langs/zh-Hans.js',
+            content_style:'dark',
+            skin:'oxide',
             height: 300,
-            language:'zh_CN',
-            language_load:true,
+            language:'zh-Hans',
             toolbar:true,
             plugins:'autoresize',
             menu: {
