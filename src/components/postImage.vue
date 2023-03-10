@@ -28,7 +28,7 @@ import mdialog from './mdialog.vue';
 import createMessage, { MESSAGE_DELAY } from './createMessage';
 
 const emit = defineEmits<{
-    (e: 'getImgBlob', blob: Blob): void
+    (e: 'getImgFile', file: File): void
 }>()
 const props = defineProps<{
     imgURL?: string;
@@ -39,6 +39,7 @@ const currentImg = ref<string>('');
 const newImg = ref<string>('');
 const fileRef = ref<null | HTMLInputElement>(null);
 const MAX_SIZE = 512;
+let fileType:string;
 
 if (props.imgURL) {
     currentImg.value = props.imgURL;
@@ -70,7 +71,8 @@ const confirmImage = () => {
     let base64url = cas.toDataURL('image/jpeg');
     cas.toBlob(function (blob) {
         if (blob) {
-            emit('getImgBlob', blob)
+            const file = new File([blob],fileType)
+            emit('getImgFile', file)
         }
     });
     // 使用bese64进行预览 不发送请求
@@ -96,6 +98,7 @@ const getImageInfo = (e: any) => {
     let URL = window.URL || window.webkitURL;
     // 通过 file 生成目标 url
     newImg.value = URL.createObjectURL(file);
+    fileType = file.name
     // 弹框
     openUpload()
     nextTick(() => {

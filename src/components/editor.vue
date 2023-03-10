@@ -31,7 +31,7 @@ onMounted(() => {
             target: textArea.value,
             base_url:'/tinymce',
             skin:'oxide',
-            height: 300,
+            height: 400,
             language:'zh-Hans',
             toolbar:true,
             plugins:'autoresize',

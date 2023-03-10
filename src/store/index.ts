@@ -114,12 +114,11 @@ const store = createStore<GlobalDataProps>({
             }
         },
         async postArticle({ commit }, payload) {
-            const data = await axios.post('/articles',payload,{
+            return await axios.post('/articles',payload,{
                 headers:{
                     'Content-type':'multipart/form-data'
                 }
             });
-            console.log(data)
         }
     },
     mutations: {

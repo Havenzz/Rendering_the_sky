@@ -31,7 +31,7 @@
             </div>
             <div class="article_image">
                 <label>文章封面：</label>
-                <postImage @getImgBlob="getImgBlob"></postImage>
+                <postImage @getImgFile="getImgFile"></postImage>
             </div>
             <template #submit>
                 <div class="submit_btn">
@@ -50,7 +50,11 @@ import validateInput from '../../components/validateInput.vue';
 import store from '../../store'
 import { defineAsyncComponent } from 'vue'
 import { reactive } from 'vue';
+import { useRouter } from 'vue-router';
+import createMessage from '../../components/createMessage';
+import { DEFAULT_DELAY } from '../../main';
 
+const router = useRouter()
 const editor = defineAsyncComponent({
     loader:() => import('../../components/editor.vue')
 })
@@ -71,14 +75,14 @@ const article = reactive<article>({
     tags: ['javascript'],
 })
 
-let file:Blob | null = null;
+let file:File | null = null;
 
 const removeTag = (removeItem:string) => {
     article.tags = article.tags.filter(tag => tag !== removeItem)
 }
 
-const getImgBlob = (imgBlob: Blob) => {
-    file = imgBlob
+const getImgFile = (img: File) => {
+    file = img
 }
 
 const submit = (validated: boolean) => {
@@ -86,6 +90,10 @@ const submit = (validated: boolean) => {
         store.dispatch('postArticle',{
             file,
             article:JSON.stringify(article)
+        }).then(res => {
+            router.push('/articles');
+            createMessage('上传文章成功','success',DEFAULT_DELAY)
+            console.log(res)
         })
     }
 }
