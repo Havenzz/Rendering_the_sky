@@ -30,7 +30,6 @@ onMounted(() => {
         tinymce.init({
             target: textArea.value,
             base_url:'/tinymce',
-            content_style:'dark',
             skin:'oxide',
             height: 300,
             language:'zh-Hans',
