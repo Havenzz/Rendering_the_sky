@@ -56,28 +56,14 @@ const store = createStore<GlobalDataProps>({
                 commit('UPDATE_PROGRESS', progress)
             }
         },
-        async getUser({ dispatch, commit }, next: NavigationGuardNext) {
-            try {
-                const { data: { data, time } } = await axios.get('user')
-                commit('UPDATE_USERSTATE', { ...data, isLogin: true, time })
-                next()
-            } catch (e: any) {
-                if (e.response?.data?.refresh) {
-                    dispatch('refreshToken', next)
-                }
-            }
+        async getUser({ dispatch, commit }) {
+            const { data: { data, time } } = await axios.get('user')
+            commit('UPDATE_USERSTATE', { ...data, isLogin: true, time })
         },
-        async refreshToken({ dispatch, commit }, next: NavigationGuardNext) {
-            try {
-                const { data: { data, time } } = await axios.put('user')
-                commit('UPDATE_USERSTATE', { ...data, isLogin: true, time })
-                createMessage(`欢迎回来 ${data.username} (●'◡'●)`, 'success', MESSAGE_DELAY)
-                next && next()
-            } catch (error) {
-                localStorage.removeItem(LOGIN_STATE_KEY)
-                dispatch('signOut')
-                next && next()
-            }
+        async refreshToken({ dispatch, commit }) {
+            const { data: { data, time } } = await axios.put('user')
+            commit('UPDATE_USERSTATE', { ...data, isLogin: true, time })
+            createMessage(`欢迎回来 ${data.username} (●'◡'●)`, 'success', MESSAGE_DELAY)
         },
         async signIn({ commit }, payload) {
             try {

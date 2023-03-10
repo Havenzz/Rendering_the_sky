@@ -7,7 +7,7 @@ import router from './router'
 import axios, { AxiosRequestConfig } from 'axios'
 import debounce from 'lodash/debounce'
 import { LOGIN_STATE_KEY } from './http'
-import createMessage from './components/createMessage'
+import createMessage, { MESSAGE_DELAY } from './components/createMessage'
 
 
 // 进度条进度枚举
@@ -62,6 +62,10 @@ axios.interceptors.response.use(response => {
     return response
 }, error => {
     console.log(error)
+    if(error.code === 'ERR_NETWORK'){
+        createMessage('服务器出错啦','error',MESSAGE_DELAY);
+        return;
+    }
     if (error !== 'debounced') {
         setTimeout(() => {
             store.dispatch('update_progress', PROGSTATE.INITIAL)
@@ -81,9 +85,22 @@ router.beforeEach((to, from, next) => {
     if (!user.isLogin) {
         if (localStorage.getItem(LOGIN_STATE_KEY)) {
             try {
-                store.dispatch('getUser', next)
-            } catch (error) {
-                next(from.path || '/')
+                store.dispatch('getUser')
+                next()
+            } catch (error: any) {
+                if (error.response?.data?.data?.refresh) {
+                    try {
+                        store.dispatch('refreshToken')
+                        next()
+                    } catch (error: any) {
+                        createMessage('身份已过期，请重新登录', 'error', MESSAGE_DELAY)
+                        localStorage.removeItem(LOGIN_STATE_KEY)
+                        store.dispatch('signOut')
+                        next('/')
+                    }
+                } else {
+                    next('/')
+                }
             }
         } else {
             if (requireLogin) {
