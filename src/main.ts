@@ -62,8 +62,8 @@ axios.interceptors.response.use(response => {
     return response
 }, error => {
     console.log(error)
-    if(error.code === 'ERR_NETWORK'){
-        createMessage('服务器出错啦','error',MESSAGE_DELAY);
+    if (error.code === 'ERR_NETWORK') {
+        createMessage('服务器出错啦', 'error', MESSAGE_DELAY);
         return;
     }
     if (error !== 'debounced') {
@@ -84,24 +84,7 @@ router.beforeEach((to, from, next) => {
     store.dispatch('update_progress', PROGSTATE.ACTIVE)
     if (!user.isLogin) {
         if (localStorage.getItem(LOGIN_STATE_KEY)) {
-            try {
-                store.dispatch('getUser')
-                next()
-            } catch (error: any) {
-                if (error.response?.data?.data?.refresh) {
-                    try {
-                        store.dispatch('refreshToken')
-                        next()
-                    } catch (error: any) {
-                        createMessage('身份已过期，请重新登录', 'error', MESSAGE_DELAY)
-                        localStorage.removeItem(LOGIN_STATE_KEY)
-                        store.dispatch('signOut')
-                        next('/')
-                    }
-                } else {
-                    next('/')
-                }
-            }
+            store.dispatch('getUser', next)
         } else {
             if (requireLogin) {
                 createMessage(`该页面需要权限，请登录后再访问(●'◡'●)`, 'error', ERROR_DELAY)

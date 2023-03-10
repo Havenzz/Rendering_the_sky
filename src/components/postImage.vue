@@ -88,7 +88,6 @@ const getImageInfo = (e: any) => {
         return false
     }
     let fileSize = (file.size / 1024).toFixed(2);
-    console.log(fileSize)
     if (+fileSize > MAX_SIZE) {
         createMessage(`图片大小必须在${MAX_SIZE}kb以内!`, 'error', MESSAGE_DELAY);
         return false;

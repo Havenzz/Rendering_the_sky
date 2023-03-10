@@ -12,35 +12,26 @@ import 'tinymce/models/dom';
 
 interface EditorProps {
     modelValue?: string;
-    // options?: QuillOptionsStatic;
 }
 interface EditorEvents {
     (type: 'update:modelValue', value: string): void;
     (type: 'change', value: string): void;
     (type: 'blur'): void;
 }
-const toolbarOptions = [
-    'bold', 'italic', 'underline',
-    { header: 1 }, { header: 2 },
-    'blockquote', 'code-block', 'code', 'link',
-    { list: 'ordered' }, { list: 'bullet' },
-    'image',
-]
 const emit = defineEmits<EditorEvents>();
 const props = defineProps<EditorProps>();
 
 const textArea = ref<HTMLTextAreaElement | null>(null);
-// let quillInstrance: Quill | null = null;
 const innerValue = ref(props.modelValue || '');
 
 onMounted(() => {
     if (textArea.value) {
         tinymce.init({
             target: textArea.value,
-            base_url:'/public/tinymce',
-            skin_url: '/public/tinymce/skins/ui/oxide',
+            base_url:'/tinymce',
+            skin_url: '/tinymce/skins/ui/oxide',
+            language_url:'/tinymce/langs/zh-Hans.js',
             height: 300,
-            language_url:'/public/tinymce/langs/zh-Hans.js',
             language:'zh_CN',
             language_load:true,
             toolbar:true,
@@ -53,6 +44,21 @@ onMounted(() => {
                 format: { title: '格式', items: 'bold italic underline strikethrough superscript subscript | formats | removeformat' },
                 table: { title: '表格', items: 'inserttable tableprops deletetable | cell row column' },
                 tools: { title: '工具', items: 'spellchecker code' }
+            },
+            setup:(editor) => {
+                editor.on('init',() => {
+                    editor.setContent(innerValue.value)
+                })
+            },
+            init_instance_callback:(editor) => {
+                editor.on('input',(e) => {
+                    innerValue.value = e.target.innerHTML;
+                    emit('update:modelValue',e.target.innerHTML)
+                })
+                editor.on('change',(e) => {
+                    innerValue.value = e.level.content;
+                    emit('update:modelValue',e.level.content)
+                })
             }
         });
     }

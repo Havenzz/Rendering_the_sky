@@ -56,14 +56,30 @@ const store = createStore<GlobalDataProps>({
                 commit('UPDATE_PROGRESS', progress)
             }
         },
-        async getUser({ dispatch, commit }) {
-            const { data: { data, time } } = await axios.get('user')
-            commit('UPDATE_USERSTATE', { ...data, isLogin: true, time })
+        async getUser({ dispatch, commit }, next: NavigationGuardNext) {
+            try {
+                const { data: { data, time } } = await axios.get('user')
+                commit('UPDATE_USERSTATE', { ...data, isLogin: true, time })
+                next()
+            } catch (error: any) {
+                if (error.response?.data?.data?.refresh) {
+                    dispatch('refreshToken', next)
+                } else {
+                    console.log('getUserError', error)
+                }
+            }
         },
-        async refreshToken({ dispatch, commit }) {
-            const { data: { data, time } } = await axios.put('user')
-            commit('UPDATE_USERSTATE', { ...data, isLogin: true, time })
-            createMessage(`欢迎回来 ${data.username} (●'◡'●)`, 'success', MESSAGE_DELAY)
+        async refreshToken({ dispatch, commit }, next: NavigationGuardNext) {
+            try {
+                const { data: { data, time } } = await axios.put('user')
+                commit('UPDATE_USERSTATE', { ...data, isLogin: true, time })
+                createMessage(`欢迎回来 ${data.username} (●'◡'●)`, 'success', MESSAGE_DELAY)
+            } catch (error: any) {
+                createMessage('身份已过期，请重新登录', 'error', MESSAGE_DELAY)
+                localStorage.removeItem(LOGIN_STATE_KEY)
+                dispatch('signOut')
+                next('/')
+            }
         },
         async signIn({ commit }, payload) {
             try {
@@ -96,6 +112,14 @@ const store = createStore<GlobalDataProps>({
             } catch (error) {
                 console.log(error, 'signOut')
             }
+        },
+        async postArticle({ commit }, payload) {
+            const data = await axios.post('/articles',payload,{
+                headers:{
+                    'Content-type':'multipart/form-data'
+                }
+            });
+            console.log(data)
         }
     },
     mutations: {
