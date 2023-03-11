@@ -74,6 +74,7 @@ const store = createStore<GlobalDataProps>({
                 const { data: { data, time } } = await axios.put('user')
                 commit('UPDATE_USERSTATE', { ...data, isLogin: true, time })
                 createMessage(`欢迎回来 ${data.username} (●'◡'●)`, 'success', MESSAGE_DELAY)
+                next()
             } catch (error: any) {
                 createMessage('身份已过期，请重新登录', 'error', MESSAGE_DELAY)
                 localStorage.removeItem(LOGIN_STATE_KEY)

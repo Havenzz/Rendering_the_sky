@@ -72,7 +72,7 @@ const article = reactive<article>({
     describe: '',
     content: '',
     uploader: store.state.user.username,
-    tags: ['javascript'],
+    tags: ['javascript','css'],
 })
 
 let file:File | null = null;
