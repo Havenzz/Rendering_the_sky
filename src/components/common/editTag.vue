@@ -72,7 +72,9 @@ const removeTag = (removeTag: EditTag) => {
 }
 
 const updateTag = (updateTag: EditTag) => {
-    store.dispatch('updateTag',{ updateTag, tags })
+    if(updateTag.name.toLocaleUpperCase() !== updateTag.oldName?.toLocaleUpperCase()){
+        store.dispatch('updateTag',{ updateTag, tags })
+    }
 }
 
 const openAdd = () => {
@@ -81,6 +83,7 @@ const openAdd = () => {
         document.getElementById('addInput')?.focus()
     })
 }
+
 const closeAdd = () => addInputShow.value = false;
 const confirmAddTag = () => {
     if (addTagName.value.trim() === '') {

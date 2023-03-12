@@ -27,6 +27,7 @@
                 <div class="tags_container">
                     <span v-for="tag of article.tags" class="tag" :key="tag">{{ tag }}<i @click="removeTag(tag)" class="iconfont">&#xeb6a;</i></span>
                     <span v-if="article.tags.length <= 3" class="addTag">+ 添加标签</span>
+                    <chooseTag v-model="article.tags" :tags="tagsName"></chooseTag>
                 </div>
             </div>
             <div class="article_image">
@@ -49,15 +50,17 @@ import formContainer from '../../components/common/formContainer.vue';
 import validateInput from '../../components/common/validateInput.vue';
 import store from '../../store'
 import { defineAsyncComponent } from 'vue'
-import { reactive } from 'vue';
+import { reactive, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import createMessage, { MESSAGE_DELAY } from '../../components/common/createMessage';
 import loading from '../../components/common/loading.vue';
+import chooseTag from '../../components/articles/chooseTag.vue';
 
 const router = useRouter()
 const editor = defineAsyncComponent({
     loader:() => import(/* webpackChunkName: "[request]" */'../../components/articles/editor.vue')
 })
+const tagsName = computed(() => store.state.tags.map(tag => tag.name))
 
 interface article {
     title: string;
