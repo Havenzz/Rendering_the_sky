@@ -10,8 +10,6 @@
             <p class="tags">文章标签：
                 <a href="javascript:;" v-for="tag of article.tags">{{ tag }}</a>
             </p>
-            <div v-if="article.reproduced" class="reproduced"><span>本文转载至：</span><a target="_blank" :href="article.reproduced">{{ article.reproduced
-            }}</a></div>
         </div>
         <div class="content" >
             在开发中为了安全或满足分布式场景，通常会舍弃原有的session认证手段，而采用jwt(json web
@@ -30,7 +28,7 @@
 <script lang="ts">
 import prism from 'prismjs';
 import { defineComponent, onMounted } from 'vue';
-import container from '../../components/container.vue';
+import container from '../../components/common/container.vue';
 import { article } from './articles.vue'
 export default defineComponent({
     components: {
@@ -43,7 +41,6 @@ export default defineComponent({
             tags: ['jwt', 'axios'],
             id: 1,
             date: '2021-11-27 15:48:20',
-            reproduced: 'https://blog.csdn.net/m0_48468380/article/details/121577011',
             author: '老蛙@'
         }
         onMounted(() => {

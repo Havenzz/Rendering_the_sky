@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import { defineProps, defineEmits, withDefaults, ref, onBeforeUnmount } from 'vue';
-import useCreateAndRemoveDOM from '../hook/useCreateAndRemoveDOM';
+import useCreateAndRemoveDOM from '../../hook/useCreateAndRemoveDOM';
 interface props {
     type: 'success' | 'error' | 'default';
     message: string;

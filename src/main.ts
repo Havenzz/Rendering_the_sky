@@ -7,7 +7,7 @@ import router from './router'
 import axios, { AxiosRequestConfig } from 'axios'
 import debounce from 'lodash/debounce'
 import { LOGIN_STATE_KEY } from './http'
-import createMessage, { MESSAGE_DELAY } from './components/createMessage'
+import createMessage, { MESSAGE_DELAY } from './components/common/createMessage'
 
 
 // 进度条进度枚举

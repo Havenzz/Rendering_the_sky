@@ -13,12 +13,12 @@
 </template>
 
 <script setup lang="ts">
-import globalHeader, { userDataProp } from './components/globalHeader.vue';
+import globalHeader, { userDataProp } from './components/globalHeader/globalHeader.vue';
 import { computed } from 'vue';
-import background from './components/background.vue';
+import background from './components/common/background.vue';
 import Login from './pages/Login.vue';
 import { useStore } from 'vuex';
-import mprogress from './components/mprogress.vue';
+import mprogress from './components/common/mprogress.vue';
 
 const store = useStore();
 

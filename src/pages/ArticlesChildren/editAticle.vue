@@ -18,7 +18,7 @@
                 <Suspense>
                     <editor v-model="article.content"></editor>
                     <template #fallback>
-                        <div>Loading...</div>
+                        <loading :style="{height: 400 + 'px'}"></loading>
                     </template>
                 </Suspense>
             </div>
@@ -43,20 +43,20 @@
 </template>
 
 <script lang="ts" setup>
-import container from '../../components/container.vue';
-import postImage from '../../components/postImage.vue';
-import formContainer from '../../components/formContainer.vue';
-import validateInput from '../../components/validateInput.vue';
+import container from '../../components/common/container.vue';
+import postImage from '../../components/common/postImage.vue';
+import formContainer from '../../components/common/formContainer.vue';
+import validateInput from '../../components/common/validateInput.vue';
 import store from '../../store'
 import { defineAsyncComponent } from 'vue'
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
-import createMessage from '../../components/createMessage';
-import { DEFAULT_DELAY } from '../../main';
+import createMessage, { MESSAGE_DELAY } from '../../components/common/createMessage';
+import loading from '../../components/common/loading.vue';
 
 const router = useRouter()
 const editor = defineAsyncComponent({
-    loader:() => import('../../components/editor.vue')
+    loader:() => import(/* webpackChunkName: "[request]" */'../../components/articles/editor.vue')
 })
 
 interface article {
@@ -92,8 +92,7 @@ const submit = (validated: boolean) => {
             article:JSON.stringify(article)
         }).then(res => {
             router.push('/articles');
-            createMessage('上传文章成功','success',DEFAULT_DELAY)
-            console.log(res)
+            createMessage('上传文章成功','success',MESSAGE_DELAY)
         })
     }
 }

@@ -18,7 +18,7 @@
 
 <script lang="ts" setup>
 import { defineProps, withDefaults, defineEmits } from 'vue';
-import useCreateAndRemoveDOM from '../hook/useCreateAndRemoveDOM';
+import useCreateAndRemoveDOM from '../../hook/useCreateAndRemoveDOM';
 useCreateAndRemoveDOM('back')
 const props = withDefaults(defineProps<{
     width: string;

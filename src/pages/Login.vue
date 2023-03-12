@@ -17,9 +17,9 @@
 
 <script lang="ts">
 import { defineComponent, Ref, reactive, onBeforeUnmount } from 'vue';
-import background from '../components/background.vue';
-import formContainer from '../components/formContainer.vue';
-import validateInput, { rulesProp } from '../components/validateInput.vue';
+import background from '../components/common/background.vue';
+import formContainer from '../components/common/formContainer.vue';
+import validateInput, { rulesProp } from '../components/common/validateInput.vue';
 import { useStore } from 'vuex';
 import useCreateAndRemoveDOM from '../hook/useCreateAndRemoveDOM';
 

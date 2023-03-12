@@ -15,7 +15,7 @@
 
 <script lang="ts" setup>
 import { useRouter } from 'vue-router';
-import threeHome from '../components/threeHome.vue';
+import threeHome from '../components/home/threeHome.vue';
 
 const router = useRouter()
 const goInfoRoute = () => {

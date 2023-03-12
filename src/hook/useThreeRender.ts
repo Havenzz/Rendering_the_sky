@@ -75,10 +75,10 @@ export default (container: Ref<HTMLElement>) => {
         const load = async () => {
             const loadGLTF = new GLTFLoader();
             const loadDraco = new DRACOLoader();
-            loadDraco.setDecoderPath('../src/lib/draco/');
+            loadDraco.setDecoderPath('../public/draco/');
             loadGLTF.setDRACOLoader(loadDraco);
             await new Promise((resolve, reject) => {
-                loadGLTF.load('src/lib/the_sky.glb', (gltf: GLTF) => {
+                loadGLTF.load('../public/glb/the_sky.glb', (gltf: GLTF) => {
                     let obj = gltf.scene;
                     obj.position.y = -0.16;
                     obj.traverse((child: any) => {

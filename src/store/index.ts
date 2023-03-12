@@ -1,7 +1,7 @@
 import { createStore } from 'vuex';
 import axios from 'axios';
 import { NavigationGuardNext } from 'vue-router';
-import createMessage, { MESSAGE_DELAY } from '../components/createMessage';
+import createMessage, { MESSAGE_DELAY } from '../components/common/createMessage';
 import { DEFAULT_DELAY, ERROR_DELAY, PROGSTATE } from '../main'
 
 

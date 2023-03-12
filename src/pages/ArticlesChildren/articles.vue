@@ -23,15 +23,14 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import pager from '../../components/pager.vue';
-import container from '../../components/container.vue';
+import pager from '../../components/common/pager.vue';
+import container from '../../components/common/container.vue';
 export interface article {
     title: string;
     content: string;
     tags: string[];
     id: number;
     date: string;
-    reproduced?: string;
     author: string
 }
 type articles = article[]
@@ -41,7 +40,7 @@ export default defineComponent({
         container
     },
     setup() {
-        const page = ref(1);
+        const page = ref<number>(1);
         const changePage = (newPage: number) => {
             page.value = newPage;
         }
@@ -51,7 +50,6 @@ export default defineComponent({
             tags: ['jwt', 'axios'],
             id: 1,
             date: '2021-11-27 15:48:20',
-            reproduced: 'https://blog.csdn.net/m0_48468380/article/details/121577011',
             author: '老蛙@'
         }, {
             title: 'Vue2的双向数据绑定原理',

@@ -20,8 +20,8 @@
 </template>
 
 <script lang="ts" setup>
-import container from '../components/container.vue';
-import search from '../components/search.vue';
+import container from '../components/common/container.vue';
+import search from '../components/articles/search.vue';
 import { useStore } from 'vuex';
 import { computed } from 'vue';
 

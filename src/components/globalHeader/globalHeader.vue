@@ -13,13 +13,13 @@
                         <div class="userInfo">
                             <div class="avatar">
                                 <img v-if="userData.avatarURL !== '#'" :src="userData.avatarURL">
-                                <img v-else src="../assets/logic.jpg">
+                                <img v-else src="../../assets/logic.jpg">
                             </div>
                             <span>{{ userData.username }}</span>
                         </div>
                     </template>
                     <ul class="dropdown">
-                        <li @click="router.push('articles/edit')">新建文章</li>
+                        <li><router-link to="/articles/edit">新建文章</router-link></li>
                         <li @click="onSignOut">退出登录</li>
                     </ul>
                 </dropdown>
@@ -35,7 +35,7 @@
 import { useStore } from 'vuex';
 import { defineProps } from 'vue';
 import navBar from './navBar.vue';
-import dropdown from './dropdown.vue'
+import dropdown from '../common/dropdown.vue'
 import { useRouter } from 'vue-router';
 
 export interface userDataProp {
@@ -94,7 +94,11 @@ const onSignOut = () => {
     cursor: pointer;
     width: 130px;
     color: var(--white);
-
+    a{
+        color: var(--white);
+    }
+    
+    a:hover,
     &:hover {
         color: #fff;
     }

@@ -1,6 +1,7 @@
 <template>
     <div>
-        <div class="upload" :style="{ backgroundImage: 'url(' + (currentImg) + ')' }" @click="chooseImage"></div>
+        <div v-if="!currentImg" class="upload wait" @click="chooseImage">未选择封面</div>
+        <div v-else class="upload" :style="{ backgroundImage: 'url(' + (currentImg) + ')' }" @click="chooseImage"></div>
         <mdialog width="auto" v-if="uploadDialog" @handleClose="handleClose">
             <template #header>
                 <h2 class="title">选择图片</h2>
@@ -44,9 +45,7 @@ let fileType:string;
 if (props.imgURL) {
     currentImg.value = props.imgURL;
 } else {
-    import('../assets/fengmian.png').then(r => {
-        currentImg.value = r.default;
-    })
+    currentImg.value = '';
 }
 
 const uploadDialog = ref(false);
@@ -137,6 +136,16 @@ const cropImage = () => {
     background-position: center center;
     background-size: 100%;
     position: relative;
+    &.wait {
+        background-color: rgba(0, 0, 0, .6);
+        line-height: 200px;
+        text-align: center;
+        &::before{
+            content: '选择封面';
+            background-color: #000;
+            font-size: 18px;
+        }
+    }
 
     &::before {
         content: '替换封面';
