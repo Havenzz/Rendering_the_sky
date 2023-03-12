@@ -5,7 +5,7 @@
                 <div class="mdialog_content">
                     <div class="header">
                         <slot name="header">
-                            <h2>{{ title }}</h2>
+                            <h2 class="title">{{ title }}</h2>
                         </slot>
                         <i class="iconfont" @click="close">&#xeb6a;</i>
                     </div>
@@ -20,8 +20,8 @@
 import { defineProps, withDefaults, defineEmits } from 'vue';
 import useCreateAndRemoveDOM from '../../hook/useCreateAndRemoveDOM';
 useCreateAndRemoveDOM('back')
-const props = withDefaults(defineProps<{
-    width: string;
+withDefaults(defineProps<{
+    width?: string;
     title?: string;
 }>(), {
     width: '375px',
@@ -83,5 +83,11 @@ const close = () => {
     @media screen and(max-width: 767px) {
         width: 90% !important;
     }
+}
+.title {
+    font-size: 18px;
+    padding: 12px;
+    color: var(--white);
+    width: 100%;
 }
 </style>

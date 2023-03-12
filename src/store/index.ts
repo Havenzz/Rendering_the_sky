@@ -5,7 +5,14 @@ import createMessage, { MESSAGE_DELAY } from '../components/common/createMessage
 import { DEFAULT_DELAY, ERROR_DELAY, PROGSTATE } from '../main'
 
 
-export const LOGIN_STATE_KEY = 'autoLogin'
+export const LOGIN_STATE_KEY = 'autoLogin';
+
+export interface Tag {
+    name: string;
+    id: string;
+    createTime: string
+}
+
 interface UserProps {
     isLogin: boolean;
     username: string;
@@ -18,6 +25,8 @@ export interface GlobalDataProps {
     isShowLogin: boolean;
     isLoading: boolean;
     progress: number;
+    tags: Tag[],
+    tagsEdit: boolean;
 }
 
 export interface userData {
@@ -35,6 +44,8 @@ const store = createStore<GlobalDataProps>({
         isShowLogin: false,
         isLoading: false,
         progress: 0,
+        tags: [],
+        tagsEdit: false
     },
     getters: {
         time(state) {
@@ -115,12 +126,47 @@ const store = createStore<GlobalDataProps>({
             }
         },
         async postArticle({ commit }, payload) {
-            return await axios.post('/articles',payload,{
-                headers:{
-                    'Content-type':'multipart/form-data'
+            return await axios.post('/articles', payload, {
+                headers: {
+                    'Content-type': 'multipart/form-data'
                 }
             });
-        }
+        },
+        async updateArticle({ commit }, payload) {
+            return await axios.post('/articles', payload, {
+                headers: {
+                    'Content-type': 'multipart/form-data'
+                }
+            });
+        },
+        async getArticlesAll({ commit }) {
+            return await axios.get('/articles');
+        },
+        async searchArticles({ commit }, payload) {
+            return await axios.get('/articles', payload);
+        },
+        async getTags({ commit }, tagsRef?: any) {
+            const { data: { data: tags } } = await axios.get('tags');
+            commit('UPDATE_TAGS', tags);
+            if (tagsRef) {
+                tagsRef.value = tags;
+            }
+        },
+        async addTag({ dispatch }, { newTag, tags }) {
+            await axios.post('tags', newTag);
+            createMessage(`${newTag.name} 添加成功`, 'success', MESSAGE_DELAY)
+            dispatch('getTags', tags)
+        },
+        async removeTag({ dispatch }, { removeTag, tags }) {
+            await axios.delete('tags', { data: { id: removeTag.id } });
+            createMessage(`${removeTag.name} 删除成功`, 'success', MESSAGE_DELAY)
+            dispatch('getTags', tags)
+        },
+        async updateTag({ dispatch }, { updateTag, tags }) {
+            await axios.put('tags', updateTag);
+            createMessage(`${updateTag.name} 修改成功`, 'success', MESSAGE_DELAY)
+            dispatch('getTags', tags)
+        },
     },
     mutations: {
         UPDATE_USERSTATE(state, userData) {
@@ -137,6 +183,12 @@ const store = createStore<GlobalDataProps>({
         UPDATE_PROGRESS(state, payload) {
             state.progress = payload
         },
+        UPDATE_TAGS(state, payload) {
+            state.tags = payload
+        },
+        UPDATE_TAGSEDIT(state, payload) {
+            state.tagsEdit = payload
+        }
     },
 })
 

@@ -20,6 +20,7 @@
                     </template>
                     <ul class="dropdown">
                         <li><router-link to="/articles/edit">新建文章</router-link></li>
+                        <li @click="openEditTag">编辑标签</li>
                         <li @click="onSignOut">退出登录</li>
                     </ul>
                 </dropdown>
@@ -53,6 +54,10 @@ const oepnLogin = () => {
 
 const onSignOut = () => {
     store.dispatch('signOut')
+}
+
+const openEditTag = () => {
+    store.commit('UPDATE_TAGSEDIT',true)
 }
 
 </script>

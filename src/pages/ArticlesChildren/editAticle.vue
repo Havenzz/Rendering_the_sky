@@ -112,12 +112,12 @@ const submit = (validated: boolean) => {
         input,
         textarea {
             box-sizing: border-box;
-            background-color: rgba(0, 0, 0, .3);
+            background-color: #fff;
             width: 100%;
             padding: 8px 16px;
-            border: 1px solid var(--deeppurple);
+            border: 1px solid var(--purple);
             border-radius: 8px;
-            color: #fff;
+            color: #000;
             outline: none;
         }
 

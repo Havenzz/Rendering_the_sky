@@ -7,10 +7,9 @@
                     <search></search>
                 </template>
                 <ul class="classification">
-                    <template v-for="n in 8">
-                        <li>HTML</li>
-                        <li>CSS</li>
-                        <li>Javascript</li>
+                    <loading v-if="isLoading" :style="{height: 200 + 'px'}"></loading>
+                    <template v-else>
+                        <li v-for="tag of tags" :key="tag.id">{{ tag.name }}</li>
                     </template>
                 </ul>
             </container>
@@ -23,7 +22,8 @@
 import container from '../components/common/container.vue';
 import search from '../components/articles/search.vue';
 import { useStore } from 'vuex';
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
+import loading from '../components/common/loading.vue';
 
 const store = useStore();
 const time = computed(() => {
@@ -31,6 +31,13 @@ const time = computed(() => {
     const MM = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1);
     const DD = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
     return `${date.getFullYear()}.${MM}.${DD}`
+})
+
+const tags = computed(() => store.state.tags);
+const isLoading = computed(() => store.state.isLoading)
+
+onMounted(() => {
+    store.dispatch('getTags')
 })
 
 </script>

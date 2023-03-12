@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import '../../../public/particles/particles'
+import '../../../public/particles/particles.js'
 import { onMounted } from 'vue';
 export default {
     setup() {

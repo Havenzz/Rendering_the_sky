@@ -44,6 +44,7 @@ export default defineComponent({
         const changePage = (newPage: number) => {
             page.value = newPage;
         }
+        
         const articles: articles = [{
             title: '[转载] 关于实现token无感刷新的解决方案',
             content: '具体来说，当Vue实例创建时，它会遍历所有的属性，并使用Object.defineProperty()方法将这些属性转换成getter/setter。这样，当数据发生变化时，Vue能够检测到变化并通知所有相关的组件...',
@@ -51,35 +52,7 @@ export default defineComponent({
             id: 1,
             date: '2021-11-27 15:48:20',
             author: '老蛙@'
-        }, {
-            title: 'Vue2的双向数据绑定原理',
-            content: '具体来说，当Vue实例创建时，它会遍历所有的属性，并使用Object.defineProperty()方法将这些属性转换成getter/setter。这样，当数据发生变化时，Vue能够检测到变化并通知所有相关的组件...',
-            tags: ['vue'],
-            id: 1,
-            date: '2023-03-01',
-            author: 'Me'
-        }, {
-            title: 'Vue2的双向数据绑定原理',
-            content: '具体来说，当Vue实例创建时，它会遍历所有的属性，并使用Object.defineProperty()方法将这些属性转换成getter/setter。这样，当数据发生变化时，Vue能够检测到变化并通知所有相关的组件...',
-            tags: ['vue'],
-            id: 1,
-            date: '2023-03-01',
-            author: 'Me'
-        }, {
-            title: 'Vue2的双向数据绑定原理',
-            content: '具体来说，当Vue实例创建时，它会遍历所有的属性，并使用Object.defineProperty()方法将这些属性转换成getter/setter。这样，当数据发生变化时，Vue能够检测到变化并通知所有相关的组件...',
-            tags: ['vue'],
-            id: 1,
-            date: '2023-03-01',
-            author: 'Me'
-        }, {
-            title: 'Vue2的双向数据绑定原理',
-            content: '具体来说，当Vue实例创建时，它会遍历所有的属性，并使用Object.defineProperty()方法将这些属性转换成getter/setter。这样，当数据发生变化时，Vue能够检测到变化并通知所有相关的组件...',
-            tags: ['vue'],
-            id: 1,
-            date: '2023-03-01',
-            author: 'Me'
-        },]
+        }, ]
 
         return {
             articles,

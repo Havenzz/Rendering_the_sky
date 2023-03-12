@@ -10,6 +10,7 @@
     </router-view>
   </div>
   <mprogress :progress="progress"></mprogress>
+  <editTag v-if="editTagOpen"></editTag>
 </template>
 
 <script setup lang="ts">
@@ -19,12 +20,14 @@ import background from './components/common/background.vue';
 import Login from './pages/Login.vue';
 import { useStore } from 'vuex';
 import mprogress from './components/common/mprogress.vue';
+import editTag from './components/common/editTag.vue';
 
 const store = useStore();
 
 const userData = computed<userDataProp>(() => store.state.user);
 const isShowLogin = computed(() => store.state.isShowLogin);
 const progress = computed<number>(() => store.state.progress);
+const editTagOpen = computed<userDataProp>(() => store.state.tagsEdit)
 
 
 </script>

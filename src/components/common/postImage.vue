@@ -2,10 +2,7 @@
     <div>
         <div v-if="!currentImg" class="upload wait" @click="chooseImage">未选择封面</div>
         <div v-else class="upload" :style="{ backgroundImage: 'url(' + (currentImg) + ')' }" @click="chooseImage"></div>
-        <mdialog width="auto" v-if="uploadDialog" @handleClose="handleClose">
-            <template #header>
-                <h2 class="title">选择图片</h2>
-            </template>
+        <mdialog title="选择图片" width="auto" v-if="uploadDialog" @handleClose="handleClose">
             <div class="container">
                 <div class="view">
                     <div class="image-preview">
@@ -204,12 +201,5 @@ const cropImage = () => {
         height: 300px;
         display: block;
     }
-}
-
-.title {
-    font-size: 18px;
-    padding: 12px;
-    color: var(--white);
-    width: 100%;
 }
 </style>

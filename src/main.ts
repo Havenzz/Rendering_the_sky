@@ -34,6 +34,7 @@ function clearRequestQueue(config: AxiosRequestConfig) {
 axios.interceptors.request.use(config => {
     const key = `${config.method}-${config.url}`;
     if (!requestQueue.has(key)) {
+        store.commit('UPDATE_ISLOADING',true);
         store.dispatch('update_progress', PROGSTATE.ACTIVE)
         // 使用 lodash 的防抖函数，限制请求发送的频率
         const debouncedRequest = debounce(() => {
@@ -58,6 +59,7 @@ axios.interceptors.request.use(config => {
 axios.interceptors.response.use(response => {
     console.log(response)
     store.dispatch('update_progress', PROGSTATE.DONE)
+    store.commit('UPDATE_ISLOADING',false)
     clearRequestQueue(response.config)
     return response
 }, error => {
@@ -73,6 +75,7 @@ axios.interceptors.response.use(response => {
             clearRequestQueue(error.config)
         }, ERROR_DELAY);
     }
+    store.commit('UPDATE_ISLOADING',false)
     return Promise.reject(error)
 })
 
