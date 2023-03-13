@@ -195,6 +195,7 @@ export default defineComponent({
         display: block;
         width: 100%;
         height: 50px;
+        flex-shrink: 0;
         max-width: 500px;
         margin: 22px auto 0;
         position: relative;

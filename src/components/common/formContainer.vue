@@ -2,14 +2,12 @@
     <form class="form-container" @submit.prevent>
         <h2 class="title">{{ title }}</h2>
         <slot></slot>
-        <div @click.prevent="onSubmit">
-            <slot name="submit">
-                <button class="submit__btn">
-                    <span :class="{ active: !isLoading }">Login</span>
-                    <span :class="{ active: isLoading }" class="submit__loading"></span>
-                </button>
-            </slot>
-        </div>
+        <slot name="submit" :onSubmit="onSubmit">
+            <button class="submit__btn" @click.prevent="onSubmit">
+                <span :class="{ active: !isLoading }">Login</span>
+                <span :class="{ active: isLoading }" class="submit__loading"></span>
+            </button>
+        </slot>
     </form>
 </template>
 

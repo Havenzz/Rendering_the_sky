@@ -1,8 +1,10 @@
 <template>
     <teleport to='#confirm'>
-        <div class="confirm" v-show="isShow">
-            <mdialog title="CONFIRM">
-                <div class="content">{{ message }}</div>
+        <div class="confirm" v-if="isShow">
+            <mdialog title="CONFIRM" width="auto" @handle-close="cancel">
+                <div class="content">
+                    <span>{{ message }}</span>
+                </div>
                 <div class="btn_container">
                     <button @click="confirm">确认</button>
                     <button @click="cancel">取消</button>
@@ -40,15 +42,26 @@ const cancel = () => {
     top: 50%;
     transform: translate(-50%, -50%);
     z-index: 99999;
-    .content{
-        min-height: 100px;
-    }
-    .btn_container{
-        border-top: 1px solid #000;
-        display: flex;
-        button{
-            margin: 20px;
-        }
-    }
 }
-</style>
+
+.content {
+    min-height: 50px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    min-width: 200px;
+}
+
+.btn_container {
+    border-top: 1px solid #000;
+    display: flex;
+    justify-content: center;
+    button {
+        margin: 10px 6px;
+        padding: 2px 8px;
+        border-radius: 4px;
+        outline: none;
+    }
+}</style>

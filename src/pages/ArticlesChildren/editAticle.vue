@@ -23,20 +23,20 @@
                 </Suspense>
             </div>
             <div class="article_tags">
-                <label>文章标签:</label>
+                <label>文章标签: ( 最多选择3个标签，至少选择1个 )</label>
                 <div class="tags_container">
                     <span v-for="tag of article.tags" class="tag" :key="tag">{{ tag }}<i @click="removeTag(tag)" class="iconfont">&#xeb6a;</i></span>
-                    <span v-if="article.tags.length <= 3" class="addTag">+ 添加标签</span>
-                    <chooseTag v-model="article.tags" :tags="tagsName"></chooseTag>
+                    <span v-if="article.tags.length < 3" class="addTag" @click="openTag">+ 添加标签</span>
+                    <chooseTag v-if="chooseTagShow" v-model="article.tags" :tags="tagsName" @close="closeTag"></chooseTag>
                 </div>
             </div>
             <div class="article_image">
                 <label>文章封面：</label>
                 <postImage @getImgFile="getImgFile"></postImage>
             </div>
-            <template #submit>
+            <template #submit="scope">
                 <div class="submit_btn">
-                    <button>提交</button>
+                    <button @click.prevent="scope.onSubmit">提交</button>
                 </div>
             </template>
         </formContainer>
@@ -50,17 +50,21 @@ import formContainer from '../../components/common/formContainer.vue';
 import validateInput from '../../components/common/validateInput.vue';
 import store from '../../store'
 import { defineAsyncComponent } from 'vue'
-import { reactive, computed } from 'vue';
+import { reactive, computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import createMessage, { MESSAGE_DELAY } from '../../components/common/createMessage';
 import loading from '../../components/common/loading.vue';
 import chooseTag from '../../components/articles/chooseTag.vue';
+import createConfirm from '../../components/common/createConfirm';
 
 const router = useRouter()
 const editor = defineAsyncComponent({
     loader:() => import(/* webpackChunkName: "[request]" */'../../components/articles/editor.vue')
 })
-const tagsName = computed(() => store.state.tags.map(tag => tag.name))
+const tagsName = computed(() => store.state.tags.map(tag => tag.name));
+const chooseTagShow = ref<boolean>(false);
+const openTag = () => chooseTagShow.value = true;
+const closeTag = () => chooseTagShow.value = false;
 
 interface article {
     title: string;
@@ -75,7 +79,7 @@ const article = reactive<article>({
     describe: '',
     content: '',
     uploader: store.state.user.username,
-    tags: ['javascript','css'],
+    tags: [],
 })
 
 let file:File | null = null;
@@ -89,13 +93,21 @@ const getImgFile = (img: File) => {
 }
 
 const submit = (validated: boolean) => {
-    if(validated && article.content.trim() !== '' && article.tags.length > 0){
-        store.dispatch('postArticle',{
-            file,
-            article:JSON.stringify(article)
-        }).then(res => {
-            router.push('/articles');
-            createMessage('上传文章成功','success',MESSAGE_DELAY)
+    if(!validated){
+        createMessage('文章标题或文章描述不能为空','error',MESSAGE_DELAY)
+    }else if (article.content.trim() === ''){
+        createMessage('文章内容不能为空','error',MESSAGE_DELAY)
+    }else if(article.tags.length < 1){
+        createMessage('至少选择1个文章标签','error',MESSAGE_DELAY)
+    }else{
+        createConfirm('确认提交？',() => {
+            store.dispatch('postArticle',{
+                file,
+                article:JSON.stringify(article)
+            }).then(res => {
+                router.push('/articles');
+                createMessage('上传文章成功','success',MESSAGE_DELAY)
+            })
         })
     }
 }
@@ -182,15 +194,21 @@ const submit = (validated: boolean) => {
 
         }
     }
-
+    .addTag:hover{
+        text-decoration: underline;
+        text-shadow: 0 0 8px;
+        cursor: pointer;
+    }
     .submit_btn {
         text-align: center;
         padding-top: 20px;
         margin-top: 20px;
         border-top: 1px solid var(--deeppurple);
+        padding-bottom: 0;
 
         button {
             padding: 8px 30px;
+            outline: none;
         }
     }
 }</style>
