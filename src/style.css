@@ -131,3 +131,15 @@ html{
     background-color: #f9f9f9;
   }
 }
+
+.tinymce_content p{
+  margin: 16px 0;
+}
+.tinymce_content h1,
+.tinymce_content h2,
+.tinymce_content h3,
+.tinymce_content h4,
+.tinymce_content h5,
+.tinymce_content h6{
+  margin: 20px 0;
+}

@@ -1,11 +1,14 @@
 <template>
-    <container title="新建文章">
+    <container :title="route.params.id ? article.title : '新建文章'">
         <formContainer class="articleInfo" @form-submit="submit">
             <router-link to="/articles">~ go back</router-link>
             <validateInput
-             label="文章标题：
-             " placeholder="请输入文章标签" 
-             :rules="[{ message: '文章标签不能为空', type: 'require' }]"
+             label="文章标题：" 
+             placeholder="请输入文章标签" 
+             :rules="[
+                { message: '文章名称过长', type:'range', maxLen:32},
+                { message: '文章标签不能为空', type: 'require' }
+                ]"
                 v-model="article.title">
             </validateInput>
             <validateInput label="文章描述：" tagType="textarea"
@@ -50,8 +53,7 @@ import postImage from '../../components/common/postImage.vue';
 import formContainer from '../../components/common/formContainer.vue';
 import validateInput from '../../components/common/validateInput.vue';
 import store from '../../store'
-import { defineAsyncComponent } from 'vue'
-import { reactive, computed, ref, onMounted, onUnmounted } from 'vue';
+import { defineAsyncComponent, reactive, computed, ref, onMounted, watch, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import { useRoute } from 'vue-router';
 import createMessage, { MESSAGE_DELAY } from '../../components/common/createMessage';
@@ -88,6 +90,25 @@ const article = reactive<article>({
     uploader: store.state.user.username,
     tags: [],
 })
+watch(() => route.params.id,newValue => {
+    if(!newValue){
+        init()
+    }
+})
+
+const init = () => {
+    CTXisLoading.value = true;
+    article.title = '';
+    article.describe = '';
+    article.content = '';
+    article.uploader = store.state.user.username;
+    article.tags = [];
+    delete article.imageSrc;
+    delete article.id;
+    nextTick(() => {
+        CTXisLoading.value = false;
+    })
+}
 
 let file:File | null = null;
 const CTXisLoading = ref<boolean>(false)
@@ -102,7 +123,7 @@ const getImgFile = (img: File) => {
 
 const submit = (validated: boolean) => {
     if(!validated){
-        createMessage('文章标题或文章描述不能为空','error',MESSAGE_DELAY)
+        createMessage('文章标题或文章描述有误','error',MESSAGE_DELAY)
     }else if (article.content.trim() === ''){
         createMessage('文章内容不能为空','error',MESSAGE_DELAY)
     }else if(article.tags.length < 1){

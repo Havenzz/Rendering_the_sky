@@ -125,6 +125,7 @@ export default defineComponent({
         }
 
         h3 {
+            max-width: 350px;
             font-size: 18px;
             width: max-content;
             margin-bottom: 10px;
@@ -132,6 +133,9 @@ export default defineComponent({
             color: var(--lightblue);
             border-bottom: 1px solid transparent;
             padding-bottom: 2px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
             transition: .3s;
         }
 

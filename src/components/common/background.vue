@@ -70,13 +70,6 @@ export default {
         }
         onMounted(() => {
             init()
-            let timer:NodeJS.Timeout;
-            window.onresize = () => {
-                clearTimeout(timer)
-                timer = setTimeout(() => {
-                    init()
-                }, 500);
-            }
         })
     }
 }

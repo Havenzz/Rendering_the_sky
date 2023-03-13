@@ -121,6 +121,7 @@ const goInfoRoute = () => {
             box-shadow: 0px 3px 7px 0px rgb(0 0 0 / 35%);
             text-shadow: 0 0 3px #a189e2, 0 0 6px #e0b5eb, ;
             color: #fff;
+            outline: none;
         }
     }
 

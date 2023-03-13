@@ -44,7 +44,7 @@ export default defineComponent({
             message: ''
         })
         watch(() => props.modelValue, newValue => {
-            if(newValue){
+            if(newValue !== void(0)){
                 inputRef.value = newValue
             }
         })

@@ -4,8 +4,8 @@
             <div class="header">
                 <router-link class="back" to="/articles"> ⬅ Go back</router-link>
                 <div class="user" v-if="username === article.uploader">
-                    <router-link class="edit" :to="`/articles/edit/${article.id}`">编辑</router-link>
-                    <span>删除</span>
+                    <span @click="onEditArticle" class="edit">编辑</span>
+                    <span @click="onRemoveArticle">删除</span>
                 </div>
             </div>
         </template>
@@ -19,7 +19,7 @@
                     <a href="javascript:;" v-for="tag of article.tags" :key="tag.id">{{ tag.name }}</a>
                 </p>
             </div>
-            <div class="content" v-html="article.content"></div>
+            <div class="tinymce_content content" v-html="article.content"></div>
         </template>
     </container>
 </template>
@@ -28,16 +28,18 @@
 import prism from 'prismjs';
 import { onMounted, ref, computed } from 'vue';
 import container from '../../components/common/container.vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { Article } from '../../store';
 import loading from '../../components/common/loading.vue';
+import createConfirm from '../../components/common/createConfirm';
 
 interface WholeArticle extends Article {
     content:string;
 }
 
 const route = useRoute()
+const router = useRouter()
 const store = useStore()
 
 const article = ref<WholeArticle | any>({})
@@ -50,6 +52,22 @@ onMounted(() => {
         prism.highlightAll()
     })
 })
+
+const onRemoveArticle = () => {
+    if(article.value.id){
+        createConfirm(`确定要删除 “${article.value.title}” 吗？`,() => {
+            store.dispatch('deleteArticle',article.value.id)
+            router.push('/articles')
+        })
+    }
+}
+const onEditArticle = () => {
+    if(article.value.id){
+        createConfirm(`确定要编辑 “${article.value.title}” 吗？`,() => {
+            router.push(`/articles/edit/${article.value.id}`)
+        })
+    }
+}
 </script>
 
 <style scoped lang="less">
@@ -124,7 +142,7 @@ onMounted(() => {
 .content {
     background-color: rgba(0, 0, 0, .3);
     color: #fff;
-    padding: 14px;
+    padding: 4px 16px;
     border-radius: 8px;
     margin: 20px 0;
     line-height: 24px;

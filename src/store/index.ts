@@ -147,6 +147,13 @@ const store = createStore<GlobalDataProps>({
                 }
             });
         },
+        async deleteArticle({ dispatch }, id) {
+            await axios.delete('/articles', {
+                data:{ id }
+            });
+            dispatch('getArticles')
+            createMessage(`删除成功(●'◡'●)`,'success',MESSAGE_DELAY)
+        },
         async updateArticle({ commit }, payload) {
             return await axios.put('/articles', payload, {
                 headers: {

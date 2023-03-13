@@ -43,14 +43,16 @@ const router = createRouter({
                     path: 'edit',
                     component: () => import('../pages/ArticlesChildren/editAticle.vue'),
                     meta: {
-                        requireLogin: true
-                    }
+                        requireLogin: true,
+                        key:0
+                    },
                 },
                 {
                     path: 'edit/:id',
                     component: () => import('../pages/ArticlesChildren/editAticle.vue'),
                     meta: {
-                        requireLogin: true
+                        requireLogin: true,
+                        key:1
                     }
                 },
 

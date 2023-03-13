@@ -19,7 +19,7 @@ import 'tinymce/models/dom';
 import '/public/tinymce/langs/zh-Hans.js'
 
 interface EditorProps {
-    modelValue?: string;
+    modelValue: string;
 }
 interface EditorEvents {
     (type: 'update:modelValue', value: string): void;
@@ -30,7 +30,7 @@ const emit = defineEmits<EditorEvents>();
 const props = defineProps<EditorProps>();
 
 const textArea = ref<HTMLTextAreaElement | null>(null);
-const innerValue = ref(props.modelValue || '');
+const innerValue = ref(props.modelValue);
 
 onMounted(() => {
     if (textArea.value) {

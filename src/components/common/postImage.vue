@@ -46,7 +46,7 @@ if (props.imgURL) {
 }
 
 watch(() => props.imgURL, newValue => {
-    if(newValue) {
+    if(newValue !== void(0)) {
         currentImg.value = newValue
     }
 })
