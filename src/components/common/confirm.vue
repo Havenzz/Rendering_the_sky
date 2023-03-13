@@ -46,6 +46,8 @@ const cancel = () => {
 
 .content {
     min-height: 50px;
+    padding: 0 20px;
+    box-sizing: border-box;
     text-align: center;
     display: flex;
     justify-content: center;

@@ -38,6 +38,7 @@ const isLoading = computed(() => store.state.isLoading)
 
 onMounted(() => {
     store.dispatch('getTags')
+    store.dispatch('getArticles')
 })
 
 </script>

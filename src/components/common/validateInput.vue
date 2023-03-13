@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, PropType, onMounted } from 'vue';
+import { defineComponent, reactive, PropType, onMounted, watch } from 'vue';
 import mitt from 'mitt'
 interface ruleProp {
     type: 'require' | 'email' | 'range';
@@ -42,6 +42,11 @@ export default defineComponent({
             value: props.modelValue || '',
             error: false,
             message: ''
+        })
+        watch(() => props.modelValue, newValue => {
+            if(newValue){
+                inputRef.value = newValue
+            }
         })
         const onInput = (e: Event) => {
             inputRef.value = (e.target as HTMLInputElement).value;

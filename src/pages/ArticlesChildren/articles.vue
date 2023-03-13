@@ -2,62 +2,60 @@
     <container class="articles" title="Articles">
         <div class="pro_item" v-for="(article, index) of articles" :key="index">
             <router-link class="article" :to="`/articles/${'' + article.id}`">
-                <h3>{{ article.title }}</h3>
-                <p>{{ article.content }}</p>
+                <div class="article_header">
+                    <h3>{{ article.title }}</h3>
+                    <span>Uploader: {{ article.uploader }} / {{ article.createTime.split('T')[0] }}</span>
+                </div>
+                <p>{{ article.describe }}</p>
+                <div class="image_box" v-if="article.imageSrc !== '#'">
+                    <img :src="baseURL + '/' + article.imageSrc">
+                </div>
             </router-link>
             <div class="tags">
                 <router-link 
                 v-for="(tag, index) of article.tags"
-                :to="`/articles?s=${tag}`"
-                :key="index">{{ tag
+                :to="`/articles?s=${tag.name}`"
+                :key="index">{{ tag.name
                 }}</router-link>
             </div>
-            <div class="article_info">
-                <div class="articles_author">Author：{{ article.author }}</div>
-                <div class="articles_date">Date：{{ article.date }}</div>
-            </div>
         </div>
-        <pager :pageCount="20" :currentPage="page" @change-page="changePage" />
+        <pager :pageCount="total || 1" :currentPage="page" @change-page="changePage" />
     </container>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, computed } from 'vue';
 import pager from '../../components/common/pager.vue';
 import container from '../../components/common/container.vue';
-export interface article {
-    title: string;
-    content: string;
-    tags: string[];
-    id: number;
-    date: string;
-    author: string
-}
-type articles = article[]
+import { useStore } from 'vuex';
+import { Article } from '../../store';
+import axios from 'axios';
+
+
+type Articles = Article[]
+
 export default defineComponent({
     components: {
         pager,
         container
     },
     setup() {
+        const baseURL = axios.defaults.baseURL
+        const store = useStore()
         const page = ref<number>(1);
         const changePage = (newPage: number) => {
             page.value = newPage;
         }
-        
-        const articles: articles = [{
-            title: '[转载] 关于实现token无感刷新的解决方案',
-            content: '具体来说，当Vue实例创建时，它会遍历所有的属性，并使用Object.defineProperty()方法将这些属性转换成getter/setter。这样，当数据发生变化时，Vue能够检测到变化并通知所有相关的组件...',
-            tags: ['jwt', 'axios'],
-            id: 1,
-            date: '2021-11-27 15:48:20',
-            author: '老蛙@'
-        }, ]
+        const SKIP = 5;
+        const articles = computed<Articles>(() => store.state.articles)
+        const total = computed<number>(() => Math.ceil(store.state.articleTotal / SKIP))
 
         return {
             articles,
             page,
-            changePage
+            changePage,
+            baseURL,
+            total
         }
     }
 })
@@ -66,25 +64,23 @@ export default defineComponent({
 <style scoped lang="less">
 .articles {
     flex: 1;
-
-
-    .article_info {
-        width: 183px;
-        margin-left: auto;
-        .articles_date,
-        .articles_author {
-            margin-bottom: 5px;
-        }
-    }
-
     .pro_item {
         min-height: 160px;
         border-bottom: 1px solid #fff;
         padding: 20px 10px 0;
         box-sizing: border-box;
+        .image_box{
+            width: 208px;
+            height: 130px;
+            margin: 10px 0 0;
+            box-sizing: border-box;
+            img{
+                width: 100%;
+            }
+        }
 
         .tags {
-            margin-bottom: 5px;
+            margin-bottom: 10px;
             display: flex;
 
             a {
@@ -116,12 +112,23 @@ export default defineComponent({
 
     .article {
         display: block;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
+        .article_header{
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            span{
+                color: var(--white);
+                font-size: 12px;
+                padding-bottom: 6px;
+            }
+        }
 
         h3 {
             font-size: 18px;
             width: max-content;
             margin-bottom: 10px;
+            margin-right: 20px;
             color: var(--lightblue);
             border-bottom: 1px solid transparent;
             padding-bottom: 2px;
@@ -131,6 +138,10 @@ export default defineComponent({
         p {
             font-size: 14px;
             color: rgba(255, 255, 255, 0.87);
+            height: 40px;
+            overflow: hidden;
+            text-overflow:ellipsis;
+            -webkit-line-clamp: 2;
         }
 
         &:hover h3 {

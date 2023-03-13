@@ -21,7 +21,7 @@
 <script lang="ts" setup>
 import Cropper from 'cropperjs';
 import 'cropperjs/dist/cropper.css';
-import { ref, defineEmits, nextTick, defineProps } from 'vue';
+import { ref, defineEmits, nextTick, defineProps, watch } from 'vue';
 import mdialog from './mdialog.vue';
 import createMessage, { MESSAGE_DELAY } from './createMessage';
 
@@ -44,6 +44,12 @@ if (props.imgURL) {
 } else {
     currentImg.value = '';
 }
+
+watch(() => props.imgURL, newValue => {
+    if(newValue) {
+        currentImg.value = newValue
+    }
+})
 
 const uploadDialog = ref(false);
 

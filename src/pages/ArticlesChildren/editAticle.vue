@@ -15,7 +15,8 @@
             </validateInput>
             <div class="article_content">
                 <label>文章内容:</label>
-                <Suspense>
+                <loading v-if="CTXisLoading" :style="{height: 400 + 'px'}"></loading>
+                <Suspense v-else>
                     <editor v-model="article.content"></editor>
                     <template #fallback>
                         <loading :style="{height: 400 + 'px'}"></loading>
@@ -32,11 +33,11 @@
             </div>
             <div class="article_image">
                 <label>文章封面：</label>
-                <postImage @getImgFile="getImgFile"></postImage>
+                <postImage :imgURL="article.imageSrc ? `${baseURL}/${article.imageSrc}` : ''" @getImgFile="getImgFile"></postImage>
             </div>
             <template #submit="scope">
                 <div class="submit_btn">
-                    <button @click.prevent="scope.onSubmit">提交</button>
+                    <button @click.prevent="scope.onSubmit">{{ route.params.id ? '修改' : '提交' }}</button>
                 </div>
             </template>
         </formContainer>
@@ -50,14 +51,18 @@ import formContainer from '../../components/common/formContainer.vue';
 import validateInput from '../../components/common/validateInput.vue';
 import store from '../../store'
 import { defineAsyncComponent } from 'vue'
-import { reactive, computed, ref } from 'vue';
+import { reactive, computed, ref, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import createMessage, { MESSAGE_DELAY } from '../../components/common/createMessage';
 import loading from '../../components/common/loading.vue';
 import chooseTag from '../../components/articles/chooseTag.vue';
 import createConfirm from '../../components/common/createConfirm';
+import axios from 'axios';
 
 const router = useRouter()
+const route = useRoute()
+const baseURL = axios.defaults.baseURL;
 const editor = defineAsyncComponent({
     loader:() => import(/* webpackChunkName: "[request]" */'../../components/articles/editor.vue')
 })
@@ -72,6 +77,8 @@ interface article {
     content: string;
     uploader: string;
     tags: string[];
+    imageSrc?:string;
+    id?:string;
 }
 
 const article = reactive<article>({
@@ -83,6 +90,7 @@ const article = reactive<article>({
 })
 
 let file:File | null = null;
+const CTXisLoading = ref<boolean>(false)
 
 const removeTag = (removeItem:string) => {
     article.tags = article.tags.filter(tag => tag !== removeItem)
@@ -100,17 +108,50 @@ const submit = (validated: boolean) => {
     }else if(article.tags.length < 1){
         createMessage('至少选择1个文章标签','error',MESSAGE_DELAY)
     }else{
-        createConfirm('确认提交？',() => {
-            store.dispatch('postArticle',{
-                file,
-                article:JSON.stringify(article)
-            }).then(res => {
-                router.push('/articles');
-                createMessage('上传文章成功','success',MESSAGE_DELAY)
+        if(!route.params.id){
+            createConfirm(`确认提交 ${article.title} ？`,() => {
+                store.dispatch('postArticle',{
+                    file,
+                    article:JSON.stringify(article)
+                }).then(res => {
+                    router.push('/articles');
+                    createMessage(`文章 ${res.data.data.title} 上传成功`,'success',MESSAGE_DELAY)
+                    store.dispatch('getArticles')
+                })
             })
-        })
+        }else{
+            createConfirm(`确认修改 ${article.title} ？`,() => {
+                store.dispatch('updateArticle',{
+                    file,
+                    article:JSON.stringify(article)
+                }).then(res => {
+                    router.push('/articles');
+                    createMessage(`文章 ${res.data.data.title} 修改成功`,'success',MESSAGE_DELAY)
+                    store.dispatch('getArticles')
+                })
+            })
+        }
     }
 }
+// 如果是编辑文章状态
+onMounted(() => {
+    if(route.params.id){
+        CTXisLoading.value = true
+        store.dispatch('getArticle',route.params.id).then(res => {
+            article.title = res.data.data.title;
+            article.content = res.data.data.content;
+            article.uploader = res.data.data.uploader;
+            article.tags = res.data.data.tags.map((tag:any) => tag.name);
+            article.describe = res.data.data.describe;
+            if(res.data.data.imageSrc !== '#'){
+                article.imageSrc = res.data.data.imageSrc;
+            }
+            article.id = res.data.data.id;
+        }).catch(e => {
+            router.push('/articles')
+        }).finally(() => CTXisLoading.value = false)
+    }
+})
 </script>
 
 <style lang="less" scoped>

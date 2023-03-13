@@ -13,6 +13,17 @@ export interface Tag {
     createTime: string
 }
 
+export interface Article {
+    title: string;
+    content: string;
+    describe: string;
+    tags: Tag[];
+    id: string;
+    createTime: string;
+    uploader: string;
+    imageSrc:string;
+}
+
 interface UserProps {
     isLogin: boolean;
     username: string;
@@ -25,7 +36,9 @@ export interface GlobalDataProps {
     isShowLogin: boolean;
     isLoading: boolean;
     progress: number;
-    tags: Tag[],
+    tags: Tag[];
+    articles: Article[];
+    articleTotal:number;
     tagsEdit: boolean;
 }
 
@@ -45,6 +58,8 @@ const store = createStore<GlobalDataProps>({
         isLoading: false,
         progress: 0,
         tags: [],
+        articles: [],
+        articleTotal:0,
         tagsEdit: false
     },
     getters: {
@@ -133,14 +148,18 @@ const store = createStore<GlobalDataProps>({
             });
         },
         async updateArticle({ commit }, payload) {
-            return await axios.post('/articles', payload, {
+            return await axios.put('/articles', payload, {
                 headers: {
                     'Content-type': 'multipart/form-data'
                 }
             });
         },
-        async getArticlesAll({ commit }) {
-            return await axios.get('/articles');
+        async getArticle(ctx,id) {
+            return await axios.get(`/articles/${id}`);
+        },
+        async getArticles({ commit }) {
+            const { data:{ data } } = await axios.get('/articles');
+            commit('UPDATE_ARTICLES',data)
         },
         async searchArticles({ commit }, payload) {
             return await axios.get('/articles', payload);
@@ -188,6 +207,10 @@ const store = createStore<GlobalDataProps>({
         },
         UPDATE_TAGSEDIT(state, payload) {
             state.tagsEdit = payload
+        },
+        UPDATE_ARTICLES(state,{ articleList, count}){
+            state.articles = articleList
+            state.articleTotal = count
         }
     },
 })
