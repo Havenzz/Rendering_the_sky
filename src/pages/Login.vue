@@ -1,7 +1,7 @@
 <template>
     <teleport to='#back'>
         <div id="login">
-            <div class="closeLogin" @click="closeLogin"><i class="iconfont">&#xeb6a;</i></div>
+            <div class="closeLogin" @click="closeLogin"><i class="iconfont">&#xe7fc;</i></div>
             <form-container title="- Sign in -" @form-submit="formSubmit">
                 <validate-input label="Username" v-model="userData.username" :rules="emailRule" required></validate-input>
                 <validate-input label="Password" v-model="userData.password" :rules="passwordRule" type="password"

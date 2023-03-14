@@ -143,3 +143,15 @@ html{
 .tinymce_content h6{
   margin: 20px 0;
 }
+.tinymce_content h2{
+  font-size: 28px;
+  line-height: 40px;
+}
+.tinymce_content h3{
+  font-size: 19px;
+  line-height: 28px;
+}
+
+div.code-toolbar > .toolbar > .toolbar-item > button {
+  outline: none;
+}

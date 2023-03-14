@@ -8,7 +8,8 @@ import axios, { AxiosRequestConfig } from 'axios'
 import debounce from 'lodash/debounce'
 import { LOGIN_STATE_KEY } from './http'
 import createMessage, { MESSAGE_DELAY } from './components/common/createMessage'
-
+import vueLazyload from 'vue-lazyload'
+import loading from './assets/loading.png'
 
 // 进度条进度枚举
 export const enum PROGSTATE {
@@ -113,5 +114,8 @@ router.afterEach((to, from) => {
 const app = createApp(App)
 app.use(router)
 app.use(store)
+app.use(vueLazyload,{
+    loading
+})
 app.mount('#app')
 

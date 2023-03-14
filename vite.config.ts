@@ -10,7 +10,7 @@ export default defineConfig({
 			// ['json', 'css'] 按需引入，'all' 所有语言
 			languages: 'all',
 			// 配置行号插件
-			plugins: ['line-numbers'],
+			plugins: ['line-numbers','copy-to-clipboard'],
 			// 主题名
 			theme: 'tomorrow',
 			css: true

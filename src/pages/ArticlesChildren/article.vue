@@ -11,6 +11,9 @@
         </template>
         <loading :style="{height: 666 + 'px'}" v-if="isLoading"></loading>
         <template v-else>
+            <div v-if="article.imageSrc" class="image">
+                <img v-lazy="baseURL + '/' + article.imageSrc">
+            </div>
             <h1 class="title">{{ article.title }}</h1>
             <div class="info">
                 <p>上传者：{{ article.uploader }}</p>
@@ -19,20 +22,21 @@
                     <a href="javascript:;" v-for="tag of article.tags" :key="tag.id">{{ tag.name }}</a>
                 </p>
             </div>
-            <div class="tinymce_content content" v-html="article.content"></div>
+            <div ref="contentRef" class="tinymce_content content line-numbers" v-html="article.content"></div>
         </template>
     </container>
 </template>
 
 <script lang="ts" setup>
 import prism from 'prismjs';
-import { onMounted, ref, computed } from 'vue';
+import { onMounted, ref, computed, nextTick } from 'vue';
 import container from '../../components/common/container.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { Article } from '../../store';
 import loading from '../../components/common/loading.vue';
 import createConfirm from '../../components/common/createConfirm';
+import axios from 'axios';
 
 interface WholeArticle extends Article {
     content:string;
@@ -41,6 +45,8 @@ interface WholeArticle extends Article {
 const route = useRoute()
 const router = useRouter()
 const store = useStore()
+const baseURL = axios.defaults.baseURL
+const contentRef = ref<HTMLElement | null>(null)
 
 const article = ref<WholeArticle | any>({})
 const isLoading = computed(() => store.state.isLoading)
@@ -49,7 +55,12 @@ const username = computed(() => store.state.user.username)
 onMounted(() => {
     store.dispatch('getArticle',route.params.id).then(res => {
         article.value = res.data.data;
-        prism.highlightAll()
+        nextTick(() => {
+            contentRef.value?.querySelectorAll('pre').forEach(item => {
+                item.innerHTML = `<code>${item.innerHTML}</code>`
+            })
+            prism.highlightAll()
+        })
     })
 })
 
@@ -96,6 +107,13 @@ const onEditArticle = () => {
     font-size: 30px;
     margin: 20px 0;
     color: #fff;
+}
+.image{
+    width: 100%;
+    margin: 10px 0 10px;
+    img{
+        width: 100%;
+    }
 }
 
 .info {

@@ -169,7 +169,12 @@ const store = createStore<GlobalDataProps>({
             commit('UPDATE_ARTICLES',data)
         },
         async searchArticles({ commit }, payload) {
-            return await axios.get('/articles', payload);
+            const { data:{ data } } = await axios.get('/articles', {
+                params:{
+                    ...payload
+                }
+            });
+            commit('UPDATE_ARTICLES',data)
         },
         async getTags({ commit }, tagsRef?: any) {
             const { data: { data: tags } } = await axios.get('tags');

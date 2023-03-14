@@ -9,7 +9,9 @@
                 <ul class="classification">
                     <loading v-if="isLoading" :style="{height: 200 + 'px'}"></loading>
                     <template v-else>
-                        <li v-for="tag of tags" :key="tag.id">{{ tag.name }}</li>
+                        <li v-for="tag of tags" :key="tag.id">
+                            <router-link :to="`articles?s=${tag.name}`">{{ tag.name }}</router-link>
+                        </li>
                     </template>
                 </ul>
             </container>
@@ -65,10 +67,16 @@ onMounted(() => {
             li {
                 line-height: 25px;
                 list-style: disc;
-                cursor: pointer;
-
-                &:hover {
+                a{
+                    display: block;
+                    color: var(--white);
+                    transition: text-shadow .3s;
+                    width: 100%;
+                    height: 100%;
+                }
+                a:hover {
                     color: #fff;
+                    text-shadow: 0 0 13px;
                 }
             }
         }

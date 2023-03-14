@@ -1,12 +1,37 @@
 <template>
     <div class="search_input">
-        <input type="text">
-        <button><i class="iconfont icon-zidingyi"></i></button>
+        <input v-model="inpVal" type="text">
+        <button @click="onFetchArticles">
+            <i class="iconfont">&#xe8ef;</i>
+            <i class="iconfont">&#xe8ef;</i>
+        </button>
     </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router';
+import createMessage, { MESSAGE_DELAY } from '../common/createMessage';
 
+const inpVal = ref<string>('')
+const route = useRoute()
+const router = useRouter()
+
+const onFetchArticles = () => {
+    if (inpVal.value.trim() !== '') {
+        router.push({
+            path:'articles',
+            query:{
+                s:inpVal.value
+            }
+        })
+        inpVal.value = ''
+    } else if(inpVal.value.trim() === '' && route.query.s){
+        router.push('articles')
+    } else {
+        createMessage('请输入文字再后搜索','error',MESSAGE_DELAY)
+    }
+}
 </script>
 
 <style scoped lang="less">
@@ -35,21 +60,34 @@
     }
 
     button {
-        padding: 4px 8px;
+        padding: 0 8px 4px;
         background-color: transparent;
+        height: 30px;
         font-size: 14px;
         flex-shrink: 0;
         border: none;
         transition: color .3s;
         position: absolute;
         right: 0;
-
+        outline: none;
+        color: #333;
+        overflow: hidden;
         i {
-            font-size: 18px;
+            display: block;
+            font-size: 22px;
+            flex-shrink: 0;
+            transition: .3s;
+            line-height: 30px;
+        }
+        i + i{
+            color: #fff;
         }
 
         &:hover {
-            color: #fff;
+            i{
+                transform: translateY(-100%);
+                text-shadow: 0 0 12px;
+            }
         }
     }
 }

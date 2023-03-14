@@ -45,6 +45,7 @@ onMounted(() => {
             codesample_global_prismjs: true,
             min_height: 500,
             color_cols: 7,
+            // content_security_policy: "default-src 'self' https:;",
             custom_colors: false,
             color_map: [
                 "000000", "Black",
@@ -65,7 +66,6 @@ onMounted(() => {
                 format: { title: 'Format', items: 'bold italic underline strikethrough superscript subscript codeformat | styles blocks fontfamily fontsize align lineheight | forecolor backcolor | language | removeformat' },
                 tools: { title: 'Tools', items: 'spellchecker spellcheckerlanguage | a11ycheck code wordcount' },
                 table: { title: 'Table', items: 'inserttable | cell row column | advtablesort | tableprops deletetable' },
-                help: { title: 'Help', items: 'help' }
             },
             setup: (editor) => {
                 editor.on('init', () => {

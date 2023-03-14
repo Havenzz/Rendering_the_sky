@@ -7,7 +7,7 @@
                         <slot name="header">
                             <h2 class="title">{{ title }}</h2>
                         </slot>
-                        <i class="iconfont" @click="close">&#xeb6a;</i>
+                        <i class="iconfont" @click="close">&#xe7fc;</i>
                     </div>
                     <slot></slot>
                 </div>

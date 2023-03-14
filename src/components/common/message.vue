@@ -3,7 +3,7 @@
         <transition appear name="fade">
             <div v-if="isVisible" class="message" :class="classObj">
                 {{ props.message }}
-                <i @click="close" class="iconfont">&#xeb6a;</i>
+                <i @click="close" class="iconfont">&#xe7fc;</i>
             </div>
         </transition>
     </teleport>

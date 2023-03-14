@@ -48,16 +48,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
 import container from '../components/common/container.vue';
+import { defineComponent } from 'vue';
+
 export default defineComponent({
-    components: {
+    components:{
         container
     },
-    setup() {
-
+    setup(){
+        return {
+        }
     }
 })
+
+
 </script>
 
 <style scoped lang="less">

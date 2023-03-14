@@ -1,14 +1,14 @@
 <template>
     <div class="pager">
         <div class="pager_container">
-            <button @click="prevPage" class="pager_btn prev">⬅ Previous</button>
+            <button @click="prevPage" class="pager_btn prev"><i class="iconfont">&#xe7ec;</i> Previous</button>
             <div class="pagelist">
-                <template v-for="(page, i) of computedPages" :key="i">
+                <template v-for="page of computedPages" :key="page">
                     <span v-if="page" :class="{ active: currentPage === page }" @click="changePage(page)">{{ page }}</span>
                     <span v-else>...</span>
                 </template>
             </div>
-            <button @click="nextPage" class="pager_btn next">Next ➡</button>
+            <button @click="nextPage" class="pager_btn next">Next <i class="iconfont">&#xe7eb;</i></button>
         </div>
     </div>
 </template>
@@ -139,18 +139,33 @@ export default defineComponent({
         }
 
         @media screen and (max-width: 750px) {
-            span {
+            span:not(.active) {
                 display: none;
             }
         }
     }
 
     .pager_btn {
+        flex-shrink: 0;
         background-color: transparent;
         color: #AA97EC;
-        width: 102.5px;
+        width: fit-content;
         outline: none;
         user-select: none;
+        i{
+            font-size: 12px;
+        }
+    }
+    .next{
+        text-align: start;
+        width: 68.3px;
+        box-sizing: content-box;
+        align-items: center;
+        display: flex;
+        i{
+            margin-left: auto;
+            margin-top: 2px;
+        }
     }
 }
 </style>
