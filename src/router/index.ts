@@ -44,7 +44,6 @@ const router = createRouter({
                     component: () => import('../pages/ArticlesChildren/editAticle.vue'),
                     meta: {
                         requireLogin: true,
-                        key:0
                     },
                 },
                 {
@@ -52,11 +51,14 @@ const router = createRouter({
                     component: () => import('../pages/ArticlesChildren/editAticle.vue'),
                     meta: {
                         requireLogin: true,
-                        key:1
                     }
                 },
 
             ]
+        },
+        {
+            path:'/about',
+            component: () => import('../pages/About.vue')
         }
     ]
 })

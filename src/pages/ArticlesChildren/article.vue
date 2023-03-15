@@ -90,6 +90,7 @@ const onEditArticle = () => {
 <style scoped lang="less">
 .back {
     color: var(--white);
+    font-weight: 200;
     transition: .3s;
     &:hover{
         color: #fff;

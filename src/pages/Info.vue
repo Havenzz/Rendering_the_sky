@@ -24,6 +24,9 @@
                     <span class="address">
                         <i class="iconfont">&#xe8ae;</i> 福建 泉州
                     </span>
+                    <a class="github" href="https://github.com/Logic533">
+                        <i class="iconfont">&#xe885;</i> My Github <i class="iconfont">&#xe7eb;</i>
+                    </a>
                 </div>
             </div>
             <div class="content">
@@ -31,8 +34,9 @@
                     <container title="个人简介">
                         <p>本人热衷于 web 中有趣的交互和精妙的逻辑，不论是设计或是实现都让我觉得十分有意思。</p>
                         <p>另外对 webGL 以及 Blender 颇有兴趣，因为这可以将模型渲染在页面上并进行交互，我也在努力学习中。</p>
+                        <p>偶尔也会在 CSDN 或博客上面发表一些文章或者自己平时记录的笔记。</p>
                     </container>
-                    <container title="技术栈 & 技能">
+                    <container title="">
                     </container>
                 </div>
             </div>
@@ -70,6 +74,7 @@ export default defineComponent({
         height: 100%;
 
         .header_bg {
+            position: relative;
             min-height: 300px;
             margin: 0 auto;
             background: radial-gradient(farthest-side at bottom right, rgba(109, 38, 44, 0.301), transparent 500px), radial-gradient(farthest-corner at bottom left, rgba(50, 255, 193, 0.103), transparent 600px);
@@ -130,7 +135,7 @@ export default defineComponent({
                     width: 100%;
                     margin-top: 20px;
                     font-size: 14px;
-                    padding: 0 30px 0 10px;
+                    padding-left: 10px;
                     margin-bottom: 24px;
 
                     p {
@@ -192,5 +197,33 @@ export default defineComponent({
             }
         }
     }
+}
+.github {
+    position: absolute;
+    bottom: 15px;
+    right: 25px;
+    background-color: #20252e;
+    padding: 2px 11px;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+    font-size: 16px;
+    color: #D3D3D3;
+    border: none;
+    transition: .3s;
+    border-radius: 6px;
+
+    &:hover {
+        box-shadow: 0 0 8px 2px rgba(0, 0, 0, .1);
+        color: #fff;
+        background-color: #353E4E;
+    }
+
+
+    i + i{
+        font-size: 12px;
+        vertical-align: 1px;
+    }
+
 }
 </style>

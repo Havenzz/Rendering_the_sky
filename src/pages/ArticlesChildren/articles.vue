@@ -1,7 +1,11 @@
 <template>
     <container class="articles">
         <template #header>
-            <i class="iconfont">&#xe86e;</i> Articles
+            <div class="header_title">
+                <router-link to="/articles" v-if="route.query.s"><i class="iconfont">&#xe7ec;</i> 返回 Articles</router-link>
+                <p v-else><i class="iconfont">&#xe86e;</i> Articles</p>
+                <p>Total: {{ articleTotal }}</p>
+            </div>
         </template>
         <h1 class="searchResult" v-if="route.query.s">以下是 "{{ route.query.s }}" 的搜索结果：</h1>
         <loading :style="{height: 301 + 'px'}" v-if="isLoading"></loading>
@@ -82,7 +86,8 @@ export default defineComponent({
         }
         const SKIP = 5;
         const articles = computed<Articles>(() => store.state.articles)
-        const total = computed<number>(() => Math.ceil(store.state.articleTotal / SKIP))
+        const articleTotal = computed<number>(() => store.state.articleTotal)
+        const total = computed<number>(() => Math.ceil(articleTotal.value / SKIP))
         const isLoading = computed(() => store.state.isLoading)
 
         watch(() => route.query, newValue => {
@@ -100,6 +105,7 @@ export default defineComponent({
             total,
             isLoading,
             route,
+            articleTotal
         }
     }
 })
@@ -256,5 +262,19 @@ export default defineComponent({
     font-size: 24px;
     margin: 30px 10px 6px;
     line-height: 34px;
+}
+.header_title{
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 5px;
+    a{
+        color: #fff;
+        transition: .3s;
+        font-weight: 200;
+        &:hover{
+            text-shadow: 0 0 12px;
+        }
+    }
 }
 </style>
