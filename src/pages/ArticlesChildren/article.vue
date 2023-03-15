@@ -2,16 +2,22 @@
     <container>
         <template #header>
             <div class="header">
-                <router-link class="back" to="/articles"> ⬅ Go back</router-link>
+                <router-link class="back" to="/articles">
+                    <i class="iconfont">&#xe7ec;</i> 返回 Articles
+                </router-link>
                 <div class="user" v-if="username === article.uploader">
-                    <span @click="onEditArticle" class="edit">编辑</span>
-                    <span @click="onRemoveArticle">删除</span>
+                    <span @click="onEditArticle" class="edit">
+                        <i class="iconfont">&#xe871;</i> 设置
+                    </span>
+                    <span @click="onRemoveArticle">
+                        <i class="iconfont">&#xe863;</i> 删除
+                    </span>
                 </div>
             </div>
         </template>
         <loading :style="{height: 666 + 'px'}" v-if="isLoading"></loading>
         <template v-else>
-            <div v-if="article.imageSrc" class="image">
+            <div v-if="article.imageSrc && article.imageSrc !== '#'" class="image">
                 <img v-lazy="baseURL + '/' + article.imageSrc">
             </div>
             <h1 class="title">{{ article.title }}</h1>
@@ -19,7 +25,7 @@
                 <p>上传者：{{ article.uploader }}</p>
                 <p>时间：{{ article.createTime?.split('T')[0] }}</p>
                 <p class="tags">文章标签：
-                    <a href="javascript:;" v-for="tag of article.tags" :key="tag.id">{{ tag.name }}</a>
+                    <router-link :to="`/articles?s=${tag.name}`" v-for="tag of article.tags" :key="tag.id">{{ tag.name }}</router-link>
                 </p>
             </div>
             <div ref="contentRef" class="tinymce_content content line-numbers" v-html="article.content"></div>
@@ -83,7 +89,12 @@ const onEditArticle = () => {
 
 <style scoped lang="less">
 .back {
-    color: #fff;
+    color: var(--white);
+    transition: .3s;
+    &:hover{
+        color: #fff;
+        text-shadow: 0 0 12px;
+    }
 }
 .header{
     display: flex;
@@ -91,9 +102,10 @@ const onEditArticle = () => {
         margin-left: auto;
         a,span{
             color: var(--white);
+            transition: .3s;
             &:hover{
                 color: #fff;
-                text-shadow: 0 0 8px;
+                text-shadow: 0 0 12px;
             }
         }
         span{
@@ -104,6 +116,8 @@ const onEditArticle = () => {
 }
 .title {
     line-height: 40px;
+    padding-left: 10px;
+    box-sizing: border-box;
     font-size: 30px;
     margin: 20px 0;
     color: #fff;

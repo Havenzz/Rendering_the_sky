@@ -1,7 +1,9 @@
 <template>
     <div class="navBar">
         <div class="mask" :class="{ show: asideShow }" @click="onClickHide"></div>
-        <div class="header-left-small" @click="onClickShow">###</div>
+        <div class="header-left-small" @click="onClickShow">
+            <i class="iconfont">&#xe7f4;</i>
+        </div>
         <div class="header-left">
             <div class="ufo" :style="{ left: `${ufoOffset}%` }"></div>
             <div class="header-navbar" :class="{ show: asideShow }" ref="headerNavbarRef">
@@ -73,10 +75,13 @@ watch(() => route.path, () => {
 .header-left-small {
     display: none;
     background: linear-gradient(150deg, #a189e2, #e0b5eb);
-    padding: 8px 12px;
+    padding: 6px 12px;
     border-radius: 5px;
     cursor: pointer;
     margin-left: 20px;
+    i{
+        font-size: 22px;
+    }
 
     @media screen and (max-width:1200px) {
         display: block;

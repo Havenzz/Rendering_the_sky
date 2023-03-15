@@ -1,7 +1,9 @@
 <template>
     <container :title="route.params.id ? article.title : '新建文章'">
         <formContainer class="articleInfo" @form-submit="submit">
-            <router-link to="/articles">~ go back</router-link>
+            <router-link to="/articles">
+                <i class="iconfont">&#xe7ec;</i> 返回上一级
+            </router-link>
             <validateInput
              label="文章标题：" 
              placeholder="请输入文章标签" 
@@ -12,7 +14,7 @@
                 v-model="article.title">
             </validateInput>
             <validateInput label="文章描述：" tagType="textarea"
-             placeholder="请输入文章描述，最多可以输入128个字符" maxlength="128"
+             placeholder="请输入文章描述，最多可以输入128个字符" maxlength="86"
                 :rules="[{ message: '文章描述不能为空', type: 'require' }]"
                  v-model="article.describe">
             </validateInput>
@@ -35,7 +37,7 @@
                 </div>
             </div>
             <div class="article_image">
-                <label>文章封面：</label>
+                <label>文章封面：( 可选 )</label>
                 <postImage :imgURL="article.imageSrc ? `${baseURL}/${article.imageSrc}` : ''" @getImgFile="getImgFile"></postImage>
             </div>
             <template #submit="scope">

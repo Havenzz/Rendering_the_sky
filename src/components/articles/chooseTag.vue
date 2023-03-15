@@ -25,7 +25,7 @@
                 :key="index" 
                 >
                     {{ tag }}
-                    <i @click="removeTag(tag)" class="iconfont">&#xeb6a;</i>
+                    <i @click="removeTag(tag)" class="iconfont">&#xe7fc;</i>
                 </span>
             </template>
             <p v-else>请选择标签 (●'◡'●)</p>
@@ -80,7 +80,20 @@ const close = () => {
 
 <style lang="less" scoped>
 .chooseBox{
-    overflow: hidden;
+    overflow-y: scroll;
+    height: 500px;
+    
+    &::-webkit-scrollbar {
+        width: 4px;
+        background: #4e48451f;
+        opacity: 0.1;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: rgba(255, 255, 255, .75);
+        border-radius: 5px;
+    }
+
     li{
         height: 50px;
         box-sizing: border-box;

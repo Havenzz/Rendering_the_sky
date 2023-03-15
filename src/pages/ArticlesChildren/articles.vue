@@ -1,5 +1,8 @@
 <template>
-    <container class="articles" title="Articles">
+    <container class="articles">
+        <template #header>
+            <i class="iconfont">&#xe86e;</i> Articles
+        </template>
         <h1 class="searchResult" v-if="route.query.s">以下是 "{{ route.query.s }}" 的搜索结果：</h1>
         <loading :style="{height: 301 + 'px'}" v-if="isLoading"></loading>
         <div class="not_found" v-else-if="articles.length === 0">
@@ -63,13 +66,19 @@ export default defineComponent({
         const DEFAULT_TAKE = 5;
         const changePage = (newPage: number) => {
             page.value = newPage;
-            router.push({
-                path:'articles',
-                query:{
-                    ...route.query,
-                    skip: newPage * DEFAULT_TAKE
-                }
-            })
+            const skip = (newPage - 1) * DEFAULT_TAKE;
+            if(skip){
+                router.push({
+                    path:'articles',
+                    query:{
+                        ...route.query,
+                        skip
+                    }
+                })
+            }else{
+                router.push('/articles')
+            }
+            
         }
         const SKIP = 5;
         const articles = computed<Articles>(() => store.state.articles)
@@ -78,6 +87,9 @@ export default defineComponent({
 
         watch(() => route.query, newValue => {
             store.dispatch('searchArticles',newValue ? newValue : route.query)
+            if(newValue.skip){
+                page.value = +newValue.skip / DEFAULT_TAKE + 1
+            }
         },{ immediate:true })
 
         return {

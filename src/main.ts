@@ -115,7 +115,8 @@ const app = createApp(App)
 app.use(router)
 app.use(store)
 app.use(vueLazyload,{
-    loading
+    loading,
+    error:loading
 })
 app.mount('#app')
 

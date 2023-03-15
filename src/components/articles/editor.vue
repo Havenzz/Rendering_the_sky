@@ -44,6 +44,7 @@ onMounted(() => {
             plugins: 'autoresize,codesample,searchreplace,table,code,link,lists,advlist',
             codesample_global_prismjs: true,
             min_height: 500,
+            max_height: 600,
             color_cols: 7,
             // content_security_policy: "default-src 'self' https:;",
             custom_colors: false,

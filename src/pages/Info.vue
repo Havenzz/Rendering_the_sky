@@ -8,38 +8,31 @@
                 <div class="user_info">
                     <div class="user_header">
                         <h2>Haven Wu</h2>
-                        <span>- Web前端工程师 -</span>
+                        <span>- Web前端 -</span>
                     </div>
                     <div class="user_content">
-                        <p>我很憧憬类似漫画家这样的人，因为他们同时具备能够想象出有趣的东西的能力，和可以将自己所想象的画面呈现出来的能力。</p>
-                        <p>因此我对设计与制作感兴趣，我想要找到一种可以兼顾两者的生活方式。</p>
-                        <p>后来通过自己选择的专业接触到前端的知识，发现了在Web中也能设计出华丽的效果，以及有趣的互动，并可以使用简洁高效的代码实现，我便对此产生了浓厚的兴趣。</p>
+                        <p style="text-decoration: line-through;">我贼能加班。</p>
+                        <p style="text-decoration: line-through;">喜欢唱跳rap篮球。</p>
+                        <p>目前居住在广东深圳处于离职状态，希望能够找到一家心仪的公司。</p>
+                        <p style="margin-top: 20px">
+                            <i class="iconfont">&#xe870;</i> Email : humorouslogic@outlook.com
+                        </p>
+                        <p>
+                            <i class="iconfont">&#xe883;</i> weChat : -becauseican
+                        </p>
                     </div>
-                    <span class="address">广东深圳</span>
+                    <span class="address">
+                        <i class="iconfont">&#xe8ae;</i> 福建 泉州
+                    </span>
                 </div>
             </div>
             <div class="content">
                 <div class="content_box">
-                    <container title="技术栈">
-                        <p>主要使用过 Photoshop、Axure、XD、Sketch 进行设计。</p>
-                        <p style="line-height:20px;">主要使用过
-                            HTML、CSS、JavaScript、TypeSciprt、Vue2、Vue3、uni-app、Aioxs、Webpack、Bootstrap、Vite、ElementUI、Vant、Ant
-                            Design、jQuery、Bootstrap、Swiper、Zepto、Echarts、Thress.js、Weex、uView、Less 进行开发。</p>
-                        <p>另外还对 WebGL 和 Blender 感兴趣，将其当作一种可以让3D模型在浏览器中工作的方法。这方面我只是个业余爱好者，但我正在努力学习。</p>
+                    <container title="个人简介">
+                        <p>本人热衷于 web 中有趣的交互和精妙的逻辑，不论是设计或是实现都让我觉得十分有意思。</p>
+                        <p>另外对 webGL 以及 Blender 颇有兴趣，因为这可以将模型渲染在页面上并进行交互，我也在努力学习中。</p>
                     </container>
-                    <container title="个人技能">
-                        <p>1.熟悉 W3C 标准，理解语义化，遵循主流编码规范，有前端性能优化意识；</p>
-                        <p>2.熟悉多种网页布局方式，熟悉 HTML5/CSS3 新特性；</p>
-                        <p>3.熟练使用 Vue 全家桶及 Vue3 + ts 开发；</p>
-                        <p>4.熟悉常用前端 Javascript 可视化工具 Echarts；</p>
-                        <p>5.熟练使用 TypeScript，JavaScript，ES6 新标准语法；</p>
-                        <p>6.熟练使用 ElementUI、Vant、Ant Design 等常用 UI 组件库；</p>
-                        <p>7.熟练使用 jQuery、Bootstrap、swiper、Zepto 等 js 库；</p>
-                        <p>8.熟练掌握浏览器各种调试工具，熟悉小程序、uni-app 的项目开发；</p>
-                        <p>9.熟悉面向对象编程，熟悉面向对象设计，对原型链、继承、闭包有一定的认识；</p>
-                        <p>10. 熟悉 Gitee、GitHub 进行项目代码管理以及版本控制，并遵循一定的流行规范；</p>
-                        <p>11. 了解 Node.js 后台语言；</p>
-                        <p>12. 了解自动化构建工具，如 webpack、vite。</p>
+                    <container title="技术栈 & 技能">
                     </container>
                 </div>
             </div>
@@ -104,8 +97,16 @@ export default defineComponent({
                 flex-direction: column;
                 .avatar{
                     margin: 0 auto;
-                    width: 183px;
-                    height: 183px;
+                    width: 193px;
+                    height: 193px;
+                }
+            }
+
+            @media screen and (max-width:500px) {
+                .avatar{
+                    margin: 0 auto;
+                    width: 150px;
+                    height: 150px;
                 }
             }
 
@@ -126,9 +127,7 @@ export default defineComponent({
                 }
 
                 .user_content {
-                    display: flex;
                     width: 100%;
-                    flex-wrap: wrap;
                     margin-top: 20px;
                     font-size: 14px;
                     padding: 0 30px 0 10px;

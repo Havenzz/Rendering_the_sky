@@ -58,8 +58,8 @@ const close = () => {
         border-top-right-radius: 8px;
         border-top-left-radius: 8px;
         i {
-            margin-top: 2px;
             margin-right: 12px;
+            margin-bottom: 2px;
             font-size: 20px;
             cursor: pointer;
             color: var(--white);

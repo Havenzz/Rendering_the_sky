@@ -7,6 +7,9 @@
                     <search></search>
                 </template>
                 <ul class="classification">
+                    <h1 class="tags_title">
+                        <i class="iconfont">&#xe86f;</i> 标签集
+                    </h1>
                     <loading v-if="isLoading" :style="{height: 200 + 'px'}"></loading>
                     <template v-else>
                         <li v-for="tag of tags" :key="tag.id">
@@ -119,6 +122,17 @@ onMounted(() => {
         @media screen and (max-width:1000px) {
             display: none;
         }
+    }
+}
+.tags_title{
+    font-size: 24px;
+    width: fit-content;
+    margin: 0 auto 20px;
+    user-select: none;
+    padding: 8px 30px 8px 24px;
+    border-bottom: 1px solid;
+    i{
+        font-size: 24px;
     }
 }
 </style>
