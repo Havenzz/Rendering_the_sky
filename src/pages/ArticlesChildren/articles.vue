@@ -20,7 +20,7 @@
                 <router-link class="article" :to="`/articles/${'' + article.id}`">
                     <div class="article_header">
                         <h3>{{ article.title }}</h3>
-                        <span>Uploader: {{ article.uploader }} / {{ article.createTime.split('T')[0] }}</span>
+                        <span>@{{ article.uploader }} · {{ article?.createTime.split('T')[0].replace('-','年').replace('-','月') + '日' }}</span>
                     </div>
                     <p>{{ article.describe }}</p>
                     <div class="image_box" v-if="article.imageSrc !== '#'">
@@ -90,10 +90,12 @@ export default defineComponent({
         const total = computed<number>(() => Math.ceil(articleTotal.value / SKIP))
         const isLoading = computed(() => store.state.isLoading)
 
-        watch(() => route.query, newValue => {
-            store.dispatch('searchArticles',newValue ? newValue : route.query)
-            if(newValue.skip){
-                page.value = +newValue.skip / DEFAULT_TAKE + 1
+        watch(route, newValue => {
+            if(route.path === '/articles'){
+                store.dispatch('searchArticles',newValue.query)
+                if(newValue.query.skip){
+                    page.value = +newValue.query.skip / DEFAULT_TAKE + 1
+                }
             }
         },{ immediate:true })
 
@@ -115,13 +117,12 @@ export default defineComponent({
 .articles {
     flex: 1;
     .pro_item {
-        min-height: 160px;
+        min-height: 140px;
         border-bottom: 1px solid #fff;
         padding: 20px 10px 0;
         box-sizing: border-box;
         .image_box{
-            width: 208px;
-            height: 130px;
+            width: 100%;
             margin: 10px 0 0;
             box-sizing: border-box;
             img{
@@ -130,7 +131,7 @@ export default defineComponent({
         }
 
         .tags {
-            margin-bottom: 10px;
+            margin: 10px 0 15px;
             display: flex;
 
             a {
@@ -167,10 +168,12 @@ export default defineComponent({
             display: flex;
             align-items: center;
             flex-wrap: wrap;
+            margin-bottom: 12px;
             span{
                 color: var(--white);
                 font-size: 12px;
                 padding-bottom: 6px;
+                align-self: end;
             }
         }
 
@@ -178,8 +181,7 @@ export default defineComponent({
             max-width: 350px;
             font-size: 18px;
             width: max-content;
-            margin-bottom: 10px;
-            margin-right: 20px;
+            margin: 4px 10px 0 0;
             color: var(--lightblue);
             border-bottom: 1px solid transparent;
             padding-bottom: 2px;
@@ -192,7 +194,6 @@ export default defineComponent({
         p {
             font-size: 14px;
             color: rgba(255, 255, 255, 0.87);
-            height: 40px;
             overflow: hidden;
             text-overflow:ellipsis;
             -webkit-line-clamp: 2;

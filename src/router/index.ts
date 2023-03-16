@@ -56,10 +56,6 @@ const router = createRouter({
 
             ]
         },
-        {
-            path:'/about',
-            component: () => import('../pages/About.vue')
-        }
     ]
 })
 

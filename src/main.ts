@@ -9,7 +9,7 @@ import debounce from 'lodash/debounce'
 import { LOGIN_STATE_KEY } from './http'
 import createMessage, { MESSAGE_DELAY } from './components/common/createMessage'
 import vueLazyload from 'vue-lazyload'
-import loading from './assets/loading.png'
+import loading from './assets/loading.jpg'
 
 // 进度条进度枚举
 export const enum PROGSTATE {
@@ -30,6 +30,10 @@ function clearRequestQueue(config: AxiosRequestConfig) {
         requestQueue.delete(key);
     }
 }
+// refresh 标识
+let isNotRefreshing = true;
+// 请求队列
+const requests:any[] = []
 
 // axios
 axios.interceptors.request.use(config => {
@@ -64,10 +68,46 @@ axios.interceptors.response.use(response => {
     clearRequestQueue(response.config)
     return response
 }, error => {
-    console.log(error)
+    if (error?.response?.data?.error === 'Forbidden'){
+        const config = error.config;
+        if(isNotRefreshing){
+            isNotRefreshing = false;
+            return axios.put('user').then(res => {
+                const { data: { data, time } } = res;
+                requests.forEach(run => run());
+                requests.splice(0,requests.length)
+                store.commit('UPDATE_USERSTATE', { ...data, isLogin: true, time })
+                createMessage(`欢迎回来 ${data.username} (●'◡'●)`, 'success', MESSAGE_DELAY)
+                return axios(config)
+            }).catch(e => {
+                if(e.status === 401){
+                    createMessage('身份已过期，请重新登录', 'error', MESSAGE_DELAY)
+                    localStorage.removeItem(LOGIN_STATE_KEY)
+                    store.dispatch('signOut')
+                }
+            }).finally(() => {
+                isNotRefreshing = true;
+                setTimeout(() => {
+                    clearRequestQueue(config)
+                }, ERROR_DELAY);
+            })
+        }else{
+            return new Promise(resolve => {
+                requests.push(() => {
+                    resolve(axios(config))
+                    setTimeout(() => {
+                        clearRequestQueue(config)
+                    }, ERROR_DELAY);
+                })
+            })
+        }
+    }
     if (error.code === 'ERR_NETWORK') {
         createMessage('服务器出错啦', 'error', MESSAGE_DELAY);
-        return;
+        setTimeout(() => {
+            clearRequestQueue(error.config)
+        }, ERROR_DELAY);
+        return Promise.reject(error);
     }
     if (error !== 'debounced') {
         setTimeout(() => {

@@ -18,7 +18,7 @@
                             <i class="iconfont">&#xe870;</i> Email : humorouslogic@outlook.com
                         </p>
                         <p>
-                            <i class="iconfont">&#xe883;</i> weChat : -becauseican
+                            <i class="iconfont">&#xe883;</i> WeChat : -becauseican
                         </p>
                     </div>
                     <span class="address">
@@ -33,10 +33,17 @@
                 <div class="content_box">
                     <container title="个人简介">
                         <p>本人热衷于 web 中有趣的交互和精妙的逻辑，不论是设计或是实现都让我觉得十分有意思。</p>
-                        <p>另外对 webGL 以及 Blender 颇有兴趣，因为这可以将模型渲染在页面上并进行交互，我也在努力学习中。</p>
+                        <p>另外对 webGL 以及 Blender 颇有兴趣，因为这可以将模型渲染在页面上并进行交互，我正在努力学习中。</p>
                         <p>偶尔也会在 CSDN 或博客上面发表一些文章或者自己平时记录的笔记。</p>
                     </container>
-                    <container title="">
+                    <container title="README.md">
+                        <p>最早萌生出搭建这个网站的想法是因为我看到 BBC 出品的电视剧《神探夏洛克》。剧中夏洛克福尔摩斯的搭档约翰华生时常在自己的博客（ The blog of Dr. John H. Watson ）上发表一些案情和琐碎的事情，我觉得这很时髦。现实生活中真的有人搭建了这个博客，尽管现在已经没有人维护了，但也给了我灵感。</p>
+                        <p>关于首页的模型，来自于设计师 WON 在 Sketchfab 发表的作品 ...Fire in the sky ，我在 Sketchfab 的每周精选中看到了这个模型，我特别喜欢并决定展示它。</p>
+                        <p>作者 Sketchfab ：<a class="link" href="https://sketchfab.com/won1" target="_blank">https://sketchfab.com/won1</a></p>
+                        <p>前端框架使用了 Vue ，后端框架使用了 NestJS 。</p>
+                        <p>我在博客里集成了 TinyMCE 富文本编辑器和 Prism 代码高亮工具，这使得在这里可以轻松的编辑自己想要的文本、代码块、图片并进行上传。</p>
+                        <p>还没有打算开放注册，不过我会将已经创建好的账号分享给我认为可以发表内容的人。</p>
+                        <p>(๑•̀ㅂ•́)و✧</p>
                     </container>
                 </div>
             </div>
@@ -225,5 +232,11 @@ export default defineComponent({
         vertical-align: 1px;
     }
 
+}
+.link{
+    color: #fff;
+    &:hover{
+        text-decoration: underline;
+    }
 }
 </style>

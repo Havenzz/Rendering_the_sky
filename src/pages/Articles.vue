@@ -1,6 +1,9 @@
 <template>
     <div class="wrap">
         <div class="aside">
+            <div class="haven">
+
+            </div>
             <h2 class="date">{{ time }}</h2>
             <container class="search" title="Search">
                 <template #header>
@@ -43,18 +46,25 @@ const isLoading = computed(() => store.state.isLoading)
 
 onMounted(() => {
     store.dispatch('getTags')
-    store.dispatch('getArticles')
 })
 
 </script>
 
 <style scoped lang="less">
 .wrap {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding-top: 100px;
+    max-width: 1100px;
+    margin: 100px auto 50px;
     display: flex;
     align-items: start;
+    background: radial-gradient(farthest-side at top right, rgba(109, 38, 44, 0.301), transparent 500px), radial-gradient(farthest-corner at top left, rgba(50, 255, 193, 0.103), transparent 600px), radial-gradient(farthest-corner at bottom right, rgba(109, 38, 44, 0), transparent 500px), radial-gradient(farthest-corner at bottom left, rgba(50, 255, 193, 0.103), transparent 600px);
+    background-color: rgba(43, 45, 68, 0.93);
+    background-repeat: no-repeat;
+    background-position: center;
+    box-sizing: border-box;
+    padding: 25px 15px;
+    display: flex;
+    position: relative;
+    
 
     @media screen and (max-width:1000px) {
         width: 100%;
@@ -62,7 +72,7 @@ onMounted(() => {
     }
 
     .search {
-        width: 230px;
+        width: 280px;
 
         .classification {
             padding: 10px 20px;
@@ -92,10 +102,18 @@ onMounted(() => {
 
 .aside {
     margin-right: 30px;
+    .haven{
+        height: 300px;
+        background-color: rgba(0, 0, 0, .3);
+        margin-bottom: 20px;
+    }
 
     @media screen and (max-width:1000px) {
         width: 100%;
         margin-right: 0;
+        .haven{
+            display: none;
+        }
     }
 }
 

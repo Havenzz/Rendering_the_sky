@@ -17,9 +17,6 @@
         </template>
         <loading :style="{height: 666 + 'px'}" v-if="isLoading"></loading>
         <template v-else>
-            <div v-if="article.imageSrc && article.imageSrc !== '#'" class="image">
-                <img v-lazy="baseURL + '/' + article.imageSrc">
-            </div>
             <h1 class="title">{{ article.title }}</h1>
             <div class="info">
                 <p>上传者：{{ article.uploader }}</p>
