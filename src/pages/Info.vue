@@ -91,6 +91,7 @@ export default defineComponent({
             box-sizing: border-box;
             padding: 25px;
             display: flex;
+            box-shadow: 0 0 8px rgba(0, 0, 0, .3);
 
             .avatar {
                 border: 2px solid #a189e2;
@@ -193,6 +194,7 @@ export default defineComponent({
             margin-top: 20px;
             display: flex;
             align-items: flex-start;
+            box-shadow: 0 0 8px rgba(0, 0, 0, .3);
 
             .content_box {
                 width: 100%;

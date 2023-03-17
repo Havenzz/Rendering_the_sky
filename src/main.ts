@@ -89,6 +89,7 @@ axios.interceptors.response.use(response => {
                 isNotRefreshing = true;
                 setTimeout(() => {
                     clearRequestQueue(config)
+                    store.commit('UPDATE_ISLOADING',false)
                 }, ERROR_DELAY);
             })
         }else{
@@ -97,6 +98,7 @@ axios.interceptors.response.use(response => {
                     resolve(axios(config))
                     setTimeout(() => {
                         clearRequestQueue(config)
+                        store.commit('UPDATE_ISLOADING',false)
                     }, ERROR_DELAY);
                 })
             })
@@ -107,6 +109,7 @@ axios.interceptors.response.use(response => {
         setTimeout(() => {
             clearRequestQueue(error.config)
         }, ERROR_DELAY);
+        store.commit('UPDATE_ISLOADING',false)
         return Promise.reject(error);
     }
     if (error !== 'debounced') {

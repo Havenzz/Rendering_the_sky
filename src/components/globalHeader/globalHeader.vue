@@ -3,8 +3,8 @@
         <div class="header-wrap">
             <navBar>
                 <router-link active-class="active" to="/home">首&nbsp;页</router-link>
-                <router-link active-class="active" to="/info">简&nbsp;介</router-link>
                 <router-link active-class="active" to="/articles">博&nbsp;客</router-link>
+                <router-link active-class="active" to="/info">简&nbsp;介</router-link>
             </navBar>
             <div class="header-right">
                 <dropdown v-if="userData.isLogin">
@@ -98,6 +98,7 @@ const openEditTag = () => {
     cursor: pointer;
     width: 130px;
     color: var(--white);
+    list-style: none;
     a{
         color: var(--white);
     }

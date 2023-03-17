@@ -7,19 +7,21 @@
             <h1>Haven's</h1>
             <h1>blog!</h1>
             <div class="btn_container">
-                <button @click="goInfoRoute">了解更多</button>
+                <button @click="goInfoRoute">进入博客</button>
             </div>
         </div>
     </div>
+    <info></info>
 </template>
 
 <script lang="ts" setup>
 import { useRouter } from 'vue-router';
 import threeHome from '../components/home/threeHome.vue';
+import info from './Info.vue'
 
 const router = useRouter()
 const goInfoRoute = () => {
-    router.push('/info')
+    router.push('/articles')
 }
 </script>
 
@@ -31,6 +33,7 @@ const goInfoRoute = () => {
     display: flex;
     padding-top: 66px;
     box-sizing: border-box;
+    height: 100vh;
 }
 
 .home_loading {

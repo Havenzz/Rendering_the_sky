@@ -28,13 +28,15 @@
                     </div>
                 </router-link>
                 <div class="tags">
-                    <router-link 
-                    v-for="(tag, index) of article.tags"
-                    :to="`/articles?s=${tag.name}`"
-                    :key="index">
-                    <i class="iconfont">&#xe872;</i>
-                    {{ tag.name }}
-                </router-link>
+                    <mbutton v-for="(tag, index) of article.tags">
+                        <router-link 
+                        :to="`/articles?s=${tag.name}`"
+                        :key="index">
+                        <i class="iconfont">&#xe872;</i>
+                        {{ tag.name }}
+                    </router-link>
+                    </mbutton>
+                    
                 </div>
             </div>
         </template>
@@ -51,6 +53,7 @@ import { Article } from '../../store';
 import axios from 'axios';
 import loading from '../../components/common/loading.vue';
 import { useRouter, useRoute } from 'vue-router';
+import mbutton from '../../components/common/mbutton.vue';
 
 
 type Articles = Article[]
@@ -59,7 +62,8 @@ export default defineComponent({
     components: {
         pager,
         container,
-        loading
+        loading,
+        mbutton
     },
     setup() {
         const baseURL = axios.defaults.baseURL
@@ -133,26 +137,8 @@ export default defineComponent({
         .tags {
             margin: 10px 0 15px;
             display: flex;
-
-            a {
-                margin: 0 4px;
-                background-color: #20252e;
-                padding: 2px 11px;
-                text-align: center;
-                height: 30px;
-                line-height: 30px;
-                font-size: 13px;
-                color: #D3D3D3;
-                border: none;
-                transition: .3s;
-                border-radius: 6px;
-
-                &:hover {
-                    box-shadow: 0 0 8px 2px rgba(0, 0, 0, .1);
-                    color: #fff;
-                    background-color: #353E4E;
-                }
-
+            a{
+                color: var(--white);
             }
         }
     }

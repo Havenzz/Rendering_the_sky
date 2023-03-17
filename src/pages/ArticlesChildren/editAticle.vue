@@ -31,7 +31,9 @@
             <div class="article_tags">
                 <label>文章标签: ( 最多选择3个标签，至少选择1个 )</label>
                 <div class="tags_container">
-                    <span v-for="tag of article.tags" class="tag" :key="tag">{{ tag }}<i @click="removeTag(tag)" class="iconfont">&#xeb6a;</i></span>
+                    <mbutton class="tag" v-for="tag of article.tags" :key="tag">
+                        <span>{{ tag }}<i @click="removeTag(tag)" class="iconfont">&#xe7fc;</i></span>
+                    </mbutton>
                     <span v-if="article.tags.length < 3" class="addTag" @click="openTag">+ 添加标签</span>
                     <chooseTag v-if="chooseTagShow" v-model="article.tags" :tags="tagsName" @close="closeTag"></chooseTag>
                 </div>
@@ -63,6 +65,7 @@ import loading from '../../components/common/loading.vue';
 import chooseTag from '../../components/articles/chooseTag.vue';
 import createConfirm from '../../components/common/createConfirm';
 import axios from 'axios';
+import mbutton from '../../components/common/mbutton.vue';
 
 const router = useRouter()
 const route = useRoute()
@@ -230,32 +233,12 @@ onMounted(() => {
         align-items: center;
         height: 30px;
         span{
-            margin: 0 10px;
+            margin: 0 4px 0 8px;
         }
-        .tag {
-            margin: 0 4px;
-            background-color: #20252e;
-            padding: 2px 11px;
-            text-align: center;
-            height: 30px;
-            line-height: 30px;
-            font-size: 13px;
-            color: #D3D3D3;
-            border: none;
-            transition: .3s;
-            border-radius: 6px;
-
-            &:hover {
-                box-shadow: 0 0 8px 2px rgba(0, 0, 0, .1);
-                color: #fff;
-                background-color: #353E4E;
-            }
-            i{
-                font-size: 12px;
-                margin-left: 5px;
-                cursor: pointer;
-            }
-
+        .tag i{
+            font-size: 12px;
+            margin-left: 6px;
+            cursor: pointer;
         }
     }
     .addTag:hover{

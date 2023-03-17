@@ -71,10 +71,6 @@ a:hover {
   color: #535bf2;
 }
 
-ul,li{
-  list-style: none;
-}
-
 input,button,select{
   outline: none;
 }
@@ -135,23 +131,38 @@ html{
 .tinymce_content p{
   margin: 16px 0;
 }
+.tinymce_content ul{
+  padding-left: 40px;
+}
 .tinymce_content h1,
 .tinymce_content h2,
 .tinymce_content h3,
 .tinymce_content h4,
 .tinymce_content h5,
 .tinymce_content h6{
-  margin: 20px 0;
+  margin: 10px 0;
 }
 .tinymce_content h2{
-  font-size: 28px;
+  font-size: 24px;
   line-height: 40px;
 }
 .tinymce_content h3{
-  font-size: 19px;
+  font-size: 18px;
   line-height: 28px;
 }
-
+.tinymce_content p{
+  padding: 0 5px;
+}
+.tinymce_content hr{
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+.tinymce_content blockquote{
+  border-left: 5px solid var(--pink);
+  padding-left: 10px;
+  margin-left: 20px;
+  color: rgba(255, 255, 255, .6);
+}
 div.code-toolbar > .toolbar > .toolbar-item > button {
   outline: none;
 }

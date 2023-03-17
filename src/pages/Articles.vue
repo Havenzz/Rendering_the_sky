@@ -1,25 +1,23 @@
 <template>
     <div class="wrap">
         <div class="aside">
-            <div class="haven">
-
-            </div>
+            <cv></cv>
             <h2 class="date">{{ time }}</h2>
             <container class="search" title="Search">
                 <template #header>
                     <search></search>
                 </template>
-                <ul class="classification">
+                <div class="classification">
                     <h1 class="tags_title">
                         <i class="iconfont">&#xe86f;</i> 标签集
                     </h1>
                     <loading v-if="isLoading" :style="{height: 200 + 'px'}"></loading>
-                    <template v-else>
-                        <li v-for="tag of tags" :key="tag.id">
+                    <div class="tags" v-else>
+                        <mbutton class="tag" v-for="tag of tags" :key="tag.id">
                             <router-link :to="`articles?s=${tag.name}`">{{ tag.name }}</router-link>
-                        </li>
-                    </template>
-                </ul>
+                        </mbutton>
+                    </div>
+                </div>
             </container>
         </div>
         <router-view></router-view>
@@ -32,6 +30,8 @@ import search from '../components/articles/search.vue';
 import { useStore } from 'vuex';
 import { computed, onMounted } from 'vue';
 import loading from '../components/common/loading.vue';
+import cv from '../components/common/cv.vue';
+import mbutton from '../components/common/mbutton.vue';
 
 const store = useStore();
 const time = computed(() => {
@@ -64,6 +64,7 @@ onMounted(() => {
     padding: 25px 15px;
     display: flex;
     position: relative;
+    box-shadow: 0 0 8px rgba(0, 0, 0, .3);
     
 
     @media screen and (max-width:1000px) {
@@ -73,13 +74,14 @@ onMounted(() => {
 
     .search {
         width: 280px;
-
         .classification {
-            padding: 10px 20px;
-
-            li {
-                line-height: 25px;
-                list-style: disc;
+            padding: 10px;
+            .tags{
+                display: flex;
+                flex-wrap: wrap;
+            }
+            .tag {
+                margin-bottom: 10px;
                 a{
                     display: block;
                     color: var(--white);
@@ -102,11 +104,6 @@ onMounted(() => {
 
 .aside {
     margin-right: 30px;
-    .haven{
-        height: 300px;
-        background-color: rgba(0, 0, 0, .3);
-        margin-bottom: 20px;
-    }
 
     @media screen and (max-width:1000px) {
         width: 100%;

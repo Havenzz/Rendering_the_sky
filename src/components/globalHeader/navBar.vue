@@ -114,7 +114,6 @@ watch(() => route.path, () => {
 .header-navbar {
     display: flex;
     font-size: 17px;
-    height: 100%;
     word-spacing: 1px;
     list-style-type: none;
 
@@ -122,14 +121,12 @@ watch(() => route.path, () => {
         flex-direction: column;
         z-index: 9999;
         position: fixed;
-        top: 0;
+        top: 66px;
         left: 0;
-        width: 233px;
-        background-color: rgba(6, 6, 6, .9);
+        width: 100%;
+        background-color: rgba(6, 6, 6, .8);
         box-shadow: 0px 3px 7px 0px rgb(0 0 0 / 35%);
         justify-content: center;
-        transform: translateX(-666px);
-        transition: .3s;
         opacity: 0;
 
         &.show {
@@ -163,9 +160,7 @@ watch(() => route.path, () => {
     left: 0;
     width: 100%;
     height: 100vh;
-    backdrop-filter: blur(3px);
     z-index: 9;
-    background-color: rgba(6, 6, 6, .66);
     display: none;
 
     &.show {

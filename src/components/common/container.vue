@@ -34,6 +34,11 @@ export default defineComponent({
     margin-bottom: 22px;
     font-size: 13px;
     overflow: hidden;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+    transition: .3s;
+    &:hover{
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+    }
     .log-container-header {
         font-family: "Motiva Sans", Sans-serif;
         font-weight: 200;

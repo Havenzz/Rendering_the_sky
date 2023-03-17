@@ -36,7 +36,7 @@ let cropper: Cropper;
 const currentImg = ref<string>('');
 const newImg = ref<string>('');
 const fileRef = ref<null | HTMLInputElement>(null);
-const MAX_SIZE = 512;
+const MAX_SIZE = 2048;
 let fileType:string;
 
 if (props.imgURL) {

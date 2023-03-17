@@ -119,6 +119,9 @@ const onEditArticle = () => {
     font-size: 30px;
     margin: 20px 0;
     color: #fff;
+    text-align: center;
+    padding-bottom: 13px;
+    border-bottom: 1px solid rgba(255, 255, 255, .3);
 }
 .image{
     width: 100%;
