@@ -153,6 +153,15 @@ html{
 .tinymce_content p{
   padding: 0 5px;
 }
+.tinymce_content p > code{
+  margin-left: 3px;
+  margin-right: 3px;
+  padding: 1px 3px;
+  border: 1px solid #ffffff;
+  color: #921d3a;
+  background: #eec6d1;
+  border-radius: 3px;
+}
 .tinymce_content hr{
   border: none;
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);

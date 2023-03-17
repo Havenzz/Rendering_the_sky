@@ -1,8 +1,8 @@
 <template>
     <div class="home">
         <threeHome />
-        <div class="textBox">
-            <h1>Welcome</h1>
+        <div ref="textBox" class="textBox">
+            <h1></h1>
             <h1>to</h1>
             <h1>Haven's</h1>
             <h1>blog!</h1>
@@ -18,8 +18,27 @@
 import { useRouter } from 'vue-router';
 import threeHome from '../components/home/threeHome.vue';
 import info from './Info.vue'
+import { ref, onMounted } from 'vue';
 
 const router = useRouter()
+const textStrArr = ['Welcome','to',"haven's",'blog!']
+const textBox = ref<null | HTMLElement>(null)
+onMounted(() => {
+    const textDomArr = Array.from((textBox.value as HTMLElement).children);
+    for (const textDom of textDomArr) {
+        for (const textStr of textStrArr) {
+            let i = 0;
+            let timer = setInterval(() => {
+                if(i === textStr.length){
+                    clearInterval(timer)
+                    return
+                }
+                textDom.textContent += textStr[i]
+                i++
+            },100)
+        }
+    }
+})
 const goInfoRoute = () => {
     router.push('/articles')
 }
@@ -102,6 +121,10 @@ const goInfoRoute = () => {
 
 
     h1 {
+        &::before{
+            content: '.';
+            visibility: hidden;
+        }
         font-size: 110px;
         color: #aa97ec;
         text-align: end;
