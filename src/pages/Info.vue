@@ -41,8 +41,6 @@
                         <p>关于首页的模型，来自于设计师 WON 在 Sketchfab 发表的作品 ...Fire in the sky ，我在 Sketchfab 的每周精选中看到了这个模型，我特别喜欢并决定展示它。</p>
                         <p>作者 Sketchfab ：<a class="link" href="https://sketchfab.com/won1" target="_blank">https://sketchfab.com/won1</a></p>
                         <p>前端框架使用了 Vue ，后端框架使用了 NestJS 。</p>
-                        <p>我在博客里集成了 TinyMCE 富文本编辑器和 Prism 代码高亮工具，这使得在这里可以轻松的编辑自己想要的文本、代码块、图片并进行上传。</p>
-                        <p>还没有打算开放注册，不过我会将已经创建好的账号分享给我认为可以发表内容的人。</p>
                         <p>(๑•̀ㅂ•́)و✧</p>
                     </container>
                 </div>

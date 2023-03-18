@@ -127,11 +127,9 @@ watch(() => route.path, () => {
         background-color: rgba(6, 6, 6, .8);
         box-shadow: 0px 3px 7px 0px rgb(0 0 0 / 35%);
         justify-content: center;
-        opacity: 0;
-
+        display: none;
         &.show {
-            opacity: 1;
-            transform: translateX(0);
+            display: flex;
         }
 
         :deep(a) {

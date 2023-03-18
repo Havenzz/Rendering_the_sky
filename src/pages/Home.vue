@@ -1,43 +1,52 @@
 <template>
-    <div class="home">
-        <threeHome />
-        <div ref="textBox" class="textBox">
-            <h1></h1>
-            <h1>to</h1>
-            <h1>Haven's</h1>
-            <h1>blog!</h1>
-            <div class="btn_container">
-                <button @click="goInfoRoute">进入博客</button>
+    <div class="home_container">
+        <div class="home">
+            <threeHome />
+            <div ref="textBox" class="textBox">
+                <h1></h1>
+                <h1></h1>
+                <h1></h1>
+                <h1></h1>
+                <div class="btn_container">
+                    <button @click="goInfoRoute">进入博客</button>
+                </div>
             </div>
         </div>
     </div>
-    <info></info>
 </template>
 
 <script lang="ts" setup>
 import { useRouter } from 'vue-router';
 import threeHome from '../components/home/threeHome.vue';
-import info from './Info.vue'
 import { ref, onMounted } from 'vue';
 
 const router = useRouter()
 const textStrArr = ['Welcome','to',"haven's",'blog!']
 const textBox = ref<null | HTMLElement>(null)
 onMounted(() => {
-    const textDomArr = Array.from((textBox.value as HTMLElement).children);
-    for (const textDom of textDomArr) {
-        for (const textStr of textStrArr) {
-            let i = 0;
-            let timer = setInterval(() => {
-                if(i === textStr.length){
-                    clearInterval(timer)
-                    return
-                }
-                textDom.textContent += textStr[i]
-                i++
-            },100)
+    const textDomArr = Array.from((textBox.value as HTMLElement).querySelectorAll('h1'));
+    const asyncArr = textDomArr.map((dom,index) => {
+        return () => {
+            return new Promise(resolve => {
+                dom.classList.add('active')
+                let i = 0;
+                let timer = setInterval(() => {
+                    if(i === textStrArr[index].length - 1){
+                        clearInterval(timer);
+                        dom.classList.remove('active')
+                        resolve('')
+                    }
+                    dom.innerText += textStrArr[index][i]
+                    i++;
+                },100)
+            })
         }
-    }
+    })
+    ;(async () => {
+        for (const async of asyncArr) {
+            await async()
+        }
+    })()
 })
 const goInfoRoute = () => {
     router.push('/articles')
@@ -45,6 +54,9 @@ const goInfoRoute = () => {
 </script>
 
 <style scoped lang="less">
+.home_container{
+    height: 100vh;
+}
 .home {
     max-width: 1200px;
     margin: 0 auto;
@@ -52,7 +64,6 @@ const goInfoRoute = () => {
     display: flex;
     padding-top: 66px;
     box-sizing: border-box;
-    height: 100vh;
 }
 
 .home_loading {
@@ -112,26 +123,48 @@ const goInfoRoute = () => {
 
 .textBox {
     position: absolute;
-    top: 16%;
+    top: 18%;
     right: 66px;
     overflow: hidden;
     padding: 10px;
     user-select: none;
     box-sizing: border-box;
-
+    width: 520px;
 
     h1 {
+        width: fit-content;
+        font-size: 110px;
+        color: #aa97ec;
+        text-shadow: 2px 2px 0px #d89aeb, 4px 4px 0px #e0bede;
+        &:nth-child(2){
+            margin-left: 365px;
+        }
+        &:nth-child(3){
+            margin-left: 75px;
+        }
+        &:nth-child(4){
+            margin-left: 212px;
+        }
         &::before{
             content: '.';
             visibility: hidden;
         }
-        font-size: 110px;
-        color: #aa97ec;
-        text-align: end;
-        text-shadow: 2px 2px 0px #d89aeb, 4px 4px 0px #e0bede;
+        &.active::after{
+            content: '|';
+        }
 
-        @media screen and (max-width:900px) {
+        @media screen and (max-width:1200px) {
             text-shadow: 1px 1px 0px #d89aeb, 2px 2px 0px #e0bede;
+            text-align: start;
+            &:nth-child(2){
+                margin-left: 0;
+            }
+            &:nth-child(3){
+                margin-left: 0;
+            }
+            &:nth-child(4){
+                margin-left: 0;
+            }
         }
     }
 
@@ -155,9 +188,9 @@ const goInfoRoute = () => {
         display: flex;
         flex-flow: wrap;
         justify-content: center;
-        top: 100%;
         width: 800px;
         margin: 0 auto;
+        top: 105%;
         left: 0;
         right: 0;
 
@@ -179,7 +212,7 @@ const goInfoRoute = () => {
         width: 100%;
 
         h1 {
-            font-size: 42px;
+            font-size: 36px;
         }
     }
 
@@ -187,7 +220,7 @@ const goInfoRoute = () => {
         top: 105%;
 
         h1 {
-            font-size: 28px;
+            font-size: 26px;
             margin-right: 10px;
         }
 

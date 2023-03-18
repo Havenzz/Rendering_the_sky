@@ -22,6 +22,7 @@ export interface Article {
     createTime: string;
     uploader: string;
     imageSrc:string;
+    editTime:string;
 }
 
 interface UserProps {

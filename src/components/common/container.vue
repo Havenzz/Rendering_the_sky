@@ -35,7 +35,7 @@ export default defineComponent({
     font-size: 13px;
     overflow: hidden;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
-    transition: .3s;
+    transition: box-shadow .3s;
     &:hover{
         box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
     }

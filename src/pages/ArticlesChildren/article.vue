@@ -17,10 +17,16 @@
         </template>
         <loading :style="{height: 666 + 'px'}" v-if="isLoading"></loading>
         <template v-else>
-            <h1 class="title">{{ article.title }}</h1>
+            <h1 class="title">
+                {{ article.title }}
+                <div>
+                    <span>创建时间：{{ dayjs(article.createTime).format('YYYY-MM-DD') }}</span>
+                    <span>文章字数 ≈ {{ wordCount }} 字</span>
+                    <span>阅读时长 ≈ {{ formatTime(Math.ceil(wordCount / 6)) }}</span>
+                </div>
+            </h1>
             <div class="info">
-                <p>上传者：{{ article.uploader }}</p>
-                <p>时间：{{ article.createTime?.split('T')[0] }}</p>
+                <p>最后编辑于：{{ dayjs(article.editTime).format('YYYY-MM-DD') }}</p>
                 <p class="tags">文章标签：
                     <router-link :to="`/articles?s=${tag.name}`" v-for="tag of article.tags" :key="tag.id">{{ tag.name }}</router-link>
                 </p>
@@ -40,6 +46,7 @@ import { Article } from '../../store';
 import loading from '../../components/common/loading.vue';
 import createConfirm from '../../components/common/createConfirm';
 import axios from 'axios';
+import dayjs from 'dayjs'
 
 interface WholeArticle extends Article {
     content:string;
@@ -54,6 +61,7 @@ const contentRef = ref<HTMLElement | null>(null)
 const article = ref<WholeArticle | any>({})
 const isLoading = computed(() => store.state.isLoading)
 const username = computed(() => store.state.user.username)
+const wordCount = ref<number>(0)
 
 onMounted(() => {
     store.dispatch('getArticle',route.params.id).then(res => {
@@ -63,6 +71,7 @@ onMounted(() => {
                 item.innerHTML = `<code>${item.innerHTML}</code>`
             })
             prism.highlightAll()
+            wordCount.value = Math.ceil(contentRef.value!.innerText.length / 2)
         })
     })
 })
@@ -81,6 +90,25 @@ const onEditArticle = () => {
             router.push(`/articles/edit/${article.value.id}`)
         })
     }
+}
+
+function formatTime(time:number) {
+  let hours = Math.floor(time / 3600);
+  let minutes = Math.floor((time - hours * 3600) / 60);
+  let seconds = time % 60;
+
+  let parts = [];
+  if (hours > 0) {
+    parts.push(` ${hours} 小时`);
+  }
+  if (minutes > 0 || (hours > 0 && seconds > 0)) {
+    parts.push(` ${minutes} 分`);
+  }
+  if (seconds > 0 || (hours === 0 && minutes === 0)) {
+    parts.push(` ${seconds} 秒`);
+  }
+
+  return parts.join('');
 }
 </script>
 
@@ -122,6 +150,13 @@ const onEditArticle = () => {
     text-align: center;
     padding-bottom: 13px;
     border-bottom: 1px solid rgba(255, 255, 255, .3);
+    div{
+        font-size: 14px;
+        font-weight: normal;
+        span{
+            margin: 0 15px;
+        }
+    }
 }
 .image{
     width: 100%;
