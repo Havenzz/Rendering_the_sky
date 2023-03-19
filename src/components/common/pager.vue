@@ -106,11 +106,11 @@ export default defineComponent({
         width: max-content;
         display: flex;
         align-items: center;
-        margin: 10px auto;
         justify-content: space-between;
+        margin: 10px auto;
 
         @media screen and (max-width: 750px) {
-            width: 70%;
+            width: 100%;
         }
     }
 
@@ -139,7 +139,7 @@ export default defineComponent({
         }
 
         @media screen and (max-width: 750px) {
-            span:not(.active) {
+            span {
                 display: none;
             }
         }
@@ -158,7 +158,7 @@ export default defineComponent({
     }
     .next{
         text-align: start;
-        width: 68.3px;
+        width: 81.3px;
         box-sizing: content-box;
         align-items: center;
         display: flex;

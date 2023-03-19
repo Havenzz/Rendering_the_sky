@@ -1,13 +1,6 @@
 <template>
-    <container class="articles">
-        <template #header>
-            <div class="header_title">
-                <router-link to="/articles" v-if="route.query.s"><i class="iconfont">&#xe7ec;</i> 返回 Articles</router-link>
-                <p v-else><i class="iconfont">&#xe86e;</i> Articles</p>
-                <p>Total: {{ articleTotal }}</p>
-            </div>
-        </template>
-        <h1 class="searchResult" v-if="route.query.s">以下是 "{{ route.query.s }}" 的搜索结果：</h1>
+    <div class="articles_wrap">
+        <h1 class="searchResult" v-if="route.query.s">以下是关于 "{{ route.query.s }}" 的内容：</h1>
         <loading :style="{height: 301 + 'px'}" v-if="isLoading"></loading>
         <div class="not_found" v-else-if="articles.length === 0">
             <div class="cube">
@@ -16,32 +9,66 @@
             <span>(●'◡'●) 空空如也，点击<router-link to="/articles">返回</router-link>上一级</span>
         </div>
         <template v-else>
-            <div class="pro_item" v-for="(article, index) of articles" :key="index">
-                <router-link class="article" :to="`/articles/${'' + article.id}`">
-                    <div class="article_header">
-                        <h3>{{ article.title }}</h3>
-                        <span>@{{ article.uploader }} · {{ article?.createTime.split('T')[0].replace('-','年').replace('-','月') + '日' }}</span>
-                    </div>
-                    <p>{{ article.describe }}</p>
-                    <div class="image_box" v-if="article.imageSrc !== '#'">
-                        <img v-lazy="baseURL + '/' + article.imageSrc">
-                    </div>
-                </router-link>
-                <div class="tags">
-                    <mbutton v-for="(tag, index) of article.tags">
-                        <router-link 
-                        :to="`/articles?s=${tag.name}`"
-                        :key="index">
-                        <i class="iconfont">&#xe872;</i>
-                        {{ tag.name }}
+            <template v-for="(article, index) of articles" :key="index">
+                <container class="articles" v-if="index === 0 && !route.query.s">
+                    <template #header>
+                        <div class="header_title">
+                            <router-link to="/articles" v-if="route.query.s"><i class="iconfont">&#xe7ec;</i> 返回 Articles</router-link>
+                            <p v-else><i class="iconfont">&#xe86e;</i> 置顶</p>
+                            <p>Total: {{ articleTotal }}</p>
+                        </div>
+                    </template>
+                        <div class="pro_item">
+                            <router-link class="article" :to="`/articles/${'' + article.id}`">
+                                <div class="article_header">
+                                    <h3>{{ article.title }}</h3>
+                                    <span>@{{ article.uploader }} · {{ dayjs(article?.createTime).format('YYYY年MM月DD日') }}</span>
+                                </div>
+                                <p>{{ article.describe }}</p>
+                                <div class="image_box" v-if="article.imageSrc !== '#'">
+                                    <img v-lazy="baseURL + '/' + article.imageSrc">
+                                </div>
+                            </router-link>
+                            <div class="tags">
+                                <mbutton v-for="(tag, index) of article.tags">
+                                    <router-link 
+                                    :to="`/articles?s=${tag.name}`"
+                                    :key="index">
+                                    <i class="iconfont">&#xe872;</i>
+                                    {{ tag.name }}
+                                </router-link>
+                                </mbutton>
+                            </div>
+                        </div>
+                </container>
+                <div class="pro_item" v-else>
+                    <router-link class="article" :to="`/articles/${'' + article.id}`">
+                        <div class="article_header">
+                            <h3>{{ article.title }}</h3>
+                            <span>@{{ article.uploader }} · {{ dayjs(article?.createTime).format('YYYY年MM月DD日') }}</span>
+                        </div>
+                        <p>{{ article.describe }}</p>
+                        <div class="image_box" v-if="article.imageSrc !== '#'">
+                            <img v-lazy="baseURL + '/' + article.imageSrc">
+                        </div>
                     </router-link>
-                    </mbutton>
-                    
+                    <div class="tags">
+                        <mbutton v-for="(tag, index) of article.tags">
+                            <router-link 
+                            :to="`/articles?s=${tag.name}`"
+                            :key="index">
+                            <i class="iconfont">&#xe872;</i>
+                            {{ tag.name }}
+                        </router-link>
+                        </mbutton>
+                    </div>
                 </div>
-            </div>
+            </template>
         </template>
-        <pager :pageCount="total || 1" :currentPage="page" @change-page="changePage" />
-    </container>
+        <div class="pager_container">
+            <pager :pageCount="total || 1" :currentPage="page" @change-page="changePage" />
+        </div>
+    </div>
 </template>
 
 <script lang="ts">
@@ -54,6 +81,7 @@ import axios from 'axios';
 import loading from '../../components/common/loading.vue';
 import { useRouter, useRoute } from 'vue-router';
 import mbutton from '../../components/common/mbutton.vue';
+import dayjs from 'dayjs';
 
 
 type Articles = Article[]
@@ -111,89 +139,116 @@ export default defineComponent({
             total,
             isLoading,
             route,
-            articleTotal
+            articleTotal,
+            dayjs
         }
     }
 })
 </script>
 
 <style scoped lang="less">
-.articles {
-    flex: 1;
-    .pro_item {
-        min-height: 140px;
-        border-bottom: 1px solid #fff;
-        padding: 20px 10px 0;
+.pro_item {
+    min-height: 140px;
+    padding: 20px 20px 10px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    background-color: rgba(0, 0, 0, .3);
+    box-shadow: 0 0 8px rgba(0, 0, 0, .3);
+    transition: box-shadow .3s;
+    &:hover{
+        box-shadow: 0 0 8px rgba(0, 0, 0, .6);
+    }
+    .image_box{
+        width: 100%;
+        margin: 10px 0 0;
         box-sizing: border-box;
-        .image_box{
+        img{
             width: 100%;
-            margin: 10px 0 0;
-            box-sizing: border-box;
-            img{
-                width: 100%;
-            }
-        }
-
-        .tags {
-            margin: 10px 0 15px;
-            display: flex;
-            a{
-                color: var(--white);
-            }
         }
     }
 
-    @media screen and (max-width:1000px) {
-        margin-left: 0;
-    }
-
-    .article {
-        display: block;
-        margin-bottom: 10px;
-        .article_header{
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-bottom: 12px;
-            span{
-                color: var(--white);
-                font-size: 12px;
-                padding-bottom: 6px;
-                align-self: end;
-            }
-        }
-
-        h3 {
-            max-width: 350px;
-            font-size: 18px;
-            width: max-content;
-            margin: 4px 10px 0 0;
-            color: var(--lightblue);
-            border-bottom: 1px solid transparent;
-            padding-bottom: 2px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            transition: .3s;
-        }
-
-        p {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.87);
-            overflow: hidden;
-            text-overflow:ellipsis;
-            -webkit-line-clamp: 2;
-        }
-
-        &:hover h3 {
-            border-bottom-color: var(--lightblue);
+    .tags {
+        margin: 15px 0 10px;
+        display: flex;
+        a{
+            color: var(--white);
         }
     }
 }
+
+@media screen and (max-width:1000px) {
+    margin-left: 0;
+}
+
+.article {
+    display: block;
+    margin-bottom: 10px;
+    
+    .article_header{
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+        span{
+            color: var(--white);
+            font-size: 12px;
+            padding-bottom: 6px;
+            align-self: end;
+        }
+    }
+
+    h3 {
+        max-width: 350px;
+        font-size: 18px;
+        width: max-content;
+        margin: 4px 10px 0 0;
+        color: var(--lightblue);
+        border-bottom: 1px solid transparent;
+        padding-bottom: 2px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        transition: .3s;
+    }
+
+    p {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.87);
+        overflow: hidden;
+        text-overflow:ellipsis;
+        -webkit-line-clamp: 2;
+    }
+
+    &:hover h3 {
+        border-bottom-color: var(--lightblue);
+    }
+}
+.articles_wrap{
+    flex: 1;
+}
+.articles {
+    .pro_item{
+        background-color: transparent;
+        box-shadow: none;
+        transition: none;
+        margin-bottom: 0;
+        &:hover{
+            box-shadow: none;
+        }
+    }
+    :deep(.log-container-content){
+        padding: 0;
+    }
+    
+}
 .not_found{
+    width: 100%;
     height: 300px;
-    border-bottom: 1px solid #fff;
     position: relative;
+    background-color: rgba(0, 0, 0, .3);
+    box-shadow: 0 0 8px rgba(0, 0, 0, .3);
+    margin-bottom: 30px;
+    overflow: hidden;
     span{
         position: absolute;
         bottom: 40px;
@@ -247,8 +302,11 @@ export default defineComponent({
 }
 .searchResult{
     font-size: 24px;
-    margin: 30px 10px 6px;
+    margin-bottom: 30px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, .3);
     line-height: 34px;
+    background-color: rgba(0, 0, 0, .3);
+    padding: 15px 20px;
 }
 .header_title{
     box-sizing: border-box;
@@ -263,5 +321,11 @@ export default defineComponent({
             text-shadow: 0 0 12px;
         }
     }
+}
+.pager_container{
+    background-color: rgba(0, 0, 0, .3);
+    padding: 2px 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, .3);
 }
 </style>
