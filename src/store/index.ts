@@ -23,6 +23,7 @@ export interface Article {
     uploader: string;
     imageSrc:string;
     editTime:string;
+    isTop:boolean;
 }
 
 interface UserProps {
@@ -161,6 +162,16 @@ const store = createStore<GlobalDataProps>({
                     'Content-type': 'multipart/form-data'
                 }
             });
+        },
+        async setTopArticle({ dispatch },id) {
+            await axios.put('/articles/setTop',{ id });
+            dispatch('getArticles');
+            createMessage(`置顶成功 (●'◡'●)`,'success',MESSAGE_DELAY)
+        },
+        async cancleTopArticle({ dispatch }) {
+            await axios.delete('/articles/setTop');
+            dispatch('getArticles');
+            createMessage(`取消置顶成功 (●'◡'●)`,'success',MESSAGE_DELAY)
         },
         async getArticle(ctx,id) {
             return await axios.get(`/articles/${id}`);

@@ -96,7 +96,7 @@ watch(() => route.path, () => {
         position: absolute;
         left: 0;
         top: 0;
-        width: calc(33.3333% - 60px);
+        width: calc(25% - 60px);
         height: 6px;
         background: var(--linear);
         ;

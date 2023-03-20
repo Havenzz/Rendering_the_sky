@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3952687 */
-  src: url('iconfont.woff2?t=1678806033150') format('woff2'),
-       url('iconfont.woff?t=1678806033150') format('woff'),
-       url('iconfont.ttf?t=1678806033150') format('truetype');
+  src: url('iconfont.woff2?t=1679308107738') format('woff2'),
+       url('iconfont.woff?t=1679308107738') format('woff'),
+       url('iconfont.ttf?t=1679308107738') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,62 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-down:before {
+  content: "\e7ed";
+}
+
+.icon-time-circle-fill:before {
+  content: "\e848";
+}
+
+.icon-heart-fill:before {
+  content: "\e849";
+}
+
+.icon-image-fill:before {
+  content: "\e860";
+}
+
+.icon-location-fill:before {
+  content: "\e868";
+}
+
+.icon-like-fill:before {
+  content: "\e86a";
+}
+
+.icon-star-fill:before {
+  content: "\e86b";
+}
+
+.icon-edit-fill:before {
+  content: "\e873";
+}
+
+.icon-camera-fill:before {
+  content: "\e874";
+}
+
+.icon-USB-fill:before {
+  content: "\e875";
+}
+
+.icon-bug-fill:before {
+  content: "\e8e8";
+}
+
+.icon-caret-down:before {
+  content: "\e8ec";
+}
+
+.icon-login:before {
+  content: "\e8f0";
+}
+
+.icon-shengrix:before {
+  content: "\e62e";
 }
 
 .icon-tag-fill:before {

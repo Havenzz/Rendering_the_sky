@@ -10,7 +10,7 @@
         </div>
         <template v-else>
             <template v-for="(article, index) of articles" :key="index">
-                <container class="articles" v-if="index === 0 && !route.query.s">
+                <container class="articles" v-if="index === 0 && !route.query.s && article.isTop">
                     <template #header>
                         <div class="header_title">
                             <router-link to="/articles" v-if="route.query.s"><i class="iconfont">&#xe7ec;</i> 返回 Articles</router-link>

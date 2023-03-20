@@ -53,9 +53,12 @@ const router = createRouter({
                         requireLogin: true,
                     }
                 },
-
             ]
         },
+        {
+            path:'/dynamic',
+            component: () => import('../pages/dynamic.vue')
+        }
     ]
 })
 

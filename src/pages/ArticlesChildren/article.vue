@@ -6,6 +6,12 @@
                     <i class="iconfont">&#xe7ec;</i> 返回 Articles
                 </router-link>
                 <div class="user" v-if="username === article.uploader">
+                    <span v-if="!article.isTop" @click="onSetTopArticle" class="edit">
+                        <i class="iconfont">&#xe86e;</i> 置顶
+                    </span>
+                    <span v-else @click="onCancelTopArticle" class="edit">
+                        <i class="iconfont">&#xe86e;</i> 取消置顶
+                    </span>
                     <span @click="onEditArticle" class="edit">
                         <i class="iconfont">&#xe871;</i> 设置
                     </span>
@@ -20,8 +26,8 @@
             <h1 class="title">
                 {{ article.title }}
                 <div>
-                    <span>创建时间：{{ dayjs(article.createTime).format('YYYY-MM-DD') }}</span>
-                    <span>文章字数 ≈ {{ wordCount }} 字</span>
+                    <span><i class="iconfont">&#xe62e;</i> {{ dayjs(article.createTime).format('YYYY-MM-DD') }}</span>
+                    <span>字数 ≈ {{ wordCount }} 字</span>
                     <span>阅读时长 ≈ {{ formatTime(Math.ceil(wordCount / 6)) }}</span>
                 </div>
             </h1>
@@ -75,6 +81,24 @@ onMounted(() => {
         })
     })
 })
+
+const onSetTopArticle = () => {
+    if(article.value.id){
+        createConfirm(`确定要将 “${article.value.title}” 设为置顶吗？`,() => {
+            store.dispatch('setTopArticle',article.value.id)
+            router.push('/articles')
+        })
+    }
+}
+
+const onCancelTopArticle = () => {
+    if(article.value.id){
+        createConfirm(`确定要将 “${article.value.title}” 设为置顶吗？`,() => {
+            store.dispatch('cancleTopArticle')
+            router.push('/articles')
+        })
+    }
+}
 
 const onRemoveArticle = () => {
     if(article.value.id){
@@ -151,6 +175,9 @@ function formatTime(time:number) {
     padding-bottom: 13px;
     border-bottom: 1px solid rgba(255, 255, 255, .3);
     div{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
         font-size: 14px;
         font-weight: normal;
         span{
