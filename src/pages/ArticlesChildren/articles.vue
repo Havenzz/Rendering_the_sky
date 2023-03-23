@@ -225,6 +225,7 @@ export default defineComponent({
 }
 .articles_wrap{
     flex: 1;
+    width: 100%;
 }
 .articles {
     .pro_item{
