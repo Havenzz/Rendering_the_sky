@@ -93,7 +93,7 @@ const onSetTopArticle = () => {
 
 const onCancelTopArticle = () => {
     if(article.value.id){
-        createConfirm(`确定要将 “${article.value.title}” 设为置顶吗？`,() => {
+        createConfirm(`确定要将 “${article.value.title}” 取消置顶吗？`,() => {
             store.dispatch('cancleTopArticle')
             router.push('/articles')
         })
@@ -116,6 +116,7 @@ const onEditArticle = () => {
     }
 }
 
+// 阅读时间估算
 function formatTime(time:number) {
   let hours = Math.floor(time / 3600);
   let minutes = Math.floor((time - hours * 3600) / 60);
