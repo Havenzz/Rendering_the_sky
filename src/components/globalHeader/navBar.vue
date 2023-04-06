@@ -51,6 +51,7 @@ const onClickHide = () => {
 }
 
 onMounted(async () => {
+    // 等待router完成
     await router.isReady();
     const elArr = changeOffset();
     elArr.forEach((el: HTMLElement | unknown, index: number) => {
