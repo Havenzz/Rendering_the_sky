@@ -1,7 +1,7 @@
 <template>
     <div class="wrap">
         <container title="dynamic">
-            <p style="height:500px">敬请期待</p>
+            <p style="height:500px">敬请期待吧还是</p>
         </container>
     </div>
 </template>

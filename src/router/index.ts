@@ -57,7 +57,7 @@ const router = createRouter({
         },
         {
             path:'/dynamic',
-            component: () => import('../pages/dynamic.vue')
+            component: () => import('../pages/Dynamic.vue')
         }
     ]
 })
