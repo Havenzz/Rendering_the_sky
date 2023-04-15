@@ -5,7 +5,7 @@
     <div id="home_threeJS" v-show="!isLoading" ref="threeRef"></div>
 </template>
 
-<script setup lang="ts" name="threeHome">
+<script setup lang="ts">
 import { ref, Ref } from 'vue';
 import useThreeRender from '../../hook/useThreeRender';
 import loading from '../common/loading.vue';
