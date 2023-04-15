@@ -9,7 +9,7 @@
 import { ref, Ref } from 'vue';
 import useThreeRender from '../../hook/useThreeRender';
 import loading from '../common/loading.vue';
-const threeRef = ref<Ref | null>(null);
+const threeRef = ref<Ref | null>(null); 
 const { width, height, isLoading } = useThreeRender(threeRef)
 
 </script>
